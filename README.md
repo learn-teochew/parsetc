@@ -14,8 +14,9 @@ Read from:
 Write to all the above, plus:
 
  * Tie-tsiann-hue 潮正會, also known as Tie-lo 潮羅 (`tlo`)
+ * Duffus system (`duffus`)
 
-Orthographic conventions:
+Orthographic conventions for input text:
 
  * Text must be in lower case
  * Syllables may be written with or without tone numbers

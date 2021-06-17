@@ -1,31 +1,4 @@
-// Three options for dealing with potentially ambiguous syllable parsing
-
-// 1. all syllables in a word must be separated either by tone number or punctuation
-sentence : word_sep ( ( PUNCTUATION | SPACE ) word_sep )+ [ PUNCTUATION | SPACE ]
-word_sep : ( syllable_toneless [ SYLLABLE_SEP word_sep ] ) | ( syllable_tone [ word_sep ] )
-
-// 2. syllable separation not explicit, tone numbers and syllable separators are optional
-// leave it to the parser, which may make surprising choices
-sentence_ambig : word ( [ PUNCTUATION | SPACE ] word )+ [ PUNCTUATION | SPACE ]
-word : ( syllable SYLLABLE_SEP? )+
-
-// 3. all syllables must have tone number (including 0), so no ambiguities about syllable separation
-sentence_tone : word_tone ( ( PUNCTUATION  | SPACE ) word_tone )+ [ PUNCTUATION | SPACE ]
-word_tone : syllable_tone+
-
-syllable : initial? final tone?
-syllable_tone : initial? final tone
-syllable_toneless : initial? final
-
 // Initials
-initial : INIT_BH | INIT_P  | INIT_B
-        | INIT_M  | INIT_NG | INIT_N
-        | INIT_GH | INIT_K  | INIT_G
-        | INIT_D  | INIT_T 
-        | INIT_Z  | INIT_C 
-        | INIT_S  | INIT_H 
-        | INIT_R  | INIT_L 
-
 INIT_BH : "bh"
 INIT_P  : "p"
 INIT_B  : "b"
@@ -44,20 +17,7 @@ INIT_H  : "h"
 INIT_R  : "y"
 INIT_L  : "l"
 
-// Finals
-final :  ( medial coda ) 
-      | ( medial NASAL codastops? ) 
-      | medial
-      | codanasal
-
 // Medials
-// longer medials are listed first to be preferentially matched
-medial : MED_AI  | MED_AU  
-       | MED_IA  | MED_IAU | MED_IEU | MED_IOU | MED_IU  | MED_IE  | MED_IO  
-       | MED_OI  | MED_OU  
-       | MED_UAI | MED_UA  | MED_UE  | MED_UI  
-       | MED_A   | MED_V   | MED_E   | MED_I   | MED_O   | MED_U   
-
 MED_AI  : "ai" 
 MED_AU  : "ao" 
 MED_IA  : "ia" 
@@ -98,8 +58,5 @@ NASAL : "n"
 tone : TONENUMBER [ "(" TONENUMBER ")" ]
 TONENUMBER : "0".."8"
 
-// Punctuation and spacing
-PUNCTUATION : "." | "," | "?" | "!" | "'" | "-"
-SPACE : " "
 // syllable separators can be hyphen or apostrophes
 SYLLABLE_SEP : "-" | "'" | "’"
