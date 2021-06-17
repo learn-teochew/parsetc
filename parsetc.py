@@ -46,7 +46,7 @@ def transliterate_all(phrase, i="gdpi"):
         t = PARSER_DICT[i].parse(phrase)
         out = []
         for o in TRANSFORMER_DICT:
-            out.append((i, TRANSFORMER_DICT[o].transform(t)))
+            out.append((o, TRANSFORMER_DICT[o].transform(t)))
         return(out)
     except KeyError:
         print(f"Unknown spelling scheme {i}")
@@ -95,6 +95,9 @@ if __name__ == "__main__":
     parser.add_argument(
         '--parse_only', '-p', action='store_true',
         help="Only report parse in prettified format from lark (option --output ignored)")
+    parser.add_argument(
+        '--all', '-a', action='store_true',
+        help="Output in all available formats, tab-separated (option --output ignored)")
     args = parser.parse_args()
 
     intext = sys.stdin.read().rstrip()
@@ -102,5 +105,10 @@ if __name__ == "__main__":
     if args.parse_only:
         parsetree = PARSER_DICT[args.input].parse(intext)
         print(parsetree.pretty())
+    elif args.all:
+        out = transliterate_all(intext, i=args.input)
+        print("\t".join(['INPUT', intext]))
+        for line in out:
+            print("\t".join(list(line)))
     else:
         print(transliterate(intext, i=args.input, o=args.output))
