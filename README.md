@@ -3,7 +3,9 @@ Parsing tools for Teochew phonetic spelling
 
 Parse and convert between different Teochew phonetic spelling schemes.
 
-Read from:
+
+Input formats
+-------------
 
  * Geng'dang Pêng'im 廣東拼音 (`gdpi`)
  * Gaginang Peng'im 家己儂拼音 (`ggn`)
@@ -11,12 +13,18 @@ Read from:
    instead) (`ggnn`)
  * Dieghv 潮語 (`dieghv`)
 
-Write to all the above, plus:
+
+Output formats
+--------------
+
+`gdpi`, `ggnn`, plus:
 
  * Tie-tsiann-hue 潮正會, also known as Tie-lo 潮羅 (`tlo`)
  * Duffus system (`duffus`)
 
-Orthographic conventions for input text:
+
+Orthographic conventions for input text
+---------------------------------------
 
  * Text must be in lower case
  * Syllables may be written with or without tone numbers
@@ -28,5 +36,29 @@ Orthographic conventions for input text:
    of `pêng-im`, which in general can only be dealt with by usage frequency,
    which is not available.
 
-Parsing makes use of the [`lark`
-library](https://lark-parser.readthedocs.io/en/latest/)
+
+Running the script
+------------------
+
+Python 3 is required.
+
+Install the [`lark` library](https://lark-parser.readthedocs.io/en/latest/) with pip:
+
+```
+pip install lark
+```
+
+See help message:
+
+```
+python parsetc.py --help
+```
+
+Input text is read from STDIN, no line breaks.
+
+```
+# output in Tie-lo
+echo 'ua2 ain3 oh8 diê5ghe2, ain3 dan3 diê5ziu1 uê7.' | python parsetc.py -i gdpi -o tlo
+# all available output romanizations
+echo 'ua2 ain3 oh8 diê5ghe2, ain3 dan3 diê5ziu1 uê7.' | python parsetc.py -i gdpi --all
+```
