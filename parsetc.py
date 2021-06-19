@@ -9,8 +9,7 @@ import json
 from textwrap import dedent
 from lark import Lark
 
-# Available input formats for parsers
-# load terminals data
+# Load terminals data
 with open("terminals.json") as fh:
     TERMINALS = json.load(fh)
 
@@ -110,15 +109,19 @@ TONENUMBER : "0".."8"
 SYLLABLE_SEP : "-" | "'" | "’"
 """
 
+# Available input formats for parsers
 PARSER_DICT = {}
+LARK_DICT = {}
 for scheme in ['dieghv','gdpi','ggn','ggnn']:
     lark_rules = [
         RULES['common'],
         RULES[scheme]
     ]
-    for term in TERMINALS:
-        if scheme in TERMINALS[term]:
-            lark_rules.append(f"{term} : \"{TERMINALS[term][scheme]}\"")
+    for group in TERMINALS:
+        for term in TERMINALS[group]:
+            if scheme in TERMINALS[group][term]:
+                lark_rules.append(f"{term} : \"{TERMINALS[group][term][scheme]}\"")
+    LARK_DICT[scheme] = "\n".join(lark_rules)
     PARSER_DICT[scheme] = Lark(
             "\n".join(lark_rules),
             start='sentence')
@@ -181,8 +184,10 @@ def transliterate(phrase, i='gdpi', o='tlo'):
             return(TRANSFORMER_DICT[o].transform(t))
         except KeyError:
             print(f'Invalid output scheme {o}')
+            print(f"Must be one of {', '.join(list(TRANSFORMER_DICT.keys()))}")
     except KeyError:
         print(f'Invalid input scheme {i}')
+        print(f"Must be one of {', '.join(list(PARSER_DICT.keys()))}")
     
 
 if __name__ == "__main__":
@@ -194,27 +199,36 @@ if __name__ == "__main__":
         """)
     parser.add_argument(
         '--input', '-i', type=str, default='gdpi',
-        help="Input romanization, available: gdpi, ggn, ggnn, dieghv")
+        help=f"Input romanization, available: {', '.join(list(PARSER_DICT.keys()))}")
     parser.add_argument(
         '--output', '-o', type=str, default='tlo',
-        help="Output romanization, available: gdpi, ggnn, tlo, duffus")
+        help=f"Output romanization, available: {', '.join(list(TRANSFORMER_DICT.keys()))}")
     parser.add_argument(
         '--parse_only', '-p', action='store_true',
         help="Only report parse in prettified format from lark (option --output ignored)")
     parser.add_argument(
         '--all', '-a', action='store_true',
         help="Output in all available formats, tab-separated (option --output ignored)")
+    parser.add_argument(
+        '--show_lark', action='store_true',
+        help="Show parse rules in Lark format for input romanization (output --output ignored)")
     args = parser.parse_args()
 
-    intext = sys.stdin.read().rstrip()
 
-    if args.parse_only:
-        parsetree = PARSER_DICT[args.input].parse(intext)
-        print(parsetree.pretty())
-    elif args.all:
-        out = transliterate_all(intext, i=args.input)
-        print("\t".join(['INPUT', intext]))
-        for line in out:
-            print("\t".join(list(line)))
+    if args.show_lark:
+        if args.input in LARK_DICT:
+            print(LARK_DICT[args.input])
+        else:
+            print(f"Invalid input scheme {args.input}, must be one of {', '.join(list(LARK_DICT.keys()))}")
     else:
-        print(transliterate(intext, i=args.input, o=args.output))
+        intext = sys.stdin.read().rstrip()
+        if args.parse_only:
+            parsetree = PARSER_DICT[args.input].parse(intext)
+            print(parsetree.pretty())
+        elif args.all:
+            out = transliterate_all(intext, i=args.input)
+            print("\t".join(['INPUT', intext]))
+            for line in out:
+                print("\t".join(list(line)))
+        else:
+            print(transliterate(intext, i=args.input, o=args.output))
