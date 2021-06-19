@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
 
 import re
+import json
 from lark import Transformer
+
+with open('terminals.json') as fh:
+    TERMINALS = json.load(fh)
 
 class Gdpi(Transformer):
     """Convert Teochew pengim parse tree to Gengdang Pêng'im"""
@@ -10,72 +14,24 @@ class Gdpi(Transformer):
         return('n')
 
     def initial(self, items):
-        trdict = {
-            'INIT_BH' : "bh",
-            'INIT_P'  : "p",
-            'INIT_B'  : "b",
-            'INIT_M'  : "m",
-            'INIT_NG' : "ng",
-            'INIT_N'  : "n",
-            'INIT_GH' : "gh",
-            'INIT_K'  : "k",
-            'INIT_G'  : "g",
-            'INIT_D'  : "d",
-            'INIT_T'  : "t",
-            'INIT_Z'  : "z",
-            'INIT_C'  : "c",
-            'INIT_S'  : "s",
-            'INIT_H'  : "h",
-            'INIT_R'  : "r",
-            'INIT_L'  : "l",
-        }
+        trdict = { term : TERMINALS['initials'][term]['gdpi'] for term in TERMINALS['initials'] if 'gdpi' in TERMINALS['initials'][term] }
         return(trdict[items[0].type])
 
     def medial(self, items):
-        trdict = {
-            'MED_AI'  : "ai" ,
-            'MED_AU'  : "ao" ,
-            'MED_IA'  : "ia" ,
-            'MED_IAU' : "iao" ,
-            'MED_IEU' : "iêu" ,
-            'MED_IOU' : "iou" ,
-            'MED_IU'  : "iu" ,
-            'MED_IE'  : "iê" ,
-            'MED_IO'  : "io" ,
-            'MED_OI'  : "oi" ,
-            'MED_OU'  : "ou" ,
-            'MED_UAI' : "uai" ,
-            'MED_UA'  : "ua" ,
-            'MED_UE'  : "uê" ,
-            'MED_UI'  : "ui" ,
-            'MED_A'   : "a" ,
-            'MED_V'   : "e" ,
-            'MED_E'   : "ê" ,
-            'MED_I'   : "i" ,
-            'MED_O'   : "o" ,
-            'MED_U'   : "u",
-        }
-        out = []
+        trdict = { term : TERMINALS['medials'][term]['gdpi'] for term in TERMINALS['medials'] if 'gdpi' in TERMINALS['medials'][term] }
         return(trdict[items[0].type])
 
     def coda(self, items):
         return("".join([str(i) for i in items]))
 
     def codastops(self, items):
-        trdict = {
-            'COD_P' : "b",
-            'COD_K' : "g",
-            'COD_H' : "h",
-            'COD_T' : 'g', # Gengdang Pêng'im does not have stop -t
-        }
+        trdict = { term : TERMINALS['codastops'][term]['gdpi'] for term in TERMINALS['codastops'] if 'gdpi' in TERMINALS['codastops'][term] }
+        trdict['COD_T'] = 'g' # Gengdang Pêng'im does not have stop -t
         return(trdict[items[0].type])
 
     def codanasal(self, items):
-        trdict = {
-            'COD_M' : "m",
-            'COD_NG': "ng",
-            'COD_N' : "ng", # Gengdang Pêng'im does not have coda n
-        }
+        trdict = { term : TERMINALS['codanasals'][term]['gdpi'] for term in TERMINALS['codanasals'] if 'gdpi' in TERMINALS['codanasals'][term] }
+        trdict['COD_N'] = "ng" # Gengdang Pêng'im does not have coda n
         return(trdict[items[0].type])
 
     def final(self, items):
@@ -109,71 +65,22 @@ class Ggnn(Transformer):
         return('ñ')
 
     def initial(self, items):
-        trdict = {
-            'INIT_BH' : "bh",
-            'INIT_P'  : "p",
-            'INIT_B'  : "b",
-            'INIT_M'  : "m",
-            'INIT_NG' : "ng",
-            'INIT_N'  : "n",
-            'INIT_GH' : "gh",
-            'INIT_K'  : "k",
-            'INIT_G'  : "g",
-            'INIT_D'  : "d",
-            'INIT_T'  : "t",
-            'INIT_Z'  : "j",
-            'INIT_C'  : "ch",
-            'INIT_S'  : "s",
-            'INIT_H'  : "h",
-            'INIT_R'  : "y",
-            'INIT_L'  : "l",
-        }
+        trdict = { term : TERMINALS['initials'][term]['ggnn'] for term in TERMINALS['initials'] if 'ggnn' in TERMINALS['initials'][term] }
         return(trdict[items[0].type])
 
     def medial(self, items):
-        trdict = {
-            'MED_AI'  : "ai" ,
-            'MED_AU'  : "ao" ,
-            'MED_IA'  : "ia" ,
-            'MED_IAU' : "iao" ,
-            'MED_IEU' : "ieu" ,
-            'MED_IOU' : "iou" ,
-            'MED_IU'  : "iu" ,
-            'MED_IE'  : "ie" ,
-            'MED_IO'  : "io" ,
-            'MED_OI'  : "oi" ,
-            'MED_OU'  : "ou" ,
-            'MED_UAI' : "uai" ,
-            'MED_UA'  : "ua" ,
-            'MED_UE'  : "ue" ,
-            'MED_UI'  : "ui" ,
-            'MED_A'   : "a" ,
-            'MED_V'   : "eu" ,
-            'MED_E'   : "e" ,
-            'MED_I'   : "i" ,
-            'MED_O'   : "o" ,
-            'MED_U'   : "u",
-        }
+        trdict = { term : TERMINALS['medials'][term]['ggnn'] for term in TERMINALS['medials'] if 'ggnn' in TERMINALS['medials'][term] }
         return(trdict[items[0].type])
 
     def coda(self, items):
         return("".join([str(i) for i in items]))
 
     def codastops(self, items):
-        trdict = {
-            'COD_P' : "p",
-            'COD_K' : "k",
-            'COD_H' : "h",
-            'COD_T' : 't',
-        }
+        trdict = { term : TERMINALS['codastops'][term]['ggnn'] for term in TERMINALS['codastops'] if 'ggnn' in TERMINALS['codastops'][term] }
         return(trdict[items[0].type])
 
     def codanasal(self, items):
-        trdict = {
-            'COD_M' : "m",
-            'COD_NG': "ng",
-            'COD_N' : "n",
-        }
+        trdict = { term : TERMINALS['codanasals'][term]['ggnn'] for term in TERMINALS['codanasals'] if 'ggnn' in TERMINALS['codanasals'][term] }
         return(trdict[items[0].type])
 
     def final(self, items):
