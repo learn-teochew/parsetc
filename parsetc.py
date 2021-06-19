@@ -109,10 +109,24 @@ TONENUMBER : "0".."8"
 SYLLABLE_SEP : "-" | "'" | "’"
 """
 
+# Tie-lo with tone numbers instead of diacritics
+# input needs preprocessing
+RULES['tlo'] = """
+// Codas
+coda : codanasal | codastops
+codanasal : COD_M | COD_NG | COD_N
+codastops : COD_P | COD_K | COD_H | COD_T
+// Tones
+tone : TONENUMBER [ "(" TONENUMBER ")" ]
+TONENUMBER : "0".."8"
+// syllable separators can be hyphen or apostrophes
+SYLLABLE_SEP : "-" | "'" | "’"
+"""
+
 # Available input formats for parsers
 PARSER_DICT = {}
 LARK_DICT = {}
-for scheme in ['dieghv','gdpi','ggn','ggnn']:
+for scheme in ['dieghv','gdpi','ggn','ggnn', 'tlo']:
     lark_rules = [
         RULES['common'],
         RULES[scheme]
@@ -126,6 +140,7 @@ for scheme in ['dieghv','gdpi','ggn','ggnn']:
             "\n".join(lark_rules),
             start='sentence')
 
+
 # Available output formats for transformers
 TRANSFORMER_DICT = {
     'gdpi' : translit.Gdpi(),
@@ -133,6 +148,74 @@ TRANSFORMER_DICT = {
     'tlo' : translit.Tlo(),
     'duffus' : translit.Duffus()
 }
+
+
+def tlo_syllable_parse(syllable):
+    """Parse a Tie-lo syllable with diacritics to get tone number
+    
+    Will not complain if a syllable has two diacritics. Beware!
+    
+    Returns
+    -------
+    (str, int) : base syllable string, tone number. Tone 0 not supported
+    """
+    tonemarks = {
+        769 : 2, # hex 0x301
+        768 : 3, # 0x300
+        770 : 5, # 0x302
+        774 : 6, # 0x306
+        780 : 6, # 0x30C combining caron, often confused with combining breve
+        772 : 7  # 0x304
+    }
+    notone = []
+    tone = 1 # default tone
+    for c in syllable:
+        # in case combining marks are in use, cannot be decomposed
+        if ord(c) in tonemarks:
+            # ord returns decimal value
+            tone = tonemarks[ord(c)]
+        else:
+            # decompose each character into diacritics
+            decomp = unicodedata.decomposition(c).split()
+            # convert hex values to decimal
+            decomp = [int('0x' + i, 16) for i in decomp]
+            if len(decomp) > 0:
+                # check if key is present
+                if decomp[1] in tonemarks: 
+                    # base letter
+                    notone.append(chr(decomp[0]))
+                    # tone
+                    tone = tonemarks[decomp[1]]
+                else:
+                    print(f"invalid diacritic found in character {c} {syllable}")
+                    return(syllable.upper(), None)
+            else:
+                # not a diacritic, append to the base 
+                notone.append(c)
+    # check for entering tones
+    if notone[-1] in ['p','t','k','h']:
+        if tone == 1:
+            tone = 4
+        elif tone == 5:
+            tone = 8
+    return("".join(notone), tone)
+
+
+def tlo_convert_to_numeric(text):
+    """Convert Tie-lo with diacritics to tone numbers
+
+    Returns
+    -------
+    str
+        Tie-lo with tone numbers instead of diacritics
+    """
+    out = []
+    for elem in re.split(r'([\s,\.\'\"\?\!\-]+)', text):
+        if elem != "" and not re.match(r'([\s,\.\'\"\?\!\-]+)', elem):
+            out.append("".join([str(i) for i in tlo_syllable_parse(elem)]))
+        else:
+            out.append(elem)
+    return("".join(out))
 
 
 def transliterate_all(phrase, i="gdpi"):
@@ -222,6 +305,11 @@ if __name__ == "__main__":
             print(f"Invalid input scheme {args.input}, must be one of {', '.join(list(LARK_DICT.keys()))}")
     else:
         intext = sys.stdin.read().rstrip()
+        if args.input == 'tlo':
+            # If Tie-lo input, preprocess from diacritics to numeric tone marks
+            # Assumes that all syllables have tones marked!
+            # impossible otherwise, because tone1 cannot be distinguished from unmarked tone
+            intext = tlo_convert_to_numeric(intext)
         if args.parse_only:
             parsetree = PARSER_DICT[args.input].parse(intext)
             print(parsetree.pretty())

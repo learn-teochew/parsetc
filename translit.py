@@ -4,8 +4,10 @@ import re
 import json
 from lark import Transformer
 
+# Load terminals data
 with open('terminals.json') as fh:
     TERMINALS = json.load(fh)
+
 
 class Gdpi(Transformer):
     """Convert Teochew pengim parse tree to Gengdang Pêng'im"""
@@ -118,71 +120,22 @@ class Tlo(Transformer):
         return('-')
 
     def initial(self, items):
-        trdict = {
-            'INIT_BH' : "b",
-            'INIT_P'  : "ph",
-            'INIT_B'  : "p",
-            'INIT_M'  : "m",
-            'INIT_NG' : "ng",
-            'INIT_N'  : "n",
-            'INIT_GH' : "g",
-            'INIT_K'  : "kh",
-            'INIT_G'  : "k",
-            'INIT_D'  : "t",
-            'INIT_T'  : "th",
-            'INIT_Z'  : "ts",
-            'INIT_C'  : "tsh",
-            'INIT_S'  : "s",
-            'INIT_H'  : "h",
-            'INIT_R'  : "z",
-            'INIT_L'  : "l",
-        }
+        trdict = { term : TERMINALS['initials'][term]['tlo'] for term in TERMINALS['initials'] if 'tlo' in TERMINALS['initials'][term] }
         return(trdict[items[0].type])
 
     def medial(self, items):
-        trdict = {
-            'MED_AI'  : "ai" ,
-            'MED_AU'  : "au" ,
-            'MED_IA'  : "ia" ,
-            'MED_IAU' : "iau" ,
-            'MED_IEU' : "ieu" ,
-            'MED_IOU' : "iou" ,
-            'MED_IU'  : "iu" ,
-            'MED_IE'  : "ie" ,
-            'MED_IO'  : "io" ,
-            'MED_OI'  : "oi" ,
-            'MED_OU'  : "ou" ,
-            'MED_UAI' : "uai" ,
-            'MED_UA'  : "ua" ,
-            'MED_UE'  : "ue" ,
-            'MED_UI'  : "ui" ,
-            'MED_A'   : "a" ,
-            'MED_V'   : "ur" ,
-            'MED_E'   : "e" ,
-            'MED_I'   : "i" ,
-            'MED_O'   : "o" ,
-            'MED_U'   : "u",
-        }
+        trdict = { term : TERMINALS['medials'][term]['tlo'] for term in TERMINALS['medials'] if 'tlo' in TERMINALS['medials'][term] }
         return(trdict[items[0].type])
 
     def coda(self, items):
         return("".join([str(i) for i in items]))
 
     def codastops(self, items):
-        trdict = {
-            'COD_P' : "p",
-            'COD_K' : "k",
-            'COD_H' : "h",
-            'COD_T' : 't',
-        }
+        trdict = { term : TERMINALS['codastops'][term]['tlo'] for term in TERMINALS['codastops'] if 'tlo' in TERMINALS['codastops'][term] }
         return(trdict[items[0].type])
 
     def codanasal(self, items):
-        trdict = {
-            'COD_M' : "m",
-            'COD_NG': "ng",
-            'COD_N' : "n",
-        }
+        trdict = { term : TERMINALS['codanasals'][term]['tlo'] for term in TERMINALS['codanasals'] if 'tlo' in TERMINALS['codanasals'][term] }
         return(trdict[items[0].type])
 
     def final(self, items):
