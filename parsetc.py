@@ -5,17 +5,123 @@ import unicodedata
 import argparse
 import translit
 import sys
+import json
 from textwrap import dedent
 from lark import Lark
 
 # Available input formats for parsers
+# load terminals data
+with open("terminals.json") as fh:
+    TERMINALS = json.load(fh)
+
+# grammar rules per transcription system
+# written in Lark format
+# 'common' are rules that are common to all systems
+RULES = {}
+
+RULES['common'] = """
+// Three options for dealing with potentially ambiguous syllable parsing
+// 1. all syllables in a word must be separated either by tone number or punctuation
+sentence : word_sep ( ( PUNCTUATION | SPACE )+ word_sep )* [ PUNCTUATION | SPACE ]
+word_sep : ( syllable_toneless [ SYLLABLE_SEP word_sep ] ) | ( syllable_tone [ word_sep ] )
+// 2. syllable separation not explicit, tone numbers and syllable separators are optional
+// leave it to the parser, which may make surprising choices
+sentence_ambig : word ( [ PUNCTUATION | SPACE ] word )* [ PUNCTUATION | SPACE ]
+word : ( syllable SYLLABLE_SEP? )+
+// 3. all syllables must have tone number (including 0), so no ambiguities about syllable separation
+sentence_tone : word_tone ( ( PUNCTUATION  | SPACE )+ word_tone )* [ PUNCTUATION | SPACE ]
+word_tone : syllable_tone+
+// Syllables
+syllable : initial? final tone?
+syllable_tone : initial? final tone
+syllable_toneless : initial? final
+// Initials
+initial : INIT_BH | INIT_P  | INIT_B
+        | INIT_M  | INIT_NG | INIT_N
+        | INIT_GH | INIT_K  | INIT_G
+        | INIT_D  | INIT_T 
+        | INIT_Z  | INIT_C 
+        | INIT_S  | INIT_H 
+        | INIT_R  | INIT_L 
+// Finals
+// TODO: rule for entering tone
+final :  ( medial coda ) 
+      | ( medial NASAL codastops? ) 
+      | medial
+      | codanasal
+// Medials
+// longer medials are listed first to be preferentially matched
+medial : MED_AI  | MED_AU  
+       | MED_IA  | MED_IAU | MED_IEU | MED_IOU | MED_IU  | MED_IE  | MED_IO  
+       | MED_OI  | MED_OU  
+       | MED_UAI | MED_UA  | MED_UE  | MED_UI  
+       | MED_A   | MED_V   | MED_E   | MED_I   | MED_O   | MED_U   
+// Punctuation and spacing
+PUNCTUATION : "." | "," | "?" | "!" | "'" | "-"
+SPACE : " "
+
+"""
+
+RULES['dieghv'] = """
+// Codas
+coda : codanasal | codastops
+codanasal : COD_M | COD_NG
+codastops : COD_P | COD_K | COD_H
+// Tones
+tone : TONENUMBER [ "(" TONENUMBER ")" ]
+TONENUMBER : "0".."8"
+// syllable separators can be hyphen or apostrophes
+SYLLABLE_SEP : "-" | "'" | "’"
+"""
+
+RULES['gdpi'] = """
+// Codas
+coda : codanasal | codastops
+codanasal : COD_M | COD_NG
+codastops : COD_P | COD_K | COD_H
+// Tones
+tone : TONENUMBER [ "(" TONENUMBER ")" ]
+TONENUMBER : "0".."8"
+// syllable separators can be hyphen or apostrophes
+SYLLABLE_SEP : "-" | "'" | "’"
+"""
+
+RULES['ggn'] = """
+// Codas
+coda : codanasal | codastops
+codanasal : COD_M | COD_NG
+codastops : COD_P | COD_K | COD_H | COD_T
+// Tones
+tone : TONENUMBER [ "(" TONENUMBER ")" ]
+TONENUMBER : "0".."8"
+// syllable separators can be hyphen or apostrophes
+SYLLABLE_SEP : "-" | "'" | "’"
+"""
+
+RULES['ggnn'] = """
+// Codas
+coda : codanasal | codastops
+codanasal : COD_M | COD_NG | COD_N
+codastops : COD_P | COD_K | COD_H | COD_T
+// Tones
+tone : TONENUMBER [ "(" TONENUMBER ")" ]
+TONENUMBER : "0".."8"
+// syllable separators can be hyphen or apostrophes
+SYLLABLE_SEP : "-" | "'" | "’"
+"""
+
 PARSER_DICT = {}
-with open('common.lark') as fh:
-    common = fh.read()
-for i in ['dieghv','gdpi','ggn','ggnn']:
-    with open(f'{i}.lark') as fh:
-        j = fh.read()
-        PARSER_DICT[i] = Lark(common + j, start='sentence')
+for scheme in ['dieghv','gdpi','ggn','ggnn']:
+    lark_rules = [
+        RULES['common'],
+        RULES[scheme]
+    ]
+    for term in TERMINALS:
+        if scheme in TERMINALS[term]:
+            lark_rules.append(f"{term} : \"{TERMINALS[term][scheme]}\"")
+    PARSER_DICT[scheme] = Lark(
+            "\n".join(lark_rules),
+            start='sentence')
 
 # Available output formats for transformers
 TRANSFORMER_DICT = {
