@@ -56,7 +56,7 @@ medial : MED_AI  | MED_AU
        | MED_UAI | MED_UA  | MED_UE  | MED_UI  
        | MED_A   | MED_V   | MED_E   | MED_I   | MED_O   | MED_U   
 // Punctuation and spacing
-PUNCTUATION : "." | "," | "?" | "!" | "'" | "-"
+PUNCTUATION : "." | "," | ";" | "?" | "!" | "'" | "-"
 SPACE : " "
 
 """
@@ -304,19 +304,21 @@ if __name__ == "__main__":
         else:
             print(f"Invalid input scheme {args.input}, must be one of {', '.join(list(LARK_DICT.keys()))}")
     else:
-        intext = sys.stdin.read().rstrip()
-        if args.input == 'tlo':
-            # If Tie-lo input, preprocess from diacritics to numeric tone marks
-            # Assumes that all syllables have tones marked!
-            # impossible otherwise, because tone1 cannot be distinguished from unmarked tone
-            intext = tlo_convert_to_numeric(intext)
-        if args.parse_only:
-            parsetree = PARSER_DICT[args.input].parse(intext)
-            print(parsetree.pretty())
-        elif args.all:
-            out = transliterate_all(intext, i=args.input)
-            print("\t".join(['INPUT', intext]))
-            for line in out:
-                print("\t".join(list(line)))
-        else:
-            print(transliterate(intext, i=args.input, o=args.output))
+        for intext in sys.stdin:
+            # intext = sys.stdin.read().rstrip()
+            intext = intext.rstrip()
+            if args.input == 'tlo':
+                # If Tie-lo input, preprocess from diacritics to numeric tone marks
+                # Assumes that all syllables have tones marked!
+                # impossible otherwise, because tone1 cannot be distinguished from unmarked tone
+                intext = tlo_convert_to_numeric(intext)
+            if args.parse_only:
+                parsetree = PARSER_DICT[args.input].parse(intext)
+                print(parsetree.pretty())
+            elif args.all:
+                out = transliterate_all(intext, i=args.input)
+                print("\t".join(['INPUT', intext]))
+                for line in out:
+                    print("\t".join(list(line)))
+            else:
+                print(transliterate(intext, i=args.input, o=args.output))
