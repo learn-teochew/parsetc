@@ -56,7 +56,7 @@ medial : MED_AI  | MED_AU
        | MED_UAI | MED_UA  | MED_UE  | MED_UI  
        | MED_A   | MED_V   | MED_E   | MED_I   | MED_O   | MED_U   
 // Punctuation and spacing
-PUNCTUATION : "." | "," | ";" | "?" | "!" | "'" | "-"
+PUNCTUATION : "." | "," | ";" | "?" | "!" | "'" | "-" | "(" | ")" | "[" | "]"
 SPACE : " "
 
 """
@@ -306,7 +306,7 @@ if __name__ == "__main__":
     else:
         for intext in sys.stdin:
             # intext = sys.stdin.read().rstrip()
-            intext = intext.rstrip()
+            intext = intext.rstrip().lower()
             if args.input == 'tlo':
                 # If Tie-lo input, preprocess from diacritics to numeric tone marks
                 # Assumes that all syllables have tones marked!
