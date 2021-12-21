@@ -21,14 +21,14 @@ RULES = {}
 RULES['common'] = """
 // Three options for dealing with potentially ambiguous syllable parsing
 // 1. all syllables in a word must be separated either by tone number or punctuation
-sentence : word_sep ( ( PUNCTUATION | SPACE )+ word_sep )* [ PUNCTUATION | SPACE ]
+sentence : [ PUNCTUATION | SPACE ]+ word_sep ( ( PUNCTUATION | SPACE )+ word_sep )* [ PUNCTUATION | SPACE ]+
 word_sep : ( syllable_toneless [ SYLLABLE_SEP word_sep ] ) | ( syllable_tone [ word_sep ] )
 // 2. syllable separation not explicit, tone numbers and syllable separators are optional
 // leave it to the parser, which may make surprising choices
-sentence_ambig : word ( [ PUNCTUATION | SPACE ] word )* [ PUNCTUATION | SPACE ]
+sentence_ambig : [ PUNCTUATION | SPACE ]+ word ( [ PUNCTUATION | SPACE ] word )* [ PUNCTUATION | SPACE ]+
 word : ( syllable SYLLABLE_SEP? )+
 // 3. all syllables must have tone number (including 0), so no ambiguities about syllable separation
-sentence_tone : word_tone ( ( PUNCTUATION  | SPACE )+ word_tone )* [ PUNCTUATION | SPACE ]
+sentence_tone : [ PUNCTUATION | SPACE ]+ word_tone ( ( PUNCTUATION  | SPACE )+ word_tone )* [ PUNCTUATION | SPACE ]+
 word_tone : syllable_tone+
 // Syllables
 syllable : initial? final tone?
@@ -56,7 +56,7 @@ medial : MED_AI  | MED_AU
        | MED_UAI | MED_UA  | MED_UE  | MED_UI  
        | MED_A   | MED_V   | MED_E   | MED_I   | MED_O   | MED_U   
 // Punctuation and spacing
-PUNCTUATION : "." | "," | ";" | "?" | "!" | "'" | "-" | "(" | ")" | "[" | "]"
+PUNCTUATION : "." | "," | ":" | ";" | "?" | "!" | "'" | "-" | "(" | ")" | "[" | "]" | "“" | "”" | "‘" | "’"
 SPACE : " "
 
 """
@@ -271,7 +271,7 @@ def transliterate(phrase, i='gdpi', o='tlo'):
     except KeyError:
         print(f'Invalid input scheme {i}')
         print(f"Must be one of {', '.join(list(PARSER_DICT.keys()))}")
-    
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
@@ -295,6 +295,9 @@ if __name__ == "__main__":
     parser.add_argument(
         '--show_lark', action='store_true',
         help="Show parse rules in Lark format for input romanization (output --output ignored)")
+    parser.add_argument(
+        '--delim_only', '-d', type=str, default=None,
+        help="Only parse and convert text that is contained within delimiters (not compatible with --parse_only)")
     args = parser.parse_args()
 
 
@@ -305,20 +308,33 @@ if __name__ == "__main__":
             print(f"Invalid input scheme {args.input}, must be one of {', '.join(list(LARK_DICT.keys()))}")
     else:
         for intext in sys.stdin:
+            outtext = ''
             # intext = sys.stdin.read().rstrip()
-            intext = intext.rstrip().lower()
-            if args.input == 'tlo':
-                # If Tie-lo input, preprocess from diacritics to numeric tone marks
-                # Assumes that all syllables have tones marked!
-                # impossible otherwise, because tone1 cannot be distinguished from unmarked tone
-                intext = tlo_convert_to_numeric(intext)
-            if args.parse_only:
-                parsetree = PARSER_DICT[args.input].parse(intext)
-                print(parsetree.pretty())
-            elif args.all:
-                out = transliterate_all(intext, i=args.input)
-                print("\t".join(['INPUT', intext]))
-                for line in out:
-                    print("\t".join(list(line)))
+            intext = intext.rstrip()
+            if args.delim_only:
+                in_splits = intext.split(args.delim_only)
+                for i in range(len(in_splits)):
+                    if i%2 == 1:
+                        if args.input == 'tlo':
+                            in_splits[i] = tlo_convert_to_numeric(in_splits[i].lower())
+                        outtext += transliterate(in_splits[i].lower(), i=args.input, o=args.output)
+                    else:
+                        outtext += in_splits[i]
             else:
-                print(transliterate(intext, i=args.input, o=args.output))
+                intext = intext.lower()
+                if args.input == 'tlo':
+                    # If Tie-lo input, preprocess from diacritics to numeric tone marks
+                    # Assumes that all syllables have tones marked!
+                    # impossible otherwise, because tone1 cannot be distinguished from unmarked tone
+                    intext = tlo_convert_to_numeric(intext)
+                if args.parse_only:
+                    parsetree = PARSER_DICT[args.input].parse(intext)
+                    print(parsetree.pretty())
+                elif args.all:
+                    out = transliterate_all(intext, i=args.input)
+                    print("\t".join(['INPUT', intext]))
+                    for line in out:
+                        print("\t".join(list(line)))
+                else:
+                    outtext = transliterate(intext, i=args.input, o=args.output)
+            print(outtext)
