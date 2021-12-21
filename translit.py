@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 
 import re
+import os
 import json
 from lark import Transformer
 
 # Load terminals data
-with open('terminals.json') as fh:
+projdir = os.path.dirname(__file__)
+with open(os.path.join(projdir, 'terminals.json')) as fh:
     TERMINALS = json.load(fh)
 
 
