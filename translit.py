@@ -602,13 +602,13 @@ class Zapngou(Transformer):
         # If the first character is not in the list of initials, then assume
         # this is a null-initial syllable, and add 英 character. Workaround
         # because null is not permissible as a regex.
-        if items[0] not in Zapngou.INITS:
+        if str(items[0])[0] not in Zapngou.INITS:
             return('【' + '英' + "".join([str(i) for i in items]) + '】')
         else:
             return('【' + "".join([str(i) for i in items]) + '】')
 
     def syllable_toneless(self, items):
-        if items[0] not in Zapngou.INITS:
+        if str(items[0])[0] not in Zapngou.INITS:
             return('【' + '英' + "".join([str(i) for i in items]) + '】')
         else:
             return('【' + "".join([str(i) for i in items]) + '】')
