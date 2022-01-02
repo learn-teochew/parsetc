@@ -26,7 +26,9 @@ Output formats
    [(source)](https://archive.org/details/englishchinesev00duffgoog)
  * Teochew Sinwenz (`sinwz`);
    [(source)](http://eresources.nlb.gov.sg/newspapers/Digitised/Page/nysp19391115-1.1.22)
-
+ * Traditional initial-final categories (`15`) from 《彙集雅俗通十五音》 also
+   known as 《擊木知音》, based on the analysis by 徐宇航
+   「《擊木知音》音系之再研究」 (2014)
 
 Orthographic conventions for input text
 ---------------------------------------
@@ -66,4 +68,10 @@ Input text is read from STDIN, no line breaks.
 echo 'ua2 ain3 oh8 diê5ghe2, ain3 dan3 diê5ziu1 uê7.' | python parsetc.py -i gdpi -o tlo
 # all available output romanizations
 echo 'ua2 ain3 oh8 diê5ghe2, ain3 dan3 diê5ziu1 uê7.' | python parsetc.py -i gdpi --all
+```
+
+Testing with provided example text:
+
+```
+cat test.dieghv.txt | python parsetc.py -i dieghv --all
 ```
