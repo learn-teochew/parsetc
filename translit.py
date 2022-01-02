@@ -428,6 +428,10 @@ class Sinwz(Transformer):
 
 
 class Zapngou(Transformer):
+    INITS = [
+        "柳", "邊", "求", "去", "地", "頗", "他", "貞", "入", "時", "文", "語",
+        "出", "喜"
+    ]
 
     def NASAL(self, value):
         return('n')
@@ -491,7 +495,7 @@ class Zapngou(Transformer):
             'ong' : '公',
             'ok' : '公',
             'uai' : '乖',
-            'uain' : '乖', # not in Xu, only in suain 'mango'
+            'uain' : '乖（鼻）', # not in Xu, only in suain 'mango'
             'uaih' : '乖',
             'eng' : '經',
             'ek' : '經',
@@ -555,9 +559,9 @@ class Zapngou(Transformer):
             'en' : '更',
             'enh' : '更',
             'ia' : '京',
-            'ian' : '京',
+            'ian' : '京（鼻）',
             'iah' : '京',
-            'ianh' : '京',
+            'ianh' : '京（鼻）',
             'io' : '蕉',
             'ioh' : '蕉',
             'ie' : '蕉',
@@ -595,11 +599,19 @@ class Zapngou(Transformer):
             return("")
 
     def syllable_tone(self, items):
-        return('【' + "".join([str(i) for i in items]) + '】')
+        # If the first character is not in the list of initials, then assume
+        # this is a null-initial syllable, and add 英 character. Workaround
+        # because null is not permissible as a regex.
+        if items[0] not in Zapngou.INITS:
+            return('【' + '英' + "".join([str(i) for i in items]) + '】')
+        else:
+            return('【' + "".join([str(i) for i in items]) + '】')
 
     def syllable_toneless(self, items):
-        return('【' + "".join([str(i) for i in items]) + '】')
-        # return("".join([str(i) for i in items]))
+        if items[0] not in Zapngou.INITS:
+            return('【' + '英' + "".join([str(i) for i in items]) + '】')
+        else:
+            return('【' + "".join([str(i) for i in items]) + '】')
 
     def word_sep(self, items):
         # replace all syllable separators with spaces and separate syllables
