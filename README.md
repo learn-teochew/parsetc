@@ -55,23 +55,30 @@ Install the [`lark` library](https://lark-parser.readthedocs.io/en/latest/) with
 pip install lark
 ```
 
+Alternatively, install dependencies into a [Conda](https://docs.conda.io/en/latest/) environment:
+
+```
+conda env create -f ./env.yml -n parsetc
+conda activate parsetc
+```
+
 See help message:
 
 ```
-python parsetc.py --help
+python ./parsetc.py --help
 ```
 
 Input text is read from STDIN, no line breaks.
 
 ```
 # output in Tie-lo
-echo 'ua2 ain3 oh8 diê5ghe2, ain3 dan3 diê5ziu1 uê7.' | python parsetc.py -i gdpi -o tlo
+echo 'ua2 ain3 oh8 diê5ghe2, ain3 dan3 diê5ziu1 uê7.' | python ./parsetc.py -i gdpi -o tlo
 # all available output romanizations
-echo 'ua2 ain3 oh8 diê5ghe2, ain3 dan3 diê5ziu1 uê7.' | python parsetc.py -i gdpi --all
+echo 'ua2 ain3 oh8 diê5ghe2, ain3 dan3 diê5ziu1 uê7.' | python ./parsetc.py -i gdpi --all
 ```
 
 Testing with provided example text:
 
 ```
-cat test.dieghv.txt | python parsetc.py -i dieghv --all
+cat ./test.dieghv.txt | python ./parsetc.py -i dieghv --all
 ```
