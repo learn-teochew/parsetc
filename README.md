@@ -11,7 +11,8 @@ Input formats
  * Gaginang Peng'im 家己儂拼音 (`ggn`)
  * Gaginang Peng'im with coda `-n` allowed (nasalization written with `ñ`
    instead) (`ggnn`)
- * Dieghv 潮語 (`dieghv`)
+ * Dieghv 潮語 (`dieghv`);
+   [(source)](https://kahaani.github.io/gatian/appendix1/index.html)
 
 
 Output formats
@@ -19,8 +20,12 @@ Output formats
 
 `gdpi`, `ggnn`, plus:
 
- * Tie-tsiann-hue 潮正會, also known as Tie-lo 潮羅 (`tlo`)
- * Duffus system (`duffus`)
+ * Tie-tsiann-hue 潮正會, also known as Tie-lo 潮羅 (`tlo`);
+   [(source)](http://library.hiteo.pw/book/wagpzbkv.html)
+ * Duffus system (`duffus`);
+   [(source)](https://archive.org/details/englishchinesev00duffgoog)
+ * Teochew Sinwenz (`sinwz`);
+   [(source)](http://eresources.nlb.gov.sg/newspapers/Digitised/Page/nysp19391115-1.1.22)
 
 
 Orthographic conventions for input text
