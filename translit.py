@@ -310,3 +310,118 @@ class Duffus(Transformer):
 
     def sentence(self, items):
         return("".join(items))
+
+
+class Sinwz(Transformer):
+    """Convert Teochew pengim parse tree to Sinwenz system"""
+
+    def NASAL(self, items):
+        # Nasal will end with vowel so we can keep this simple
+        syllab = "".join(items[:-1])
+        return(syllab + '\u0303')
+
+    def SYLLABLE_SEP(self, value):
+        # TODO: Check what syllable separators are used in Sinwenz
+        # Change all syllable separators to hyphens
+        return('-')
+
+    def initial(self, items):
+        trdict = {
+            'INIT_BH' : "bh",
+            'INIT_P'  : "p" ,
+            'INIT_B'  : "b" ,
+            'INIT_M'  : "m" ,
+            'INIT_NG' : "ng",
+            'INIT_N'  : "n" ,
+            'INIT_GH' : "gh",
+            'INIT_K'  : "k" ,
+            'INIT_G'  : "g" ,
+            'INIT_D'  : "d" ,
+            'INIT_T'  : "t" ,
+            'INIT_Z'  : "z" ,
+            'INIT_C'  : "c" ,
+            'INIT_S'  : "s" ,
+            'INIT_H'  : "x" ,
+            'INIT_R'  : "dz",
+            'INIT_L'  : "l" ,
+        }
+        return(trdict[items[0].type])
+
+    def medial(self, items):
+        trdict = {
+            'MED_AI'  : "ai" ,
+            'MED_AU'  : "ao" ,
+            'MED_IA'  : "ia" ,
+            'MED_IAU' : "iao",
+            'MED_IEU' : "iao",
+            'MED_IOU' : "iao",
+            'MED_IU'  : "iu" ,
+            'MED_IE'  : "io" ,
+            'MED_IO'  : "io" ,
+            'MED_OI'  : "oi" ,
+            'MED_OU'  : "ou" ,
+            'MED_UAI' : "uai",
+            'MED_UA'  : "ua" ,
+            'MED_UE'  : "ue" ,
+            'MED_UI'  : "ui" ,
+            'MED_A'   : "a"  ,
+            'MED_V'   : "y"  ,
+            'MED_E'   : "e"  ,
+            'MED_I'   : "i"  ,
+            'MED_O'   : "o"  ,
+            'MED_U'   : "u"  
+        }
+        return(trdict[items[0].type])
+
+    def coda(self, items):
+        return("".join([str(i) for i in items]))
+
+    def codastops(self, items):
+        trdict = {
+            'COD_P' : "p",
+            'COD_K' : "q",
+            'COD_H' : "q",
+        }
+        return(trdict[items[0].type])
+
+    def codanasal(self, items):
+        trdict = {
+            'COD_M' : "m",
+            'COD_NG': "ng",
+            'COD_N' : "n",
+        }
+        return(trdict[items[0].type])
+
+    def final(self, items):
+        return("".join([str(i) for i in items]))
+
+    def tone(self, items):
+        # Only return the citation tone
+        return(str(items[0]))
+
+    def syllable_tone(self, items):
+        # Check if syllable begins with i or u
+        pre = list("".join([str(i) for i in items]))
+        if pre[0] == 'i' and len(pre) > 1:
+            pre[0] = 'j'
+        elif pre[0] =='u' and len(pre) > 1:
+            pre[0] = 'w'
+        return("".join(pre))
+
+    def syllable_toneless(self, items):
+        # Check if syllable begins with i or u
+        pre = list("".join([str(i) for i in items]))
+        if pre[0] == 'i' and len(pre) > 1:
+            pre[0] = 'j'
+        elif pre[0] =='u' and len(pre) > 1:
+            pre[0] = 'w'
+        return("".join(pre))
+
+    def word_sep(self, items):
+        # replace all syllable separators with hyphens
+        # and separate syllables with hyphens if no
+        # syllable separator is present
+        return('-'.join([i for i in items if i != '-']))
+
+    def sentence(self, items):
+        return("".join(items))

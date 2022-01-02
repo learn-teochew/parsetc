@@ -148,7 +148,8 @@ TRANSFORMER_DICT = {
     'gdpi' : translit.Gdpi(),
     'ggnn' : translit.Ggnn(),
     'tlo' : translit.Tlo(),
-    'duffus' : translit.Duffus()
+    'duffus' : translit.Duffus(),
+    'sinwz' : translit.Sinwz()
 }
 
 
