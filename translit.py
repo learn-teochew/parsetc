@@ -425,3 +425,189 @@ class Sinwz(Transformer):
 
     def sentence(self, items):
         return("".join(items))
+
+
+class Zapngou(Transformer):
+
+    def NASAL(self, value):
+        return('n')
+
+    def initial(self, items):
+        trdict = {
+            "INIT_L"  : "柳",
+            "INIT_N"  : "柳(n)", # merged in Minnan/Hokkien
+            "INIT_B"  : "邊",
+            "INIT_M"  : "邊(m)", # merged in Minnan/Hokkien
+            "INIT_G"  : "求",
+            "INIT_NG" : "求(ng)", # merged in Minnan/Hokkien
+            "INIT_K"  : "去",
+            "INIT_D"  : "地",
+            "INIT_P"  : "頗",
+            "INIT_T"  : "他",
+            "INIT_Z"  : "貞",
+            "INIT_R"  : "入",
+            "INIT_S"  : "時",
+            # null 英
+            "INIT_BH" : "文",
+            "INIT_GH" : "語",
+            "INIT_C"  : "出",
+            "INIT_H"  : "喜"
+        }
+        return(trdict[items[0].type])
+
+    def medial(self, items):
+        trdict = { term : TERMINALS['medials'][term]['dieghv'] for term in TERMINALS['medials'] if 'dieghv' in TERMINALS['medials'][term] }
+        return(trdict[items[0].type])
+
+    def coda(self, items):
+        return("".join([str(i) for i in items]))
+
+    def codastops(self, items):
+        trdict = { term : TERMINALS['codastops'][term]['dieghv'] for term in TERMINALS['codastops'] if 'dieghv' in TERMINALS['codastops'][term] }
+        trdict['COD_T'] = 'g' # Dieghv does not have stop -t
+        return(trdict[items[0].type])
+
+    def codanasal(self, items):
+        trdict = { term : TERMINALS['codanasals'][term]['dieghv'] for term in TERMINALS['codanasals'] if 'dieghv' in TERMINALS['codanasals'][term] }
+        trdict['COD_N'] = "ng" # Dieghv does not have coda n
+        return(trdict[items[0].type])
+
+    def final(self, items):
+        trdict = {
+            'ung'  : '君',
+            'uk'   : '君',
+            'ieng' : '堅', # additional to Xu
+            'iang' : '堅',
+            'iek'  : '堅', # additional to Xu
+            'iak'  : '堅',
+            'im' : '金',
+            'ip' : '金',
+            'ui' : '歸',
+            'uih' : '歸',
+            'ia' : '佳',
+            'iah' : '佳',
+            'ang' : '干',
+            'ak' : '干',
+            'ong' : '公',
+            'ok' : '公',
+            'uai' : '乖',
+            'uain' : '乖', # not in Xu, only in suain 'mango'
+            'uaih' : '乖',
+            'eng' : '經',
+            'ek' : '經',
+            'ueng' : '關', # different from Xu
+            'uek' : '關', # different from Xu
+            'ou' : '孤',
+            'ouh' : '孤',
+            'iau' : '驕',
+            'iou' : '驕',
+            'ieu' : '驕',
+            'iauh' : '驕',
+            'iouh' : '驕',
+            'ieuh' : '驕',
+            'oi' : '雞',
+            'oih' : '雞',
+            'iong' : '恭',
+            'iok' : '恭',
+            'o' : '高',
+            'oh' : '高',
+            'ai' : '皆',
+            'aih' : '皆',
+            'ing' : '斤', # different from Xu
+            'ik' : '斤', # different from Xu
+            'ion' : '薑',
+            'ionh' : '薑',
+            'ien' : '薑',
+            'ienh' : '薑',
+            'am' : '甘',
+            'ap' : '甘',
+            'ua' : '柯',
+            'uah' : '柯',
+            'ang' : '江',
+            'ak' : '江',
+            'iam' : '兼',
+            'iap' : '兼',
+            'iem' : '兼',
+            'iep' : '兼',
+            'au' : '交',
+            'auh' : '交',
+            'e' : '家',
+            'eh' : '家',
+            'ue' : '瓜',
+            'ueh' : '瓜',
+            'a' : '膠',
+            'ah' : '膠',
+            'u' : '龜',
+            'uh' : '龜',
+            'vng' : '扛',
+            'ng' : '扛',
+            'vk' : '扛',
+            'i' : '枝',
+            'ih' : '枝',
+            'iu' : '鳩',
+            'iuh' : '鳩',
+            'uan' : '官',
+            'uanh' : '官',
+            'v' : '車',
+            'vh' : '車',
+            'an' : '柑',
+            'anh' : '柑',
+            'en' : '更',
+            'enh' : '更',
+            'ia' : '京',
+            'ian' : '京',
+            'iah' : '京',
+            'ianh' : '京',
+            'io' : '蕉',
+            'ioh' : '蕉',
+            'ie' : '蕉',
+            'ieh' : '蕉',
+            'iang' : '姜',
+            'iak' : '姜',
+            'in' : '天',
+            'inh' : '天',
+            'uang' : '光',
+            'uak' : '光',
+            'oin' : '間',
+            'oinh' : '間'
+        }
+        pre = "".join([str(i) for i in items])
+        if pre in trdict:
+            return(trdict[pre])
+        else:
+            return(pre)
+
+    def tone(self, items):
+        trdict = {
+            '1' : '上平',
+            '2' : '上上',
+            '3' : '上去',
+            '4' : '上入',
+            '5' : '下平',
+            '6' : '下上',
+            '7' : '下去',
+            '8' : '下入'
+        }
+        if len(items) >= 1:
+            # citation tone only
+            return(trdict[str(items[0])])
+        else:
+            return("")
+
+    def syllable_tone(self, items):
+        return('【' + "".join([str(i) for i in items]) + '】')
+
+    def syllable_toneless(self, items):
+        return('【' + "".join([str(i) for i in items]) + '】')
+        # return("".join([str(i) for i in items]))
+
+    def word_sep(self, items):
+        # replace all syllable separators with spaces and separate syllables
+        # with spaces if no syllable separator is present
+        return(''.join([i for i in items if i != '-']))
+
+    def sentence(self, items):
+        return("".join(items))
+
+
+

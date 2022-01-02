@@ -37,6 +37,7 @@ syllable : initial? final tone?
 syllable_tone : initial? final tone
 syllable_toneless : initial? final
 // Initials
+// TODO: null initial
 initial : INIT_BH | INIT_P  | INIT_B
         | INIT_M  | INIT_NG | INIT_N
         | INIT_GH | INIT_K  | INIT_G
@@ -149,7 +150,8 @@ TRANSFORMER_DICT = {
     'ggnn' : translit.Ggnn(),
     'tlo' : translit.Tlo(),
     'duffus' : translit.Duffus(),
-    'sinwz' : translit.Sinwz()
+    'sinwz' : translit.Sinwz(),
+    '15' : translit.Zapngou(),
 }
 
 
