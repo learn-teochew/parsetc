@@ -249,7 +249,7 @@ def transliterate_all(phrase, i="gdpi"):
         print(f"Unknown spelling scheme {i}")
 
 
-def transliterate(phrase, i='gdpi', o='tlo'):
+def transliterate(phrase, i='gdpi', o='tlo', superscript_tone=False):
     """Transliterate romanized Teochew into different spelling scheme
 
     Arguments
@@ -260,6 +260,8 @@ def transliterate(phrase, i='gdpi', o='tlo'):
         Input format. Must match one of the available inputs
     o : str
         Output format. Must match one of the available outputs
+    superscript_tone : bool
+        Tone numbers in superscript
 
     Returns
     -------
@@ -269,7 +271,24 @@ def transliterate(phrase, i='gdpi', o='tlo'):
     try:
         t = PARSER_DICT[i].parse(phrase)
         try:
-            return(TRANSFORMER_DICT[o].transform(t))
+            out = TRANSFORMER_DICT[o].transform(t)
+            if superscript_tone:
+                subst = {
+                    '1' : '¹',
+                    '2' : '²',
+                    '3' : '³',
+                    '4' : '⁴',
+                    '5' : '⁵',
+                    '6' : '⁶',
+                    '7' : '⁷',
+                    '8' : '⁸',
+                    '0' : '⁰'
+                }
+                for num in subst:
+                    out = out.replace(num, subst[num])
+                return(out)
+            else:
+                return(out)
         except KeyError:
             print(f'Invalid output scheme {o}')
             print(f"Must be one of {', '.join(list(TRANSFORMER_DICT.keys()))}")
@@ -294,6 +313,9 @@ if __name__ == "__main__":
     parser.add_argument(
         '--parse_only', '-p', action='store_true',
         help="Only report parse in prettified format from lark (option --output ignored)")
+    parser.add_argument(
+        '--superscript_tone', '-s', action='store_true',
+        help="Tone numbers in superscript (for gdpi and ggnn output only)")
     parser.add_argument(
         '--all', '-a', action='store_true',
         help="Output in all available formats, tab-separated (option --output ignored)")
@@ -322,7 +344,7 @@ if __name__ == "__main__":
                     if i%2 == 1:
                         if args.input == 'tlo':
                             in_splits[i] = tlo_convert_to_numeric(in_splits[i].lower())
-                        outtext += transliterate(in_splits[i].lower(), i=args.input, o=args.output)
+                        outtext += transliterate(in_splits[i].lower(), i=args.input, o=args.output, superscript_tone=args.superscript_tone)
                     else:
                         outtext += in_splits[i]
             else:
@@ -341,5 +363,5 @@ if __name__ == "__main__":
                     for line in out:
                         print("\t".join(list(line)))
                 else:
-                    outtext = transliterate(intext, i=args.input, o=args.output)
+                    outtext = transliterate(intext, i=args.input, o=args.output, superscript_tone=args.superscript_tone)
             print(outtext)
