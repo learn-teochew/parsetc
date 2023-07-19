@@ -49,10 +49,10 @@ Running the script
 
 Python 3 is required.
 
-Install the [`lark` library](https://lark-parser.readthedocs.io/en/latest/) with pip:
+Install the [`lark` library](https://lark-parser.readthedocs.io/en/latest/) v0.11.3 with pip (`parsetc` has not yet been updated to work with the latest `lark` release):
 
 ```
-pip install lark
+pip install 'lark==0.11.3'
 ```
 
 Alternatively, install dependencies into a [Conda](https://docs.conda.io/en/latest/) environment:
