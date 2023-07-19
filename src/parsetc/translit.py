@@ -1,15 +1,13 @@
 #!/usr/bin/env python3
 
 import re
-import os
 import json
 
+from importlib_resources import files
 from lark import Transformer
 
 # Load terminals data
-projdir = os.path.dirname(__file__)
-with open(os.path.join(projdir, "terminals.json")) as fh:
-    TERMINALS = json.load(fh)
+TERMINALS = json.loads(files("parsetc").joinpath("terminals.json").read_text())
 
 
 class Gdpi(Transformer):

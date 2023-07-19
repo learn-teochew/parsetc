@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 import re
-import os
 import unicodedata
 import argparse
 import sys
@@ -10,12 +9,11 @@ import json
 import parsetc.translit as translit
 
 from textwrap import dedent
+from importlib_resources import files
 from lark import Lark
 
 # Load terminals data
-projdir = os.path.dirname(__file__)
-with open(os.path.join(projdir, "terminals.json")) as fh:
-    TERMINALS = json.load(fh)
+TERMINALS = json.loads(files("parsetc").joinpath("terminals.json").read_text())
 
 # grammar rules per transcription system
 # written in Lark format
