@@ -57,7 +57,7 @@ Install with `pip` from source code (this repository):
 pip install .
 ```
 
-Install with `pip` from PyPI:
+Install latest release with `pip` from PyPI:
 
 ```
 pip install parsetc
