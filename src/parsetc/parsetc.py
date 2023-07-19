@@ -22,7 +22,9 @@ with open(os.path.join(projdir, "terminals.json")) as fh:
 # 'common' are rules that are common to all systems
 RULES = {}
 
-RULES['common'] = """
+RULES[
+    "common"
+] = """
 // Three options for dealing with potentially ambiguous syllable parsing
 // 1. all syllables in a word must be separated either by tone number or punctuation
 sentence : [ PUNCTUATION | SPACE ]+ word_sep ( ( PUNCTUATION | SPACE )+ word_sep )* [ PUNCTUATION | SPACE ]+
@@ -66,7 +68,9 @@ SPACE : " "
 
 """
 
-RULES['dieghv'] = """
+RULES[
+    "dieghv"
+] = """
 // Codas
 coda : codanasal | codastops
 codanasal : COD_M | COD_NG
@@ -78,7 +82,9 @@ TONENUMBER : "0".."8"
 SYLLABLE_SEP : "-" | "'" | "’"
 """
 
-RULES['gdpi'] = """
+RULES[
+    "gdpi"
+] = """
 // Codas
 coda : codanasal | codastops
 codanasal : COD_M | COD_NG
@@ -90,7 +96,9 @@ TONENUMBER : "0".."8"
 SYLLABLE_SEP : "-" | "'" | "’"
 """
 
-RULES['ggn'] = """
+RULES[
+    "ggn"
+] = """
 // Codas
 coda : codanasal | codastops
 codanasal : COD_M | COD_NG
@@ -102,7 +110,9 @@ TONENUMBER : "0".."8"
 SYLLABLE_SEP : "-" | "'" | "’"
 """
 
-RULES['ggnn'] = """
+RULES[
+    "ggnn"
+] = """
 // Codas
 coda : codanasal | codastops
 codanasal : COD_M | COD_NG | COD_N
@@ -116,7 +126,9 @@ SYLLABLE_SEP : "-" | "'" | "’"
 
 # Tie-lo with tone numbers instead of diacritics
 # input needs preprocessing
-RULES['tlo'] = """
+RULES[
+    "tlo"
+] = """
 // Codas
 coda : codanasal | codastops
 codanasal : COD_M | COD_NG | COD_N
@@ -131,51 +143,46 @@ SYLLABLE_SEP : "-" | "'" | "’"
 # Available input formats for parsers
 PARSER_DICT = {}
 LARK_DICT = {}
-for scheme in ['dieghv','gdpi','ggn','ggnn', 'tlo']:
-    lark_rules = [
-        RULES['common'],
-        RULES[scheme]
-    ]
+for scheme in ["dieghv", "gdpi", "ggn", "ggnn", "tlo"]:
+    lark_rules = [RULES["common"], RULES[scheme]]
     for group in TERMINALS:
         for term in TERMINALS[group]:
             if scheme in TERMINALS[group][term]:
-                lark_rules.append(f"{term} : \"{TERMINALS[group][term][scheme]}\"")
+                lark_rules.append(f'{term} : "{TERMINALS[group][term][scheme]}"')
     LARK_DICT[scheme] = "\n".join(lark_rules)
-    PARSER_DICT[scheme] = Lark(
-            "\n".join(lark_rules),
-            start='sentence')
+    PARSER_DICT[scheme] = Lark("\n".join(lark_rules), start="sentence")
 
 
 # Available output formats for transformers
 TRANSFORMER_DICT = {
-    'gdpi' : translit.Gdpi(),
-    'ggnn' : translit.Ggnn(),
-    'tlo' : translit.Tlo(),
-    'duffus' : translit.Duffus(),
-    'sinwz' : translit.Sinwz(),
-    '15' : translit.Zapngou(),
+    "gdpi": translit.Gdpi(),
+    "ggnn": translit.Ggnn(),
+    "tlo": translit.Tlo(),
+    "duffus": translit.Duffus(),
+    "sinwz": translit.Sinwz(),
+    "15": translit.Zapngou(),
 }
 
 
 def tlo_syllable_parse(syllable):
     """Parse a Tie-lo syllable with diacritics to get tone number
-    
+
     Will not complain if a syllable has two diacritics. Beware!
-    
+
     Returns
     -------
     (str, int) : base syllable string, tone number. Tone 0 not supported
     """
     tonemarks = {
-        769 : 2, # hex 0x301
-        768 : 3, # 0x300
-        770 : 5, # 0x302
-        774 : 6, # 0x306
-        780 : 6, # 0x30C combining caron, often confused with combining breve
-        772 : 7  # 0x304
+        769: 2,  # hex 0x301
+        768: 3,  # 0x300
+        770: 5,  # 0x302
+        774: 6,  # 0x306
+        780: 6,  # 0x30C combining caron, often confused with combining breve
+        772: 7,  # 0x304
     }
     notone = []
-    tone = 1 # default tone
+    tone = 1  # default tone
     for c in syllable:
         # in case combining marks are in use, cannot be decomposed
         if ord(c) in tonemarks:
@@ -185,27 +192,27 @@ def tlo_syllable_parse(syllable):
             # decompose each character into diacritics
             decomp = unicodedata.decomposition(c).split()
             # convert hex values to decimal
-            decomp = [int('0x' + i, 16) for i in decomp]
+            decomp = [int("0x" + i, 16) for i in decomp]
             if len(decomp) > 0:
                 # check if key is present
-                if decomp[1] in tonemarks: 
+                if decomp[1] in tonemarks:
                     # base letter
                     notone.append(chr(decomp[0]))
                     # tone
                     tone = tonemarks[decomp[1]]
                 else:
                     print(f"invalid diacritic found in character {c} {syllable}")
-                    return(syllable.upper(), None)
+                    return (syllable.upper(), None)
             else:
-                # not a diacritic, append to the base 
+                # not a diacritic, append to the base
                 notone.append(c)
     # check for entering tones
-    if notone[-1] in ['p','t','k','h']:
+    if notone[-1] in ["p", "t", "k", "h"]:
         if tone == 1:
             tone = 4
         elif tone == 5:
             tone = 8
-    return("".join(notone), tone)
+    return ("".join(notone), tone)
 
 
 def tlo_convert_to_numeric(text):
@@ -217,12 +224,12 @@ def tlo_convert_to_numeric(text):
         Tie-lo with tone numbers instead of diacritics
     """
     out = []
-    for elem in re.split(r'([\s,\.\'\"\?\!\-]+)', text):
-        if elem != "" and not re.match(r'([\s,\.\'\"\?\!\-]+)', elem):
+    for elem in re.split(r"([\s,\.\'\"\?\!\-]+)", text):
+        if elem != "" and not re.match(r"([\s,\.\'\"\?\!\-]+)", elem):
             out.append("".join([str(i) for i in tlo_syllable_parse(elem)]))
         else:
             out.append(elem)
-    return("".join(out))
+    return "".join(out)
 
 
 def transliterate_all(phrase, i="gdpi"):
@@ -246,12 +253,12 @@ def transliterate_all(phrase, i="gdpi"):
         out = []
         for o in TRANSFORMER_DICT:
             out.append((o, TRANSFORMER_DICT[o].transform(t)))
-        return(out)
+        return out
     except KeyError:
         print(f"Unknown spelling scheme {i}")
 
 
-def transliterate(phrase, i='gdpi', o='tlo', superscript_tone=False):
+def transliterate(phrase, i="gdpi", o="tlo", superscript_tone=False):
     """Transliterate romanized Teochew into different spelling scheme
 
     Arguments
@@ -276,26 +283,26 @@ def transliterate(phrase, i='gdpi', o='tlo', superscript_tone=False):
             out = TRANSFORMER_DICT[o].transform(t)
             if superscript_tone:
                 subst = {
-                    '1' : '¹',
-                    '2' : '²',
-                    '3' : '³',
-                    '4' : '⁴',
-                    '5' : '⁵',
-                    '6' : '⁶',
-                    '7' : '⁷',
-                    '8' : '⁸',
-                    '0' : '⁰'
+                    "1": "¹",
+                    "2": "²",
+                    "3": "³",
+                    "4": "⁴",
+                    "5": "⁵",
+                    "6": "⁶",
+                    "7": "⁷",
+                    "8": "⁸",
+                    "0": "⁰",
                 }
                 for num in subst:
                     out = out.replace(num, subst[num])
-                return(out)
+                return out
             else:
-                return(out)
+                return out
         except KeyError:
-            print(f'Invalid output scheme {o}')
+            print(f"Invalid output scheme {o}")
             print(f"Must be one of {', '.join(list(TRANSFORMER_DICT.keys()))}")
     except KeyError:
-        print(f'Invalid input scheme {i}')
+        print(f"Invalid input scheme {i}")
         print(f"Must be one of {', '.join(list(PARSER_DICT.keys()))}")
 
 
@@ -305,53 +312,83 @@ def main():
         Parse and convert romanized Teochew between different phonetic spelling schemes
 
         Text is read from STDIN
-        """)
+        """
+    )
     parser.add_argument(
-        '--input', '-i', type=str, default='gdpi',
-        help=f"Input romanization, available: {', '.join(list(PARSER_DICT.keys()))}")
+        "--input",
+        "-i",
+        type=str,
+        default="gdpi",
+        help=f"Input romanization, available: {', '.join(list(PARSER_DICT.keys()))}",
+    )
     parser.add_argument(
-        '--output', '-o', type=str, default='tlo',
-        help=f"Output romanization, available: {', '.join(list(TRANSFORMER_DICT.keys()))}")
+        "--output",
+        "-o",
+        type=str,
+        default="tlo",
+        help=f"Output romanization, available: {', '.join(list(TRANSFORMER_DICT.keys()))}",
+    )
     parser.add_argument(
-        '--parse_only', '-p', action='store_true',
-        help="Only report parse in prettified format from lark (option --output ignored)")
+        "--parse_only",
+        "-p",
+        action="store_true",
+        help="Only report parse in prettified format from lark (option --output ignored)",
+    )
     parser.add_argument(
-        '--superscript_tone', '-s', action='store_true',
-        help="Tone numbers in superscript (for gdpi and ggnn output only)")
+        "--superscript_tone",
+        "-s",
+        action="store_true",
+        help="Tone numbers in superscript (for gdpi and ggnn output only)",
+    )
     parser.add_argument(
-        '--all', '-a', action='store_true',
-        help="Output in all available formats, tab-separated (option --output ignored)")
+        "--all",
+        "-a",
+        action="store_true",
+        help="Output in all available formats, tab-separated (option --output ignored)",
+    )
     parser.add_argument(
-        '--show_lark', action='store_true',
-        help="Show parse rules in Lark format for input romanization (output --output ignored)")
+        "--show_lark",
+        action="store_true",
+        help="Show parse rules in Lark format for input romanization (output --output ignored)",
+    )
     parser.add_argument(
-        '--delim_only', '-d', type=str, default=None,
-        help="Only parse and convert text that is contained within delimiters (not compatible with --parse_only)")
+        "--delim_only",
+        "-d",
+        type=str,
+        default=None,
+        help="Only parse and convert text that is contained within delimiters (not compatible with --parse_only)",
+    )
     args = parser.parse_args()
-
 
     if args.show_lark:
         if args.input in LARK_DICT:
             print(LARK_DICT[args.input])
         else:
-            print(f"Invalid input scheme {args.input}, must be one of {', '.join(list(LARK_DICT.keys()))}")
+            print(
+                f"Invalid input scheme {args.input}, must be one of {', '.join(list(LARK_DICT.keys()))}"
+            )
     else:
         for intext in sys.stdin:
-            outtext = ''
+            outtext = ""
             # intext = sys.stdin.read().rstrip()
             intext = intext.rstrip()
             if args.delim_only:
                 in_splits = intext.split(args.delim_only)
                 for i in range(len(in_splits)):
-                    if i%2 == 1:
-                        if args.input == 'tlo':
+                    if i % 2 == 1:
+                        if args.input == "tlo":
                             in_splits[i] = tlo_convert_to_numeric(in_splits[i].lower())
-                        outtext += transliterate(in_splits[i].lower(), i=args.input, o=args.output, superscript_tone=args.superscript_tone)
+                        outtext += transliterate(
+                            in_splits[i].lower(),
+                            i=args.input,
+                            o=args.output,
+                            superscript_tone=args.superscript_tone,
+                        )
                     else:
                         outtext += in_splits[i]
             else:
                 intext = intext.lower()
-                if args.input == 'tlo':
+                if args.input == "tlo":
                     # If Tie-lo input, preprocess from diacritics to numeric tone marks
                     # Assumes that all syllables have tones marked!
                     # impossible otherwise, because tone1 cannot be distinguished from unmarked tone
@@ -361,9 +398,14 @@ def main():
                     print(parsetree.pretty())
                 elif args.all:
                     out = transliterate_all(intext, i=args.input)
-                    print("\t".join(['INPUT', intext]))
+                    print("\t".join(["INPUT", intext]))
                     for line in out:
                         print("\t".join(list(line)))
                 else:
-                    outtext = transliterate(intext, i=args.input, o=args.output, superscript_tone=args.superscript_tone)
+                    outtext = transliterate(
+                        intext,
+                        i=args.input,
+                        o=args.output,
+                        superscript_tone=args.superscript_tone,
+                    )
             print(outtext)
