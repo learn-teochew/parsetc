@@ -12,6 +12,19 @@ dependencies = [
   'lark == 0.11.3',
 ]
 keywords = ["Chinese", "Teochew", "romanization"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "License :: OSI Approved :: MIT License",
+  "Natural Language :: Chinese (Traditional)",
+  "Topic :: Text Processing :: Linguistic"
+]
+
+[project.urls]
+source = "https://github.com/learn-teochew/parsetc"
+homepage = "https://learn-teochew.github.io"
+
+[project.scripts]
+parsetc = "parsetc.parsetc:main"
 
 [build-system]
 requires = ["setuptools >= 61.0.0"]
@@ -25,6 +38,3 @@ where = ["src"]
 
 [tool.setuptools.package-data]
 parsetc = ["terminals.json"]
-
-[project.scripts]
-parsetc = "parsetc.parsetc:main"
