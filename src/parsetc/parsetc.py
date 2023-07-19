@@ -4,9 +4,11 @@ import re
 import os
 import unicodedata
 import argparse
-import translit
 import sys
 import json
+
+import parsetc.translit as translit
+
 from textwrap import dedent
 from lark import Lark
 
@@ -297,7 +299,7 @@ def transliterate(phrase, i='gdpi', o='tlo', superscript_tone=False):
         print(f"Must be one of {', '.join(list(PARSER_DICT.keys()))}")
 
 
-if __name__ == "__main__":
+def main():
     parser = argparse.ArgumentParser(
         description="""
         Parse and convert romanized Teochew between different phonetic spelling schemes

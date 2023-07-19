@@ -3,6 +3,7 @@
 import re
 import os
 import json
+
 from lark import Transformer
 
 # Load terminals data
