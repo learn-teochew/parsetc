@@ -1,6 +1,8 @@
 Parsing tools for Teochew phonetic spelling
 ===========================================
 
+[![PyPI version shields.io](https://img.shields.io/pypi/v/parsetc.svg)](https://pypi.python.org/pypi/parsetc/)
+
 Parse and convert between different Teochew phonetic spelling schemes.
 
 
