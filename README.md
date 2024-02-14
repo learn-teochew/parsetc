@@ -32,18 +32,21 @@ Output formats
    known as 《擊木知音》, based on the analysis by 徐宇航
    「《擊木知音》音系之再研究」 (2014)
 
+
 Orthographic conventions for input text
 ---------------------------------------
 
  * Text must be in lower case
  * Syllables may be written with or without tone numbers
- * Syllables may be combined into words for legibility
- * If syllables are combined into words, they must have tone numbers (e.g.
-   `diê5ziu1`), or use a syllable separator character if tone numbers are
-   omitted (e.g. `diê-ziu` or `pêng'im`). This is either a hyphen or single
-   apostrophe. This is because of ambiguous parsings, e.g. `pê-ngi-m` instead
-   of `pêng-im`, which in general can only be dealt with by usage frequency,
-   which is not available.
+ * Syllables may be combined into words for legibility, i.e. [word-segmented writing](https://en.wikipedia.org/wiki/Chinese_word-segmented_writing)
+ * If syllables are combined into words, they must either have tone numbers
+   (e.g. `diê5ziu1`), or use a syllable separator character (e.g. `diê-ziu` or
+   `pêng'im`, or `diê5-ziu1`). The separator character is either a hyphen or
+   single apostrophe. This is because of ambiguous parsings, e.g. `pê-ngi-m`
+   instead of `pêng-im`, which in general can only be dealt with by usage
+   frequency, which is not available.
+ * If syllable separator characters are used, they must be used consistently.
+   Mixing conventions may cause unexpected parsing errors.
 
 
 Running the script

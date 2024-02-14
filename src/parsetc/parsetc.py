@@ -23,16 +23,13 @@ RULES = {}
 RULES[
     "common"
 ] = """
-// Three options for dealing with potentially ambiguous syllable parsing
+start : (sentence | sentence_tone)+
+// Two options for dealing with potentially ambiguous syllable parsing, however mixing the two is dangerous...
 // 1. all syllables in a word must be separated either by tone number or punctuation
-sentence : [ PUNCTUATION | SPACE ]+ word_sep ( ( PUNCTUATION | SPACE )+ word_sep )* [ PUNCTUATION | SPACE ]+
-word_sep : ( syllable_toneless [ SYLLABLE_SEP word_sep ] ) | ( syllable_tone [ word_sep ] )
-// 2. syllable separation not explicit, tone numbers and syllable separators are optional
-// leave it to the parser, which may make surprising choices
-sentence_ambig : [ PUNCTUATION | SPACE ]+ word ( [ PUNCTUATION | SPACE ] word )* [ PUNCTUATION | SPACE ]+
-word : ( syllable SYLLABLE_SEP? )+
-// 3. all syllables must have tone number (including 0), so no ambiguities about syllable separation
-sentence_tone : [ PUNCTUATION | SPACE ]+ word_tone ( ( PUNCTUATION  | SPACE )+ word_tone )* [ PUNCTUATION | SPACE ]+
+sentence : ( PUNCTUATION | SPACE )* word_sep ( ( PUNCTUATION | SPACE )+ word_sep )* ( PUNCTUATION | SPACE )*
+word_sep : ( syllable | syllable_toneless ) ( SYLLABLE_SEP ( syllable | syllable_toneless) )*
+// 2. all syllables must have tone number (including 0), so no ambiguities about syllable separation
+sentence_tone : ( PUNCTUATION | SPACE )* word_tone ( ( PUNCTUATION | SPACE )+ word_tone )* ( PUNCTUATION | SPACE )*
 word_tone : syllable_tone+
 // Syllables
 syllable : initial? final tone?
@@ -61,7 +58,8 @@ medial : MED_AI  | MED_AU
        | MED_UAI | MED_UA  | MED_UE  | MED_UI  
        | MED_A   | MED_V   | MED_E   | MED_I   | MED_O   | MED_U   
 // Punctuation and spacing
-PUNCTUATION : "." | "," | ":" | ";" | "?" | "!" | "'" | "-" | "(" | ")" | "[" | "]" | "“" | "”" | "‘" | "’"
+// syllable separator has priority over other punctuation
+PUNCTUATION.0 : "." | "," | ":" | ";" | "?" | "!" | "'" | "-" | "(" | ")" | "[" | "]" | "“" | "”" | "‘" | "’"
 SPACE : " "
 
 """
@@ -74,10 +72,11 @@ coda : codanasal | codastops
 codanasal : COD_M | COD_NG
 codastops : COD_P | COD_K | COD_H
 // Tones
-tone : TONENUMBER [ "(" TONENUMBER ")" ]
+tone : TONENUMBER ( "(" TONENUMBER ")" )?
 TONENUMBER : "0".."8"
 // syllable separators can be hyphen or apostrophes
-SYLLABLE_SEP : "-" | "'" | "’"
+// use as syllable separator has priority over use as punctuation
+SYLLABLE_SEP.1 : "-" | "'" | "’"
 """
 
 RULES[
@@ -88,10 +87,11 @@ coda : codanasal | codastops
 codanasal : COD_M | COD_NG
 codastops : COD_P | COD_K | COD_H
 // Tones
-tone : TONENUMBER [ "(" TONENUMBER ")" ]
+tone : TONENUMBER ( "(" TONENUMBER ")" )?
 TONENUMBER : "0".."8"
 // syllable separators can be hyphen or apostrophes
-SYLLABLE_SEP : "-" | "'" | "’"
+// use as syllable separator has priority over use as punctuation
+SYLLABLE_SEP.1 : "-" | "'" | "’"
 """
 
 RULES[
@@ -102,10 +102,11 @@ coda : codanasal | codastops
 codanasal : COD_M | COD_NG
 codastops : COD_P | COD_K | COD_H | COD_T
 // Tones
-tone : TONENUMBER [ "(" TONENUMBER ")" ]
+tone : TONENUMBER ( "(" TONENUMBER ")" )?
 TONENUMBER : "0".."8"
 // syllable separators can be hyphen or apostrophes
-SYLLABLE_SEP : "-" | "'" | "’"
+// use as syllable separator has priority over use as punctuation
+SYLLABLE_SEP.1 : "-" | "'" | "’"
 """
 
 RULES[
@@ -116,10 +117,11 @@ coda : codanasal | codastops
 codanasal : COD_M | COD_NG | COD_N
 codastops : COD_P | COD_K | COD_H | COD_T
 // Tones
-tone : TONENUMBER [ "(" TONENUMBER ")" ]
+tone : TONENUMBER ( "(" TONENUMBER ")" )?
 TONENUMBER : "0".."8"
 // syllable separators can be hyphen or apostrophes
-SYLLABLE_SEP : "-" | "'" | "’"
+// use as syllable separator has priority over use as punctuation
+SYLLABLE_SEP.1 : "-" | "'" | "’"
 """
 
 # Tie-lo with tone numbers instead of diacritics
@@ -132,10 +134,11 @@ coda : codanasal | codastops
 codanasal : COD_M | COD_NG | COD_N
 codastops : COD_P | COD_K | COD_H | COD_T
 // Tones
-tone : TONENUMBER [ "(" TONENUMBER ")" ]
+tone : TONENUMBER ( "(" TONENUMBER ")" )?
 TONENUMBER : "0".."8"
 // syllable separators can be hyphen or apostrophes
-SYLLABLE_SEP : "-" | "'" | "’"
+// use as syllable separator has priority over use as punctuation
+SYLLABLE_SEP.1 : "-" | "'" | "’"
 """
 
 # Available input formats for parsers
@@ -148,7 +151,7 @@ for scheme in ["dieghv", "gdpi", "ggn", "ggnn", "tlo"]:
             if scheme in TERMINALS[group][term]:
                 lark_rules.append(f'{term} : "{TERMINALS[group][term][scheme]}"')
     LARK_DICT[scheme] = "\n".join(lark_rules)
-    PARSER_DICT[scheme] = Lark("\n".join(lark_rules), start="sentence")
+    PARSER_DICT[scheme] = Lark("\n".join(lark_rules), start="start")
 
 
 # Available output formats for transformers
