@@ -76,6 +76,15 @@ class Gdpi(Transformer):
     def sentence(self, items):
         return "".join(items)
 
+    def word_tone(self, items):
+        return "".join(items)
+
+    def sentence_tone(self, items):
+        return "".join(items)
+
+    def start(self, items):
+        return "".join(items)
+
 
 class Ggnn(Transformer):
     """Convert Teochew pengim parse tree to Gaginang Peng'im"""
@@ -139,6 +148,15 @@ class Ggnn(Transformer):
         return "".join(items)
 
     def sentence(self, items):
+        return "".join(items)
+
+    def word_tone(self, items):
+        return "".join(items)
+
+    def sentence_tone(self, items):
+        return "".join(items)
+
+    def start(self, items):
         return "".join(items)
 
 
@@ -231,6 +249,15 @@ class Tlo(Transformer):
         return "-".join([i for i in items if i != "-"])
 
     def sentence(self, items):
+        return "".join(items)
+
+    def word_tone(self, items):
+        return "-".join([i for i in items if i != "-"])
+
+    def sentence_tone(self, items):
+        return "".join(items)
+
+    def start(self, items):
         return "".join(items)
 
 
@@ -358,6 +385,18 @@ class Duffus(Transformer):
     def sentence(self, items):
         return "".join(items)
 
+    def word_tone(self, items):
+        # replace all syllable separators with hyphens
+        # and separate syllables with hyphens if no
+        # syllable separator is present
+        return "-".join([i for i in items if i != "-"])
+
+    def sentence_tone(self, items):
+        return "".join(items)
+
+    def start(self, items):
+        return "".join(items)
+
 
 class Sinwz(Transformer):
     """Convert Teochew pengim parse tree to Sinwenz system"""
@@ -471,6 +510,18 @@ class Sinwz(Transformer):
         return "-".join([i for i in items if i != "-"])
 
     def sentence(self, items):
+        return "".join(items)
+
+    def word_tone(self, items):
+        # replace all syllable separators with hyphens
+        # and separate syllables with hyphens if no
+        # syllable separator is present
+        return "-".join([i for i in items if i != "-"])
+
+    def sentence_tone(self, items):
+        return "".join(items)
+
+    def start(self, items):
         return "".join(items)
 
 
@@ -675,4 +726,15 @@ class Zapngou(Transformer):
         return "".join([i for i in items if i != "-"])
 
     def sentence(self, items):
+        return "".join(items)
+
+    def word_tone(self, items):
+        # replace all syllable separators with spaces and separate syllables
+        # with spaces if no syllable separator is present
+        return "".join([i for i in items if i != "-"])
+
+    def sentence_tone(self, items):
+        return "".join(items)
+
+    def start(self, items):
         return "".join(items)

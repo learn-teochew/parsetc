@@ -27,12 +27,12 @@ start : (sentence | sentence_tone)+
 // Two options for dealing with potentially ambiguous syllable parsing, however mixing the two is dangerous...
 // 1. all syllables in a word must be separated either by tone number or punctuation
 sentence : ( PUNCTUATION | SPACE )* word_sep ( ( PUNCTUATION | SPACE )+ word_sep )* ( PUNCTUATION | SPACE )*
-word_sep : ( syllable | syllable_toneless ) ( SYLLABLE_SEP ( syllable | syllable_toneless) )*
+word_sep : ( syllable_tone | syllable_toneless ) ( SYLLABLE_SEP ( syllable_tone | syllable_toneless) )*
 // 2. all syllables must have tone number (including 0), so no ambiguities about syllable separation
 sentence_tone : ( PUNCTUATION | SPACE )* word_tone ( ( PUNCTUATION | SPACE )+ word_tone )* ( PUNCTUATION | SPACE )*
 word_tone : syllable_tone+
 // Syllables
-syllable : initial? final tone?
+// syllable : initial? final tone?
 syllable_tone : initial? final tone
 syllable_toneless : initial? final
 // Initials
