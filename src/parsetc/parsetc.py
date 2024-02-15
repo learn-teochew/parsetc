@@ -118,18 +118,20 @@ def diacritics_syllable_parse(syllable, system):
     return ("".join(notone), tone)
 
 
-def tlo_convert_to_numeric(text):
-    """Convert Tie-lo with diacritics to tone numbers
+def tone_diacritic_to_numeric(text, system):
+    """Convert tone diacritics to tone numbers
+
+    Tie-lo and Duffus systems only
 
     Returns
     -------
     str
-        Tie-lo with tone numbers instead of diacritics
+        Input with tone numbers instead of diacritics
     """
     out = []
-    for elem in re.split(r"([\s,\.\'\"\?\!\-]+)", text):
+    for elem in re.split(r"([\s,\.\'\"\?\!\-]+)", text): # TODO hacky
         if elem != "" and not re.match(r"([\s,\.\'\"\?\!\-]+)", elem):
-            out.append("".join([str(i) for i in diacritics_syllable_parse(elem, 'tlo')]))
+            out.append("".join([str(i) for i in diacritics_syllable_parse(elem, system)]))
         else:
             out.append(elem)
     return "".join(out)
@@ -279,8 +281,8 @@ def main():
                 in_splits = intext.split(args.delim_only)
                 for i in range(len(in_splits)):
                     if i % 2 == 1:
-                        if args.input == "tlo":
-                            in_splits[i] = tlo_convert_to_numeric(in_splits[i].lower())
+                        if args.input in ["tlo", "duffus"]:
+                            in_splits[i] = tone_diacritic_to_numeric(in_splits[i].lower(), args.input)
                         outtext += transliterate(
                             in_splits[i].lower(),
                             i=args.input,
@@ -291,11 +293,11 @@ def main():
                         outtext += in_splits[i]
             else:
                 intext = intext.lower()
-                if args.input == "tlo":
-                    # If Tie-lo input, preprocess from diacritics to numeric tone marks
+                if args.input in ["tlo", "duffus"]:
+                    # If Tie-lo or duffus input, preprocess from diacritics to numeric tone marks
                     # Assumes that all syllables have tones marked!
                     # impossible otherwise, because tone1 cannot be distinguished from unmarked tone
-                    intext = tlo_convert_to_numeric(intext)
+                    intext = tone_diacritic_to_numeric(intext, args.input)
                 if args.parse_only:
                     parsetree = PARSER_DICT[args.input].parse(intext)
                     print(parsetree.pretty())
