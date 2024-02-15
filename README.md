@@ -2,6 +2,7 @@ Parsing tools for Teochew phonetic spelling
 ===========================================
 
 [![PyPI version shields.io](https://img.shields.io/pypi/v/parsetc.svg)](https://pypi.python.org/pypi/parsetc/)
+![GitHub License](https://img.shields.io/github/license/learn-teochew/parsetc)
 
 Parse and convert between different Teochew phonetic spelling schemes.
 
@@ -38,7 +39,8 @@ Orthographic conventions for input text
 
  * Text must be in lower case
  * Syllables may be written with or without tone numbers
- * Syllables may be combined into words for legibility, i.e. [word-segmented writing](https://en.wikipedia.org/wiki/Chinese_word-segmented_writing)
+ * Syllables may be combined into words for legibility, i.e. [word-segmented
+   writing](https://en.wikipedia.org/wiki/Chinese_word-segmented_writing)
  * If syllables are combined into words, they must either have tone numbers
    (e.g. `diê5ziu1`), or use a syllable separator character (e.g. `diê-ziu` or
    `pêng'im`, or `diê5-ziu1`). The separator character is either a hyphen or
@@ -54,29 +56,29 @@ Running the script
 
 Python 3 is required.
 
-`parsetc` requires [`lark`](https://lark-parser.readthedocs.io/en/latest/) v0.11.3; it has not yet been updated to work with the latest `lark` release.
+`parsetc` requires [`lark`](https://lark-parser.readthedocs.io/en/latest/) v1.1.
 
 Install with `pip` from source code (this repository):
 
-```
+```bash
 pip install .
 ```
 
 Install latest release with `pip` from PyPI:
 
-```
+```bash
 pip install parsetc
 ```
 
 See help message:
 
-```
+```bash
 parsetc --help
 ```
 
 Input text is read from STDIN, no line breaks.
 
-```
+```bash
 # output in Tie-lo
 echo 'ua2 ain3 oh8 diê5ghe2, ain3 dan3 diê5ziu1 uê7.' | parsetc -i gdpi -o tlo
 # all available output romanizations
@@ -85,6 +87,9 @@ echo 'ua2 ain3 oh8 diê5ghe2, ain3 dan3 diê5ziu1 uê7.' | parsetc -i gdpi --all
 
 Testing with provided example text:
 
-```
-cat ./test.dieghv.txt | parsetc -i dieghv --all
+```bash
+# Example with tone numbers but no syllable separators
+cat examples/dieghv.tones.txt | parsetc -i dieghv --all
+# Example with hyphens as syllable separators
+cat examples/dieghv.sep.txt | parsetc -i dieghv --all
 ```
