@@ -35,6 +35,10 @@ class Gdpi(Tctransformer):
             for term in TERMINALS["initials"]
             if "gdpi" in TERMINALS["initials"][term]
         }
+        # initials that have merged in modern Teochew
+        trdict["INIT_CH"] = "z"
+        trdict["INIT_CHH"] = "c"
+        trdict["INIT_J"] = "r"
         return trdict[items[0].type]
 
     def medial(self, items):
@@ -102,6 +106,10 @@ class Ggnn(Tctransformer):
             for term in TERMINALS["initials"]
             if "ggnn" in TERMINALS["initials"][term]
         }
+        # initials that have merged in modern Teochew
+        trdict["INIT_CH"] = "j"
+        trdict["INIT_CHH"] = "ch"
+        trdict["INIT_J"] = "y"
         return trdict[items[0].type]
 
     def medial(self, items):
@@ -171,6 +179,10 @@ class Tlo(Tctransformer):
             for term in TERMINALS["initials"]
             if "tlo" in TERMINALS["initials"][term]
         }
+        # initials that have merged in modern Teochew
+        trdict["INIT_CH"] = "ts"
+        trdict["INIT_CHH"] = "tsh"
+        trdict["INIT_J"] = "z"
         return trdict[items[0].type]
 
     def medial(self, items):
@@ -375,6 +387,10 @@ class Sinwz(Tctransformer):
             "INIT_R": "dz",
             "INIT_L": "l",
         }
+        # initials that have merged in modern Teochew
+        trdict["INIT_CH"] = "z"
+        trdict["INIT_CHH"] = "c"
+        trdict["INIT_J"] = "dz"
         return trdict[items[0].type]
 
     def medial(self, items):
@@ -487,6 +503,11 @@ class Zapngou(Tctransformer):
             "INIT_C": "出",
             "INIT_H": "喜",
         }
+        # initials that have merged in modern Teochew
+        trdict["INIT_CH"] = "貞"
+        trdict["INIT_CHH"] = "出"
+        trdict["INIT_J"] = "入"
+
         return trdict[items[0].type]
 
     def medial(self, items):

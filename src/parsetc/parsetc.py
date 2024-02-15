@@ -18,14 +18,14 @@ TERMINALS = json.loads(files("parsetc").joinpath("terminals.json").read_text())
 # Grammar rules per transcription system in Lark format
 # 'common' are rules that are common to all systems
 RULES = {}
-for prefix in ["common", "dieghv", "gdpi", "ggn", "ggnn", "tlo"]:
+for prefix in ["common", "dieghv", "gdpi", "ggn", "ggnn", "tlo", "duffus"]:
     with open(files("parsetc").joinpath(f"{prefix}.lark")) as fh:
         RULES[prefix] = fh.read()
 
 # Available input formats for parsers
 PARSER_DICT = {}
 LARK_DICT = {}
-for scheme in ["dieghv", "gdpi", "ggn", "ggnn", "tlo"]:
+for scheme in ["dieghv", "gdpi", "ggn", "ggnn", "tlo", "duffus"]:
     lark_rules = [RULES["common"], RULES[scheme]]
     for group in TERMINALS:
         for term in TERMINALS[group]:

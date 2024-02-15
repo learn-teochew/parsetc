@@ -12,10 +12,13 @@
     "INIT_D"  : { "dieghv": "d", "gdpi": "d" , "ggn": "d" , "ggnn": "d" , "tlo": "t"  , "duffus": "t"  },
     "INIT_T"  : { "dieghv": "t", "gdpi": "t" , "ggn": "t" , "ggnn": "t" , "tlo": "th" , "duffus": "th" },
     "INIT_Z"  : { "dieghv": "z", "gdpi": "z" , "ggn": "j" , "ggnn": "j" , "tlo": "ts" , "duffus": "ts" },
+    "INIT_CH" : {                                                                       "duffus": "ch" },
     "INIT_C"  : { "dieghv": "c", "gdpi": "c" , "ggn": "ch", "ggnn": "ch", "tlo": "tsh", "duffus": "tsh"},
+    "INIT_CHH": {                                                                       "duffus": "chh"},
     "INIT_S"  : { "dieghv": "s", "gdpi": "s" , "ggn": "s" , "ggnn": "s" , "tlo": "s"  , "duffus": "s"  },
     "INIT_H"  : { "dieghv": "h", "gdpi": "h" , "ggn": "h" , "ggnn": "h" , "tlo": "h"  , "duffus": "h"  },
     "INIT_R"  : { "dieghv": "r", "gdpi": "r" , "ggn": "y" , "ggnn": "y" , "tlo": "z"  , "duffus": "z"  },
+    "INIT_J"  : {                                                                       "duffus": "j"  },
     "INIT_L"  : { "dieghv": "l", "gdpi": "l" , "ggn": "l" , "ggnn": "l" , "tlo": "l"  , "duffus": "l"  }
   },
 
@@ -36,7 +39,7 @@
     "MED_UE" : { "dieghv": "ue",  "gdpi": "uê" , "ggn": "ue" , "ggnn": "ue" , "tlo": "ue" , "duffus":  "ue" },
     "MED_UI" : { "dieghv": "ui",  "gdpi": "ui" , "ggn": "ui" , "ggnn": "ui" , "tlo": "ui" , "duffus":  "ui" },
     "MED_A"  : { "dieghv": "a",   "gdpi": "a"  , "ggn": "a"  , "ggnn": "a"  , "tlo": "a"  , "duffus":  "a"  },
-    "MED_V"  : { "dieghv": "v",   "gdpi": "e"  , "ggn": "eu" , "ggnn": "eu" , "tlo": "ur" , "duffus":  "ṳ"  },
+    "MED_V"  : { "dieghv": "v",   "gdpi": "e"  , "ggn": "eu" , "ggnn": "eu" , "tlo": "ur" , "duffus":  "\u0075\u0324"  },
     "MED_E"  : { "dieghv": "e",   "gdpi": "ê"  , "ggn": "e"  , "ggnn": "e"  , "tlo": "e"  , "duffus":  "e"  },
     "MED_I"  : { "dieghv": "i",   "gdpi": "i"  , "ggn": "i"  , "ggnn": "i"  , "tlo": "i"  , "duffus":  "i"  },
     "MED_O"  : { "dieghv": "o",   "gdpi": "o"  , "ggn": "o"  , "ggnn": "o"  , "tlo": "o"  , "duffus":  "o"  },

@@ -45,5 +45,6 @@ parsetc = [
   "gdpi.lark",
   "ggn.lark",
   "ggnn.lark",
-  "tlo.lark"
+  "tlo.lark",
+  "duffus.lark"
 ]
