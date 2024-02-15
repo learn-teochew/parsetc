@@ -63,8 +63,11 @@ def decomp_str(s):
     return out
 
 
-def tlo_syllable_parse(syllable):
-    """Parse a Tie-lo syllable with diacritics to get tone number
+def diacritics_syllable_parse(syllable, system):
+    """Parse a syllable with tone diacritics to tone number
+    
+    Tie-lo or Duffus systems only. Also decomposes compound characters, needed
+    for ṳ which can be either single character or combining.
 
     Will not complain if a syllable has two diacritics. Beware!
 
@@ -73,28 +76,39 @@ def tlo_syllable_parse(syllable):
     (str, int) : base syllable string, tone number. Tone 0 not supported
     """
     tonemarks = {
-        769: 2,  # hex 0x301
-        768: 3,  # 0x300
-        770: 5,  # 0x302
-        774: 6,  # 0x306
-        780: 6,  # 0x30C combining caron, often confused with combining breve
-        772: 7,  # 0x304
+        'tlo': {
+            769: 2,  # hex 0x301
+            768: 3,  # 0x300
+            770: 5,  # 0x302
+            774: 6,  # 0x306
+            780: 6,  # 0x30C combining caron, often confused with combining breve
+            772: 7,  # 0x304
+        }, 
+        'duffus' : {
+            769: 2,  # hex 0x301
+            768: 3,  # 0x300
+            770: 5,  # 0x302
+            771: 6,  # 0x303
+            772: 7,  # 0x304
+            781: 8,  # 0x30D # vertical line above
+            775: 8,  # 0x307 # dot above - variant
+        }
     }
     notone = []
     tone = 1  # default tone
 
     decomp = decomp_str(syllable)
     # Check for tone diacritic, should be only one
-    tones = [tonemarks[i] for i in decomp if i in tonemarks]
+    tones = [tonemarks[system][i] for i in decomp if i in tonemarks[system]]
     if len(tones) == 1:
         tone = tones[0]
     elif len(tones) > 1:
         pass # TODO complain
     # All other characters
-    notone = [chr(i) for i in decomp if i not in tonemarks]
+    notone = [chr(i) for i in decomp if i not in tonemarks[system]]
 
     # check for entering tones
-    if notone[-1] in ["p", "t", "k", "h"]:
+    if notone[-1] in ["p", "t", "k", "h"] and tone != 4 and tone != 8:
         if tone == 1:
             tone = 4
         elif tone == 5:
@@ -115,7 +129,7 @@ def tlo_convert_to_numeric(text):
     out = []
     for elem in re.split(r"([\s,\.\'\"\?\!\-]+)", text):
         if elem != "" and not re.match(r"([\s,\.\'\"\?\!\-]+)", elem):
-            out.append("".join([str(i) for i in tlo_syllable_parse(elem)]))
+            out.append("".join([str(i) for i in diacritics_syllable_parse(elem, 'tlo')]))
         else:
             out.append(elem)
     return "".join(out)

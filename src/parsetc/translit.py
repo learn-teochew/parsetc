@@ -312,8 +312,6 @@ class Duffus(Tctransformer):
         return str(items[0])
 
     def syllable_tone(self, items):
-        # Tie-lo is less straightforward because it marks
-        # tones with diacritics
         trdict = {
             "1": "",
             "2": "\u0301",
