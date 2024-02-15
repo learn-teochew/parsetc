@@ -54,20 +54,20 @@ Orthographic conventions for input text
 Running the script
 ------------------
 
-Python 3 is required.
-
-`parsetc` requires [`lark`](https://lark-parser.readthedocs.io/en/latest/) v1.1.
-
-Install with `pip` from source code (this repository):
-
-```bash
-pip install .
-```
+`parsetc` requires Python 3 and [`lark`](https://lark-parser.readthedocs.io/en/latest/) v1.1.
 
 Install latest release with `pip` from PyPI:
 
 ```bash
 pip install parsetc
+```
+
+If you are interested in latest development version, you can clone this
+repository and checkout the `dev` branch, then install with `pip` from source
+code:
+
+```bash
+pip install .
 ```
 
 See help message:
