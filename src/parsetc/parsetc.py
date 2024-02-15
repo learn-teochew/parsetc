@@ -45,6 +45,23 @@ TRANSFORMER_DICT = {
     "15": translit.Zapngou(),
 }
 
+def decomp_str(s):
+    """Decompose a string into its Unicode decimal code points
+
+    Split any combining diacritics
+    """
+    out = []
+    for c in s:
+        # decompose each character into diacritics
+        decomp = unicodedata.decomposition(c).split()
+        if len(decomp) > 0:
+            # convert hex values to decimal
+            decomp = [int("0x" + i, 16) for i in decomp]
+            out.extend(decomp)
+        else:
+            out.append(ord(c))
+    return out
+
 
 def tlo_syllable_parse(syllable):
     """Parse a Tie-lo syllable with diacritics to get tone number
@@ -65,35 +82,25 @@ def tlo_syllable_parse(syllable):
     }
     notone = []
     tone = 1  # default tone
-    for c in syllable:
-        # in case combining marks are in use, cannot be decomposed
-        if ord(c) in tonemarks:
-            # ord returns decimal value
-            tone = tonemarks[ord(c)]
-        else:
-            # decompose each character into diacritics
-            decomp = unicodedata.decomposition(c).split()
-            # convert hex values to decimal
-            decomp = [int("0x" + i, 16) for i in decomp]
-            if len(decomp) > 0:
-                # check if key is present
-                if decomp[1] in tonemarks:
-                    # base letter
-                    notone.append(chr(decomp[0]))
-                    # tone
-                    tone = tonemarks[decomp[1]]
-                else:
-                    print(f"invalid diacritic found in character {c} {syllable}")
-                    return (syllable.upper(), None)
-            else:
-                # not a diacritic, append to the base
-                notone.append(c)
+
+    decomp = decomp_str(syllable)
+    # Check for tone diacritic, should be only one
+    tones = [tonemarks[i] for i in decomp if i in tonemarks]
+    if len(tones) == 1:
+        tone = tones[0]
+    elif len(tones) > 1:
+        pass # TODO complain
+    # All other characters
+    notone = [chr(i) for i in decomp if i not in tonemarks]
+
     # check for entering tones
     if notone[-1] in ["p", "t", "k", "h"]:
         if tone == 1:
             tone = 4
         elif tone == 5:
             tone = 8
+        else:
+            pass # TODO complain
     return ("".join(notone), tone)
 
 
