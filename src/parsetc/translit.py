@@ -12,6 +12,7 @@ TERMINALS = json.loads(files("parsetc").joinpath("terminals.json").read_text())
 
 class Tctransformer(Transformer):
     """Common to all transformers"""
+
     def sentence(self, items):
         return "".join(items)
 
@@ -258,49 +259,17 @@ class Duffus(Tctransformer):
 
     def initial(self, items):
         trdict = {
-            "INIT_BH": "b",
-            "INIT_P": "ph",
-            "INIT_B": "p",
-            "INIT_M": "m",
-            "INIT_NG": "ng",
-            "INIT_N": "n",
-            "INIT_GH": "g",
-            "INIT_K": "kh",
-            "INIT_G": "k",
-            "INIT_D": "t",
-            "INIT_T": "th",
-            "INIT_Z": "ts",
-            "INIT_C": "tsh",
-            "INIT_S": "s",
-            "INIT_H": "h",
-            "INIT_R": "z",
-            "INIT_L": "l",
+            term: TERMINALS["initials"][term]["duffus"]
+            for term in TERMINALS["initials"]
+            if "duffus" in TERMINALS["initials"][term]
         }
         return trdict[items[0].type]
 
     def medial(self, items):
         trdict = {
-            "MED_AI": "ai",
-            "MED_AU": "au",
-            "MED_IA": "ia",
-            "MED_IAU": "iau",
-            "MED_IEU": "ieu",
-            "MED_IOU": "iou",
-            "MED_IU": "iu",
-            "MED_IE": "ie",
-            "MED_IO": "io",
-            "MED_OI": "oi",
-            "MED_OU": "ou",
-            "MED_UAI": "uai",
-            "MED_UA": "ua",
-            "MED_UE": "ue",
-            "MED_UI": "ui",
-            "MED_A": "a",
-            "MED_V": "ṳ",
-            "MED_E": "e",
-            "MED_I": "i",
-            "MED_O": "o",
-            "MED_U": "u",
+            term: TERMINALS["medials"][term]["duffus"]
+            for term in TERMINALS["medials"]
+            if "duffus" in TERMINALS["medials"][term]
         }
         return trdict[items[0].type]
 
@@ -309,18 +278,17 @@ class Duffus(Tctransformer):
 
     def codastops(self, items):
         trdict = {
-            "COD_P": "p",
-            "COD_K": "k",
-            "COD_H": "h",
-            "COD_T": "t",
+            term: TERMINALS["codastops"][term]["duffus"]
+            for term in TERMINALS["codastops"]
+            if "duffus" in TERMINALS["codastops"][term]
         }
         return trdict[items[0].type]
 
     def codanasal(self, items):
         trdict = {
-            "COD_M": "m",
-            "COD_NG": "ng",
-            "COD_N": "n",
+            term: TERMINALS["codanasals"][term]["duffus"]
+            for term in TERMINALS["codanasals"]
+            if "duffus" in TERMINALS["codanasals"][term]
         }
         return trdict[items[0].type]
 
@@ -696,4 +664,3 @@ class Zapngou(Tctransformer):
         # replace all syllable separators with spaces and separate syllables
         # with spaces if no syllable separator is present
         return "".join([i for i in items if i != "-"])
-

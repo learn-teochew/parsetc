@@ -1,60 +1,62 @@
 { 
   "initials" : {
-    "INIT_BH" : { "dieghv" : "bh",  "gdpi": "bh" , "ggn" : "bh" , "ggnn" : "bh" , "tlo" : "b"   },
-    "INIT_P"  : { "dieghv" : "p",   "gdpi": "p"  , "ggn" : "p"  , "ggnn" : "p"  , "tlo" : "ph"  },
-    "INIT_B"  : { "dieghv" : "b",   "gdpi": "b"  , "ggn" : "b"  , "ggnn" : "b"  , "tlo" : "p"   },
-    "INIT_M"  : { "dieghv" : "m",   "gdpi": "m"  , "ggn" : "m"  , "ggnn" : "m"  , "tlo" : "m"   },
-    "INIT_NG" : { "dieghv" : "ng",  "gdpi": "ng" , "ggn" : "ng" , "ggnn" : "ng" , "tlo" : "ng"  },
-    "INIT_N"  : { "dieghv" : "n",   "gdpi": "n"  , "ggn" : "n"  , "ggnn" : "n"  , "tlo" : "n"   },
-    "INIT_GH" : { "dieghv" : "gh",  "gdpi": "gh" , "ggn" : "gh" , "ggnn" : "gh" , "tlo" : "g"   },
-    "INIT_K"  : { "dieghv" : "k",   "gdpi": "k"  , "ggn" : "k"  , "ggnn" : "k"  , "tlo" : "kh"  },
-    "INIT_G"  : { "dieghv" : "g",   "gdpi": "g"  , "ggn" : "g"  , "ggnn" : "g"  , "tlo" : "k"   },
-    "INIT_D"  : { "dieghv" : "d",   "gdpi": "d"  , "ggn" : "d"  , "ggnn" : "d"  , "tlo" : "t"   },
-    "INIT_T"  : { "dieghv" : "t",   "gdpi": "t"  , "ggn" : "t"  , "ggnn" : "t"  , "tlo" : "th"  },
-    "INIT_Z"  : { "dieghv" : "z",   "gdpi": "z"  , "ggn" : "j"  , "ggnn" : "j"  , "tlo" : "ts"  },
-    "INIT_C"  : { "dieghv" : "c",   "gdpi": "c"  , "ggn" : "ch" , "ggnn" : "ch" , "tlo" : "tsh" },
-    "INIT_S"  : { "dieghv" : "s",   "gdpi": "s"  , "ggn" : "s"  , "ggnn" : "s"  , "tlo" : "s"   },
-    "INIT_H"  : { "dieghv" : "h",   "gdpi": "h"  , "ggn" : "h"  , "ggnn" : "h"  , "tlo" : "h"   },
-    "INIT_R"  : { "dieghv" : "r",   "gdpi": "r"  , "ggn" : "y"  , "ggnn" : "y"  , "tlo" : "z"   },
-    "INIT_L"  : { "dieghv" : "l",   "gdpi": "l"  , "ggn" : "l"  , "ggnn" : "l"  , "tlo" : "l"   }
+    "INIT_BH" : { "dieghv": "bh","gdpi": "bh", "ggn": "bh", "ggnn": "bh", "tlo": "b"  , "duffus": "b"  },
+    "INIT_P"  : { "dieghv": "p", "gdpi": "p" , "ggn": "p" , "ggnn": "p" , "tlo": "ph" , "duffus": "ph" },
+    "INIT_B"  : { "dieghv": "b", "gdpi": "b" , "ggn": "b" , "ggnn": "b" , "tlo": "p"  , "duffus": "p"  },
+    "INIT_M"  : { "dieghv": "m", "gdpi": "m" , "ggn": "m" , "ggnn": "m" , "tlo": "m"  , "duffus": "m"  },
+    "INIT_NG" : { "dieghv": "ng","gdpi": "ng", "ggn": "ng", "ggnn": "ng", "tlo": "ng" , "duffus": "ng" },
+    "INIT_N"  : { "dieghv": "n", "gdpi": "n" , "ggn": "n" , "ggnn": "n" , "tlo": "n"  , "duffus": "n"  },
+    "INIT_GH" : { "dieghv": "gh","gdpi": "gh", "ggn": "gh", "ggnn": "gh", "tlo": "g"  , "duffus": "g"  },
+    "INIT_K"  : { "dieghv": "k", "gdpi": "k" , "ggn": "k" , "ggnn": "k" , "tlo": "kh" , "duffus": "kh" },
+    "INIT_G"  : { "dieghv": "g", "gdpi": "g" , "ggn": "g" , "ggnn": "g" , "tlo": "k"  , "duffus": "k"  },
+    "INIT_D"  : { "dieghv": "d", "gdpi": "d" , "ggn": "d" , "ggnn": "d" , "tlo": "t"  , "duffus": "t"  },
+    "INIT_T"  : { "dieghv": "t", "gdpi": "t" , "ggn": "t" , "ggnn": "t" , "tlo": "th" , "duffus": "th" },
+    "INIT_Z"  : { "dieghv": "z", "gdpi": "z" , "ggn": "j" , "ggnn": "j" , "tlo": "ts" , "duffus": "ts" },
+    "INIT_C"  : { "dieghv": "c", "gdpi": "c" , "ggn": "ch", "ggnn": "ch", "tlo": "tsh", "duffus": "tsh"},
+    "INIT_S"  : { "dieghv": "s", "gdpi": "s" , "ggn": "s" , "ggnn": "s" , "tlo": "s"  , "duffus": "s"  },
+    "INIT_H"  : { "dieghv": "h", "gdpi": "h" , "ggn": "h" , "ggnn": "h" , "tlo": "h"  , "duffus": "h"  },
+    "INIT_R"  : { "dieghv": "r", "gdpi": "r" , "ggn": "y" , "ggnn": "y" , "tlo": "z"  , "duffus": "z"  },
+    "INIT_L"  : { "dieghv": "l", "gdpi": "l" , "ggn": "l" , "ggnn": "l" , "tlo": "l"  , "duffus": "l"  }
   },
 
   "medials" : {
-    "MED_AI"  : { "dieghv" : "ai",  "gdpi": "ai" , "ggn" : "ai" , "ggnn" : "ai" , "tlo" : "ai"  },
-    "MED_AU"  : { "dieghv" : "au",  "gdpi": "ao" , "ggn" : "ao" , "ggnn" : "ao" , "tlo" : "au"  },
-    "MED_IA"  : { "dieghv" : "ia",  "gdpi": "ia" , "ggn" : "ia" , "ggnn" : "ia" , "tlo" : "ia"  },
-    "MED_IAU" : { "dieghv" : "iau", "gdpi": "iao", "ggn" : "iao", "ggnn" : "iao", "tlo" : "iau" },
-    "MED_IEU" : { "dieghv" : "ieu", "gdpi": "iêu", "ggn" : "ieu", "ggnn" : "ieu", "tlo" : "ieu" },
-    "MED_IOU" : { "dieghv" : "iou", "gdpi": "iou", "ggn" : "iou", "ggnn" : "iou", "tlo" : "iou" },
-    "MED_IU"  : { "dieghv" : "iu",  "gdpi": "iu" , "ggn" : "iu" , "ggnn" : "iu" , "tlo" : "iu"  },
-    "MED_IE"  : { "dieghv" : "ie",  "gdpi": "iê" , "ggn" : "ie" , "ggnn" : "ie" , "tlo" : "ie"  },
-    "MED_IO"  : { "dieghv" : "io",  "gdpi": "io" , "ggn" : "io" , "ggnn" : "io" , "tlo" : "io"  },
-    "MED_OI"  : { "dieghv" : "oi",  "gdpi": "oi" , "ggn" : "oi" , "ggnn" : "oi" , "tlo" : "oi"  },
-    "MED_OU"  : { "dieghv" : "ou",  "gdpi": "ou" , "ggn" : "ou" , "ggnn" : "ou" , "tlo" : "ou"  },
-    "MED_UAI" : { "dieghv" : "uai", "gdpi": "uai", "ggn" : "uai", "ggnn" : "uai", "tlo" : "uai" },
-    "MED_UA"  : { "dieghv" : "ua",  "gdpi": "ua" , "ggn" : "ua" , "ggnn" : "ua" , "tlo" : "ua"  },
-    "MED_UE"  : { "dieghv" : "ue",  "gdpi": "uê" , "ggn" : "ue" , "ggnn" : "ue" , "tlo" : "ue"  },
-    "MED_UI"  : { "dieghv" : "ui",  "gdpi": "ui" , "ggn" : "ui" , "ggnn" : "ui" , "tlo" : "ui"  },
-    "MED_A"   : { "dieghv" : "a",   "gdpi": "a"  , "ggn" : "a"  , "ggnn" : "a"  , "tlo" : "a"   },
-    "MED_V"   : { "dieghv" : "v",   "gdpi": "e"  , "ggn" : "eu" , "ggnn" : "eu" , "tlo" : "ur"  },
-    "MED_E"   : { "dieghv" : "e",   "gdpi": "ê"  , "ggn" : "e"  , "ggnn" : "e"  , "tlo" : "e"   },
-    "MED_I"   : { "dieghv" : "i",   "gdpi": "i"  , "ggn" : "i"  , "ggnn" : "i"  , "tlo" : "i"   },
-    "MED_O"   : { "dieghv" : "o",   "gdpi": "o"  , "ggn" : "o"  , "ggnn" : "o"  , "tlo" : "o"   },
-    "MED_U"   : { "dieghv" : "u",   "gdpi": "u"  , "ggn" : "u"  , "ggnn" : "u"  , "tlo" : "u"   }
+    "MED_AI" : { "dieghv": "ai",  "gdpi": "ai" , "ggn": "ai" , "ggnn": "ai" , "tlo": "ai" , "duffus":  "ai" },
+    "MED_AU" : { "dieghv": "au",  "gdpi": "ao" , "ggn": "ao" , "ggnn": "ao" , "tlo": "au" , "duffus":  "au" },
+    "MED_IA" : { "dieghv": "ia",  "gdpi": "ia" , "ggn": "ia" , "ggnn": "ia" , "tlo": "ia" , "duffus":  "ia" },
+    "MED_IAU": { "dieghv": "iau", "gdpi": "iao", "ggn": "iao", "ggnn": "iao", "tlo": "iau", "duffus":  "iau"},
+    "MED_IEU": { "dieghv": "ieu", "gdpi": "iêu", "ggn": "ieu", "ggnn": "ieu", "tlo": "ieu", "duffus":  "ieu"},
+    "MED_IOU": { "dieghv": "iou", "gdpi": "iou", "ggn": "iou", "ggnn": "iou", "tlo": "iou", "duffus":  "iou"},
+    "MED_IU" : { "dieghv": "iu",  "gdpi": "iu" , "ggn": "iu" , "ggnn": "iu" , "tlo": "iu" , "duffus":  "iu" },
+    "MED_IE" : { "dieghv": "ie",  "gdpi": "iê" , "ggn": "ie" , "ggnn": "ie" , "tlo": "ie" , "duffus":  "ie" },
+    "MED_IO" : { "dieghv": "io",  "gdpi": "io" , "ggn": "io" , "ggnn": "io" , "tlo": "io" , "duffus":  "io" },
+    "MED_OI" : { "dieghv": "oi",  "gdpi": "oi" , "ggn": "oi" , "ggnn": "oi" , "tlo": "oi" , "duffus":  "oi" },
+    "MED_OU" : { "dieghv": "ou",  "gdpi": "ou" , "ggn": "ou" , "ggnn": "ou" , "tlo": "ou" , "duffus":  "ou" },
+    "MED_UAI": { "dieghv": "uai", "gdpi": "uai", "ggn": "uai", "ggnn": "uai", "tlo": "uai", "duffus":  "uai"},
+    "MED_UA" : { "dieghv": "ua",  "gdpi": "ua" , "ggn": "ua" , "ggnn": "ua" , "tlo": "ua" , "duffus":  "ua" },
+    "MED_UE" : { "dieghv": "ue",  "gdpi": "uê" , "ggn": "ue" , "ggnn": "ue" , "tlo": "ue" , "duffus":  "ue" },
+    "MED_UI" : { "dieghv": "ui",  "gdpi": "ui" , "ggn": "ui" , "ggnn": "ui" , "tlo": "ui" , "duffus":  "ui" },
+    "MED_A"  : { "dieghv": "a",   "gdpi": "a"  , "ggn": "a"  , "ggnn": "a"  , "tlo": "a"  , "duffus":  "a"  },
+    "MED_V"  : { "dieghv": "v",   "gdpi": "e"  , "ggn": "eu" , "ggnn": "eu" , "tlo": "ur" , "duffus":  "ṳ"  },
+    "MED_E"  : { "dieghv": "e",   "gdpi": "ê"  , "ggn": "e"  , "ggnn": "e"  , "tlo": "e"  , "duffus":  "e"  },
+    "MED_I"  : { "dieghv": "i",   "gdpi": "i"  , "ggn": "i"  , "ggnn": "i"  , "tlo": "i"  , "duffus":  "i"  },
+    "MED_O"  : { "dieghv": "o",   "gdpi": "o"  , "ggn": "o"  , "ggnn": "o"  , "tlo": "o"  , "duffus":  "o"  },
+    "MED_U"  : { "dieghv": "u",   "gdpi": "u"  , "ggn": "u"  , "ggnn": "u"  , "tlo": "u"  , "duffus":  "u"  }
   },
 
   "codanasals" : {
-    "COD_M"   : { "dieghv" : "m",   "gdpi": "m"  , "ggn" : "m"  , "ggnn" : "m"  , "tlo" : "m"   },
-    "COD_NG"  : { "dieghv" : "ng",  "gdpi": "ng" , "ggn" : "ng" , "ggnn" : "ng" , "tlo" : "ng"  },
-    "COD_N"   : {                                                 "ggnn" : "n"  , "tlo" : "n"   }
+    "COD_M" : { "dieghv": "m", "gdpi": "m" , "ggn": "m" , "ggnn": "m" , "tlo": "m" , "duffus": "m"  },
+    "COD_NG": { "dieghv": "ng","gdpi": "ng", "ggn": "ng", "ggnn": "ng", "tlo": "ng", "duffus": "ng" },
+    "COD_N" : {                                           "ggnn": "n" , "tlo": "n" , "duffus": "n"  }
   },
+
   "codastops" : {
-    "COD_P"   : { "dieghv" : "p",   "gdpi": "b"   ,"ggn" : "p"  , "ggnn" : "p"  , "tlo" : "p"   },
-    "COD_K"   : { "dieghv" : "k",   "gdpi": "g"   ,"ggn" : "k"  , "ggnn" : "k"  , "tlo" : "k"   },
-    "COD_H"   : { "dieghv" : "h",   "gdpi": "h"   ,"ggn" : "h"  , "ggnn" : "h"  , "tlo" : "h"   },
-    "COD_T"   : {                                  "ggn" : "t"  , "ggnn" : "t"  , "tlo" : "t"   }
+    "COD_P": { "dieghv": "p", "gdpi": "b", "ggn": "p", "ggnn": "p", "tlo": "p", "duffus": "p" },
+    "COD_K": { "dieghv": "k", "gdpi": "g", "ggn": "k", "ggnn": "k", "tlo": "k", "duffus": "k" },
+    "COD_H": { "dieghv": "h", "gdpi": "h", "ggn": "h", "ggnn": "h", "tlo": "h", "duffus": "h" },
+    "COD_T": {                             "ggn": "t", "ggnn": "t", "tlo": "t", "duffus": "t" }
   },
+
   "nasal" : {
-    "NASAL"   : { "dieghv" : "n",   "gdpi": "n",   "ggn" : "n"  , "ggnn" : "ñ"  , "tlo" : "nn"  }
+    "NASAL": { "dieghv": "n", "gdpi": "n", "ggn": "n", "ggnn": "ñ", "tlo": "nn", "duffus": "\u207f" }
   }
 }
