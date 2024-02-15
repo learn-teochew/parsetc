@@ -1,0 +1,17 @@
+// Tie-lo with tone numbers instead of diacritics
+// Input has to be pre-processed before passing to parser
+
+// Codas
+coda : codanasal | codastops
+codanasal : COD_M | COD_NG | COD_N
+codastops : COD_P | COD_K | COD_H | COD_T
+
+// Tones
+tone : TONENUMBER ( "(" TONENUMBER ")" )?
+TONENUMBER : "0".."8"
+
+// Syllable separator
+// hyphen or apostrophe are also valid punctuation
+// usage as syllable separator has priority over use as punctuation
+SYLLABLE_SEP.1 : "-" | "'" | "’"
+

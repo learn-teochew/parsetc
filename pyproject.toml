@@ -38,4 +38,12 @@ include-package-data = true
 where = ["src"]
 
 [tool.setuptools.package-data]
-parsetc = ["terminals.json"]
+parsetc = [
+  "terminals.json",
+  "common.lark",
+  "dieghv.lark",
+  "gdpi.lark",
+  "ggn.lark",
+  "ggnn.lark",
+  "tlo.lark"
+]
