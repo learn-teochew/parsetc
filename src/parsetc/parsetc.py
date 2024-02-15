@@ -46,10 +46,7 @@ initial : INIT_BH | INIT_P  | INIT_B
         | INIT_R  | INIT_L 
 // Finals
 // TODO: rule for entering tone
-final :  ( medial coda ) 
-      | ( medial NASAL codastops? ) 
-      | medial
-      | codanasal
+final : ( medial ( coda | ( NASAL codastops? ) )? ) | codanasal
 // Medials
 // longer medials are listed first to be preferentially matched
 medial : MED_AI  | MED_AU  
