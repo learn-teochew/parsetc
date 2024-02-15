@@ -10,7 +10,19 @@ from lark import Transformer
 TERMINALS = json.loads(files("parsetc").joinpath("terminals.json").read_text())
 
 
-class Gdpi(Transformer):
+class Tctransformer(Transformer):
+    """Common to all transformers"""
+    def sentence(self, items):
+        return "".join(items)
+
+    def sentence_tone(self, items):
+        return "".join(items)
+
+    def start(self, items):
+        return "".join(items)
+
+
+class Gdpi(Tctransformer):
     """Convert Teochew pengim parse tree to Gengdang Pêng'im"""
 
     def NASAL(self, value):
@@ -73,20 +85,11 @@ class Gdpi(Transformer):
     def word_sep(self, items):
         return "".join(items)
 
-    def sentence(self, items):
-        return "".join(items)
-
     def word_tone(self, items):
         return "".join(items)
 
-    def sentence_tone(self, items):
-        return "".join(items)
 
-    def start(self, items):
-        return "".join(items)
-
-
-class Ggnn(Transformer):
+class Ggnn(Tctransformer):
     """Convert Teochew pengim parse tree to Gaginang Peng'im"""
 
     def NASAL(self, value):
@@ -147,20 +150,11 @@ class Ggnn(Transformer):
     def word_sep(self, items):
         return "".join(items)
 
-    def sentence(self, items):
-        return "".join(items)
-
     def word_tone(self, items):
         return "".join(items)
 
-    def sentence_tone(self, items):
-        return "".join(items)
 
-    def start(self, items):
-        return "".join(items)
-
-
-class Tlo(Transformer):
+class Tlo(Tctransformer):
     """Convert Teochew pengim parse tree to Tie-lo"""
 
     def NASAL(self, value):
@@ -248,20 +242,11 @@ class Tlo(Transformer):
         # syllable separator is present
         return "-".join([i for i in items if i != "-"])
 
-    def sentence(self, items):
-        return "".join(items)
-
     def word_tone(self, items):
         return "-".join([i for i in items if i != "-"])
 
-    def sentence_tone(self, items):
-        return "".join(items)
 
-    def start(self, items):
-        return "".join(items)
-
-
-class Duffus(Transformer):
+class Duffus(Tctransformer):
     """Convert Teochew pengim parse tree to Duffus system"""
 
     def NASAL(self, value):
@@ -382,23 +367,14 @@ class Duffus(Transformer):
         # syllable separator is present
         return "-".join([i for i in items if i != "-"])
 
-    def sentence(self, items):
-        return "".join(items)
-
     def word_tone(self, items):
         # replace all syllable separators with hyphens
         # and separate syllables with hyphens if no
         # syllable separator is present
         return "-".join([i for i in items if i != "-"])
 
-    def sentence_tone(self, items):
-        return "".join(items)
 
-    def start(self, items):
-        return "".join(items)
-
-
-class Sinwz(Transformer):
+class Sinwz(Tctransformer):
     """Convert Teochew pengim parse tree to Sinwenz system"""
 
     def NASAL(self, items):
@@ -509,23 +485,14 @@ class Sinwz(Transformer):
         # syllable separator is present
         return "-".join([i for i in items if i != "-"])
 
-    def sentence(self, items):
-        return "".join(items)
-
     def word_tone(self, items):
         # replace all syllable separators with hyphens
         # and separate syllables with hyphens if no
         # syllable separator is present
         return "-".join([i for i in items if i != "-"])
 
-    def sentence_tone(self, items):
-        return "".join(items)
 
-    def start(self, items):
-        return "".join(items)
-
-
-class Zapngou(Transformer):
+class Zapngou(Tctransformer):
     INITS = ["柳", "邊", "求", "去", "地", "頗", "他", "貞", "入", "時", "文", "語", "出", "喜"]
 
     def NASAL(self, value):
@@ -725,16 +692,8 @@ class Zapngou(Transformer):
         # with spaces if no syllable separator is present
         return "".join([i for i in items if i != "-"])
 
-    def sentence(self, items):
-        return "".join(items)
-
     def word_tone(self, items):
         # replace all syllable separators with spaces and separate syllables
         # with spaces if no syllable separator is present
         return "".join([i for i in items if i != "-"])
 
-    def sentence_tone(self, items):
-        return "".join(items)
-
-    def start(self, items):
-        return "".join(items)
