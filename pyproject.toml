@@ -1,6 +1,6 @@
 [project]
 name = "parsetc"
-version = "0.3.1"
+dynamic = ["version"]
 description = "Parse and convert between different Teochew phonetic spelling schemes."
 authors = [
   { name="Brandon Seah" },
@@ -36,6 +36,9 @@ include-package-data = true
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.dynamic]
+version = {attr = "parsetc.__version__"}
 
 [tool.setuptools.package-data]
 parsetc = [

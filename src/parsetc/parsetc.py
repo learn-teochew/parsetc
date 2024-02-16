@@ -7,10 +7,12 @@ import sys
 import json
 
 import parsetc.translit as translit
+from parsetc import __version__
 
 from textwrap import dedent
 from importlib_resources import files
 from lark import Lark
+from lark import __version__ as lark_version
 
 # Load terminals data
 TERMINALS = json.loads(files("parsetc").joinpath("terminals.json").read_text())
@@ -44,6 +46,13 @@ TRANSFORMER_DICT = {
     "sinwz": translit.Sinwz(),
     "15": translit.Zapngou(),
 }
+
+
+def print_version():
+    print("parsetc " + __version__)
+    print("lark " + lark_version)
+    print("unicodedata unidata_version " + unicodedata.unidata_version)
+    return
 
 
 def diacritics_syllable_parse(syllable, system):
@@ -248,7 +257,17 @@ def main():
         default=None,
         help="Only parse and convert text that is contained within delimiters (not compatible with --parse_only)",
     )
+    parser.add_argument(
+        "--version",
+        "-v",
+        action="store_true",
+        help="Report version number"
+    )
     args = parser.parse_args()
+
+    if args.version:
+        print_version()
+        exit()
 
     if args.show_lark:
         if args.input in LARK_DICT:
