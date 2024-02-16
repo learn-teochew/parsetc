@@ -77,8 +77,10 @@ parsetc --help
 ```
 
 
-Usage as command line tool
---------------------------
+Usage
+-----
+
+### Command line tool
 
 Input text is read line-by-line from STDIN. Output is written to STDOUT.
 
@@ -99,8 +101,7 @@ cat examples/dieghv.sep.txt | parsetc -i dieghv --all
 ```
 
 
-Usage as a Python module
-------------------------
+### Python module
 
 Import the functions:
 
@@ -121,9 +122,21 @@ outtext = transliterate(intext, i="tlo", o="gdpi")
 ```
 
 
-Applications
-------------
+Related projects
+----------------
 
-`parsetc` is used to convert Teochew opera transcriptions to different
+### From Learn-Teochew
+
+We use `parsetc` to convert Teochew opera transcriptions into different
 romanization systems for the [Learn Teochew
 Opera](https://learn-teochew.github.io/tc-opera/transcriptions) website.
+
+How to type the special diacritics like `ṳ, o̍, o͘` in some romanization systems?
+If you use MacOS X, check out our [custom keyboard
+layouts](https://github.com/learn-teochew/POJ-variants-keyboard)
+
+
+### Others
+
+* [taibun](https://github.com/andreihar/taibun) - Transliterator and tokenizer
+  for Taiwanese Hokkien
