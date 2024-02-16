@@ -119,3 +119,11 @@ intext = preprocess("úa àinn ôh tîe-gúr", i="tlo")
 # Convert to different phonetic spelling system
 outtext = transliterate(intext, i="tlo", o="gdpi")
 ```
+
+
+Applications
+------------
+
+`parsetc` is used to convert Teochew opera transcriptions to different
+romanization systems for the [Learn Teochew
+Opera](https://learn-teochew.github.io/tc-opera/transcriptions) website.
