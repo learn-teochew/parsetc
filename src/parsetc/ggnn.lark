@@ -1,9 +1,8 @@
 // Gaginang Peng'im with -n coda
 
 // Codas
-coda : codanasal | codastops
-codanasal : COD_M | COD_NG | COD_N
-codastops : COD_P | COD_K | COD_H | COD_T
+%extend codanasal : COD_N
+%extend codastops : COD_T
 
 // Tones
 tone : TONENUMBER ( "(" TONENUMBER ")" )?

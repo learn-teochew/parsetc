@@ -37,6 +37,11 @@ medial : MED_AI  | MED_AU
        | MED_UAI | MED_UA  | MED_UE  | MED_UI  
        | MED_A   | MED_V   | MED_E   | MED_I   | MED_O   | MED_U   
 
+// Codas
+coda : codanasal | codastops
+codanasal : COD_M | COD_NG
+codastops : COD_P | COD_K | COD_H
+
 // Punctuation and spacing
 // syllable separator has priority over other punctuation
 PUNCTUATION.0 : "." | "," | ":" | ";" | "?" | "!" | "'" | "-" | "(" | ")" | "[" | "]" | "“" | "”" | "‘" | "’"

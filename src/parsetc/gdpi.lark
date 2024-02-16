@@ -1,10 +1,5 @@
 // Guangdong Pêng'im
 
-// Codas
-coda : codanasal | codastops
-codanasal : COD_M | COD_NG
-codastops : COD_P | COD_K | COD_H
-
 // Tones
 tone : TONENUMBER ( "(" TONENUMBER ")" )?
 TONENUMBER : "0".."8"
