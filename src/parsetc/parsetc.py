@@ -45,27 +45,10 @@ TRANSFORMER_DICT = {
     "15": translit.Zapngou(),
 }
 
-def decomp_str(s):
-    """Decompose a string into its Unicode decimal code points
-
-    Split any combining diacritics
-    """
-    out = []
-    for c in s:
-        # decompose each character into diacritics
-        decomp = unicodedata.decomposition(c).split()
-        if len(decomp) > 0:
-            # convert hex values to decimal
-            decomp = [int("0x" + i, 16) for i in decomp]
-            out.extend(decomp)
-        else:
-            out.append(ord(c))
-    return out
-
 
 def diacritics_syllable_parse(syllable, system):
     """Parse a syllable with tone diacritics to tone number
-    
+
     Tie-lo or Duffus systems only. Also decomposes compound characters, needed
     for ṳ which can be either single character or combining.
 
@@ -76,15 +59,15 @@ def diacritics_syllable_parse(syllable, system):
     (str, int) : base syllable string, tone number. Tone 0 not supported
     """
     tonemarks = {
-        'tlo': {
+        "tlo": {
             769: 2,  # hex 0x301
             768: 3,  # 0x300
             770: 5,  # 0x302
             774: 6,  # 0x306
             780: 6,  # 0x30C combining caron, often confused with combining breve
             772: 7,  # 0x304
-        }, 
-        'duffus' : {
+        },
+        "duffus": {
             769: 2,  # hex 0x301
             768: 3,  # 0x300
             770: 5,  # 0x302
@@ -92,18 +75,18 @@ def diacritics_syllable_parse(syllable, system):
             772: 7,  # 0x304
             781: 8,  # 0x30D # vertical line above
             775: 8,  # 0x307 # dot above - variant
-        }
+        },
     }
     notone = []
     tone = 1  # default tone
 
-    decomp = decomp_str(syllable)
+    decomp = [ord(i) for i in unicodedata.normalize("NFD", syllable)]
     # Check for tone diacritic, should be only one
     tones = [tonemarks[system][i] for i in decomp if i in tonemarks[system]]
     if len(tones) == 1:
         tone = tones[0]
     elif len(tones) > 1:
-        pass # TODO complain
+        pass  # TODO complain
     # All other characters
     notone = [chr(i) for i in decomp if i not in tonemarks[system]]
 
@@ -114,7 +97,7 @@ def diacritics_syllable_parse(syllable, system):
         elif tone == 5:
             tone = 8
         else:
-            pass # TODO complain
+            pass  # TODO complain
     return ("".join(notone), tone)
 
 
@@ -129,9 +112,11 @@ def tone_diacritic_to_numeric(text, system):
         Input with tone numbers instead of diacritics
     """
     out = []
-    for elem in re.split(r"([\s,\.\'\"\?\!\-]+)", text): # TODO hacky
+    for elem in re.split(r"([\s,\.\'\"\?\!\-]+)", text):  # TODO hacky
         if elem != "" and not re.match(r"([\s,\.\'\"\?\!\-]+)", elem):
-            out.append("".join([str(i) for i in diacritics_syllable_parse(elem, system)]))
+            out.append(
+                "".join([str(i) for i in diacritics_syllable_parse(elem, system)])
+            )
         else:
             out.append(elem)
     return "".join(out)
@@ -282,7 +267,9 @@ def main():
                 for i in range(len(in_splits)):
                     if i % 2 == 1:
                         if args.input in ["tlo", "duffus"]:
-                            in_splits[i] = tone_diacritic_to_numeric(in_splits[i].lower(), args.input)
+                            in_splits[i] = tone_diacritic_to_numeric(
+                                in_splits[i].lower(), args.input
+                            )
                         outtext += transliterate(
                             in_splits[i].lower(),
                             i=args.input,
