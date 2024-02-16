@@ -1,6 +1,6 @@
 [project]
 name = "parsetc"
-version = "0.3.0"
+version = "0.3.1"
 description = "Parse and convert between different Teochew phonetic spelling schemes."
 authors = [
   { name="Brandon Seah" },
