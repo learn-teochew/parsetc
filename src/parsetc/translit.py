@@ -290,7 +290,7 @@ class Sinwz(Tctransformer):
             "MED_AU": "ao",
             "MED_IA": "ia",
             "MED_IAU": "iao",
-            "MED_IEU": "iao",
+            "MED_IEU": "iao", # TODO merger?
             "MED_IOU": "iao",
             "MED_IU": "iu",
             "MED_IE": "io",
@@ -362,6 +362,8 @@ class Sinwz(Tctransformer):
 
 
 class Zapngou(Tctransformer):
+    # This is a special case because the finals are terminals and not
+    # decomposed further to medials+coda
     INITS = ["柳", "邊", "求", "去", "地", "頗", "他", "貞", "入", "時", "文", "語", "出", "喜"]
 
     def NASAL(self, value):
