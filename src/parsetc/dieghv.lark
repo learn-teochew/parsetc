@@ -1,10 +1,2 @@
 // Dieghv Peng-im
 
-// Tones
-tone : TONENUMBER ( "(" TONENUMBER ")" )?
-TONENUMBER : "0".."8"
-
-// Syllable separator
-// hyphen or apostrophe are also valid punctuation
-// usage as syllable separator has priority over use as punctuation
-SYLLABLE_SEP.1 : "-" | "'" | "’"

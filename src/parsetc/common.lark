@@ -42,6 +42,15 @@ coda : codanasal | codastops
 codanasal : COD_M | COD_NG
 codastops : COD_P | COD_K | COD_H
 
+// Tones
+tone : TONENUMBER ( "(" TONENUMBER ")" )?
+TONENUMBER : "0".."8"
+
+// Syllable separator
+// hyphen or apostrophe are also valid punctuation
+// usage as syllable separator has priority over use as punctuation
+SYLLABLE_SEP.1 : "-" | "'" | "’"
+
 // Punctuation and spacing
 // syllable separator has priority over other punctuation
 PUNCTUATION.0 : "." | "," | ":" | ";" | "?" | "!" | "'" | "-" | "(" | ")" | "[" | "]" | "“" | "”" | "‘" | "’"
