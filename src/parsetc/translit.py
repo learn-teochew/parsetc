@@ -2,6 +2,7 @@
 
 import re
 import json
+import unicodedata
 
 from importlib_resources import files
 from lark import Transformer
@@ -240,10 +241,12 @@ class Tlo(Tctransformer):
         if firstvowel:
             # put tone mark on first vowel letter
             inspos = firstvowel.span()[1]
-            syllab = syllab[0:inspos] + trdict[tone] + syllab[inspos:]
         else:
-            # no vowel in syllable, put on first character
-            syllab = syllab[0] + trdict[tone] + syllab[1:]
+            # no vowel in syllable, put on nasal codas n or m, n comes first
+            firstnasal = re.search(r"[nm]", syllab)
+            inspos = firstnasal.span()[1]
+        syllab = syllab[0:inspos] + trdict[tone] + syllab[inspos:]
+        syllab = unicodedata.normalize("NFC", syllab)
         return syllab
 
     def syllable_toneless(self, items):
@@ -330,10 +333,12 @@ class Duffus(Tctransformer):
         if firstvowel:
             # put tone mark on first vowel letter
             inspos = firstvowel.span()[1]
-            syllab = syllab[0:inspos] + trdict[tone] + syllab[inspos:]
         else:
-            # no vowel in syllable, put on first character
-            syllab = syllab[0] + trdict[tone] + syllab[1:]
+            # no vowel in syllable, put on nasal codas n or m, n comes first
+            firstnasal = re.search(r"[nm]", syllab)
+            inspos = firstnasal.span()[1]
+        syllab = syllab[0:inspos] + trdict[tone] + syllab[inspos:]
+        syllab = unicodedata.normalize("NFC", syllab)
         return syllab
 
     def syllable_toneless(self, items):
