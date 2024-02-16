@@ -1,0 +1,18 @@
+{
+  "duffus": [
+    "%extend initial: INIT_CH | INIT_CHH | INIT_J",
+    "%extend codanasal : COD_N",
+    "%extend codastops : COD_T"
+  ],
+  "ggnn" : [
+    "%extend codanasal : COD_N",
+    "%extend codastops : COD_T"
+  ],
+  "ggn" : [
+    "%extend codastops : COD_T"
+  ],
+  "tlo" : [
+    "%extend codanasal : COD_N",
+    "%extend codastops : COD_T"
+  ]
+}

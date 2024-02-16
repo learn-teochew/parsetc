@@ -42,12 +42,7 @@ version = {attr = "parsetc.__version__"}
 
 [tool.setuptools.package-data]
 parsetc = [
-  "terminals.json",
   "common.lark",
-  "dieghv.lark",
-  "gdpi.lark",
-  "ggn.lark",
-  "ggnn.lark",
-  "tlo.lark",
-  "duffus.lark"
+  "terminals.json",
+  "extends.json",
 ]

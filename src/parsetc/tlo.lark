@@ -1,6 +1,0 @@
-// Tie-lo with tone numbers instead of diacritics
-// Input has to be pre-processed before passing to parser
-
-// Codas
-%extend codanasal : COD_N
-%extend codastops : COD_T
