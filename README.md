@@ -16,17 +16,17 @@ Input formats
    instead) (`ggnn`)
  * Dieghv 潮語 (`dieghv`);
    [(source)](https://kahaani.github.io/gatian/appendix1/index.html)
+ * Tie-tsiann-hue 潮正會, also known as Tie-lo 潮羅 (`tlo`);
+   [(source)](http://library.hiteo.pw/book/wagpzbkv.html)
+ * Duffus system (`duffus`), also known as Pe̍h-ūe-jī (PUJ);
+   [(source)](https://archive.org/details/englishchinesev00duffgoog)
 
 
 Output formats
 --------------
 
-`gdpi`, `ggnn`, plus:
+`gdpi`, `ggnn`, `tlo`, `duffus`, plus:
 
- * Tie-tsiann-hue 潮正會, also known as Tie-lo 潮羅 (`tlo`);
-   [(source)](http://library.hiteo.pw/book/wagpzbkv.html)
- * Duffus system (`duffus`);
-   [(source)](https://archive.org/details/englishchinesev00duffgoog)
  * Teochew Sinwenz (`sinwz`);
    [(source)](http://eresources.nlb.gov.sg/newspapers/Digitised/Page/nysp19391115-1.1.22)
  * Traditional initial-final categories (`15`) from 《彙集雅俗通十五音》 also
