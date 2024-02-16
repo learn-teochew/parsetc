@@ -7,12 +7,23 @@ import unicodedata
 from importlib_resources import files
 from lark import Transformer
 
-# Load terminals data
+# Load terminals and mergers data
 TERMINALS = json.loads(files("parsetc").joinpath("terminals.json").read_text())
+MERGERS = json.loads(files("parsetc").joinpath("mergers.json").read_text())
 
 
 class Tctransformer(Transformer):
-    """Common to all transformers"""
+    """Common to all transformers unless overridden
+
+    self.system is the key for the transcription system that is used to look up
+    the terminals and mergers data.
+    """
+
+    def __init__(self):
+        self.system = None
+
+    def start(self, items):
+        return "".join(items)
 
     def sentence(self, items):
         return "".join(items)
@@ -20,59 +31,78 @@ class Tctransformer(Transformer):
     def sentence_tone(self, items):
         return "".join(items)
 
-    def start(self, items):
+    def coda(self, items):
+        return "".join([str(i) for i in items])
+
+    def final(self, items):
+        return "".join([str(i) for i in items])
+
+    def syllable_tone(self, items):
+        return "".join([str(i) for i in items])
+
+    def syllable_toneless(self, items):
+        return "".join([str(i) for i in items])
+
+    def word_sep(self, items):
         return "".join(items)
+
+    def word_tone(self, items):
+        return "".join(items)
+
+    def initial(self, items):
+        trdict = {
+            term: TERMINALS["initials"][term][self.system]
+            for term in TERMINALS["initials"]
+            if self.system in TERMINALS["initials"][term]
+        }
+        # initials that have merged in modern Teochew
+        for term in MERGERS["initials"]:
+            if self.system in MERGERS["initials"][term]:
+                merged_to = MERGERS["initials"][term][self.system]
+                trdict[term] = TERMINALS["initials"][merged_to][self.system]
+        return trdict[items[0].type]
+
+    def medial(self, items):
+        trdict = {
+            term: TERMINALS["medials"][term][self.system]
+            for term in TERMINALS["medials"]
+            if self.system in TERMINALS["medials"][term]
+        }
+        return trdict[items[0].type]
+
+    def codastops(self, items):
+        trdict = {
+            term: TERMINALS["codastops"][term][self.system]
+            for term in TERMINALS["codastops"]
+            if self.system in TERMINALS["codastops"][term]
+        }
+        for term in MERGERS["codastops"]:
+            if self.system in MERGERS["codastops"][term]:
+                merged_to = MERGERS["codastops"][term][self.system]
+                trdict[term] = TERMINALS["codastops"][merged_to][self.system]
+        return trdict[items[0].type]
+
+    def codanasal(self, items):
+        trdict = {
+            term: TERMINALS["codanasals"][term][self.system]
+            for term in TERMINALS["codanasals"]
+            if self.system in TERMINALS["codanasals"][term]
+        }
+        for term in MERGERS["codanasals"]:
+            if self.system in MERGERS["codanasals"][term]:
+                merged_to = MERGERS["codanasals"][term][self.system]
+                trdict[term] = TERMINALS["codanasals"][merged_to][self.system]
+        return trdict[items[0].type]
 
 
 class Gdpi(Tctransformer):
     """Convert Teochew pengim parse tree to Gengdang Pêng'im"""
 
+    def __init__(self):
+        self.system = "gdpi"
+
     def NASAL(self, value):
         return "n"
-
-    def initial(self, items):
-        trdict = {
-            term: TERMINALS["initials"][term]["gdpi"]
-            for term in TERMINALS["initials"]
-            if "gdpi" in TERMINALS["initials"][term]
-        }
-        # initials that have merged in modern Teochew
-        trdict["INIT_CH"] = "z"
-        trdict["INIT_CHH"] = "c"
-        trdict["INIT_J"] = "r"
-        return trdict[items[0].type]
-
-    def medial(self, items):
-        trdict = {
-            term: TERMINALS["medials"][term]["gdpi"]
-            for term in TERMINALS["medials"]
-            if "gdpi" in TERMINALS["medials"][term]
-        }
-        return trdict[items[0].type]
-
-    def coda(self, items):
-        return "".join([str(i) for i in items])
-
-    def codastops(self, items):
-        trdict = {
-            term: TERMINALS["codastops"][term]["gdpi"]
-            for term in TERMINALS["codastops"]
-            if "gdpi" in TERMINALS["codastops"][term]
-        }
-        trdict["COD_T"] = "g"  # Gengdang Pêng'im does not have stop -t
-        return trdict[items[0].type]
-
-    def codanasal(self, items):
-        trdict = {
-            term: TERMINALS["codanasals"][term]["gdpi"]
-            for term in TERMINALS["codanasals"]
-            if "gdpi" in TERMINALS["codanasals"][term]
-        }
-        trdict["COD_N"] = "ng"  # Gengdang Pêng'im does not have coda n
-        return trdict[items[0].type]
-
-    def final(self, items):
-        return "".join([str(i) for i in items])
 
     def tone(self, items):
         if len(items) == 1:
@@ -81,67 +111,16 @@ class Gdpi(Tctransformer):
             return str(items[0]) + "(" + str(items[1]) + ")"
         else:
             return ""
-
-    def syllable_tone(self, items):
-        return "".join([str(i) for i in items])
-
-    def syllable_toneless(self, items):
-        return "".join([str(i) for i in items])
-
-    def word_sep(self, items):
-        return "".join(items)
-
-    def word_tone(self, items):
-        return "".join(items)
 
 
 class Ggnn(Tctransformer):
     """Convert Teochew pengim parse tree to Gaginang Peng'im"""
 
+    def __init__(self):
+        self.system = "ggnn"
+
     def NASAL(self, value):
         return "ñ"
-
-    def initial(self, items):
-        trdict = {
-            term: TERMINALS["initials"][term]["ggnn"]
-            for term in TERMINALS["initials"]
-            if "ggnn" in TERMINALS["initials"][term]
-        }
-        # initials that have merged in modern Teochew
-        trdict["INIT_CH"] = "j"
-        trdict["INIT_CHH"] = "ch"
-        trdict["INIT_J"] = "y"
-        return trdict[items[0].type]
-
-    def medial(self, items):
-        trdict = {
-            term: TERMINALS["medials"][term]["ggnn"]
-            for term in TERMINALS["medials"]
-            if "ggnn" in TERMINALS["medials"][term]
-        }
-        return trdict[items[0].type]
-
-    def coda(self, items):
-        return "".join([str(i) for i in items])
-
-    def codastops(self, items):
-        trdict = {
-            term: TERMINALS["codastops"][term]["ggnn"]
-            for term in TERMINALS["codastops"]
-            if "ggnn" in TERMINALS["codastops"][term]
-        }
-        return trdict[items[0].type]
-
-    def codanasal(self, items):
-        trdict = {
-            term: TERMINALS["codanasals"][term]["ggnn"]
-            for term in TERMINALS["codanasals"]
-            if "ggnn" in TERMINALS["codanasals"][term]
-        }
-        return trdict[items[0].type]
-
-    def final(self, items):
-        return "".join([str(i) for i in items])
 
     def tone(self, items):
         if len(items) == 1:
@@ -151,21 +130,12 @@ class Ggnn(Tctransformer):
         else:
             return ""
 
-    def syllable_tone(self, items):
-        return "".join([str(i) for i in items])
-
-    def syllable_toneless(self, items):
-        return "".join([str(i) for i in items])
-
-    def word_sep(self, items):
-        return "".join(items)
-
-    def word_tone(self, items):
-        return "".join(items)
-
 
 class Tlo(Tctransformer):
     """Convert Teochew pengim parse tree to Tie-lo"""
+
+    def __init__(self):
+        self.system = "tlo"
 
     def NASAL(self, value):
         return "nn"
@@ -173,48 +143,6 @@ class Tlo(Tctransformer):
     def SYLLABLE_SEP(self, value):
         # Change all syllable separators to hyphens
         return "-"
-
-    def initial(self, items):
-        trdict = {
-            term: TERMINALS["initials"][term]["tlo"]
-            for term in TERMINALS["initials"]
-            if "tlo" in TERMINALS["initials"][term]
-        }
-        # initials that have merged in modern Teochew
-        trdict["INIT_CH"] = "ts"
-        trdict["INIT_CHH"] = "tsh"
-        trdict["INIT_J"] = "z"
-        return trdict[items[0].type]
-
-    def medial(self, items):
-        trdict = {
-            term: TERMINALS["medials"][term]["tlo"]
-            for term in TERMINALS["medials"]
-            if "tlo" in TERMINALS["medials"][term]
-        }
-        return trdict[items[0].type]
-
-    def coda(self, items):
-        return "".join([str(i) for i in items])
-
-    def codastops(self, items):
-        trdict = {
-            term: TERMINALS["codastops"][term]["tlo"]
-            for term in TERMINALS["codastops"]
-            if "tlo" in TERMINALS["codastops"][term]
-        }
-        return trdict[items[0].type]
-
-    def codanasal(self, items):
-        trdict = {
-            term: TERMINALS["codanasals"][term]["tlo"]
-            for term in TERMINALS["codanasals"]
-            if "tlo" in TERMINALS["codanasals"][term]
-        }
-        return trdict[items[0].type]
-
-    def final(self, items):
-        return "".join([str(i) for i in items])
 
     def tone(self, items):
         # Only return the citation tone
@@ -234,7 +162,6 @@ class Tlo(Tctransformer):
             "8": "\u0302",
             "0": "",
         }
-        # TODO put tone mark on first vowel letter else on first letter of final
         syllab = "".join(items[:-1])  # syllable without tone
         tone = items[-1]
         firstvowel = re.search(r"[aeiou]", syllab)
@@ -249,9 +176,6 @@ class Tlo(Tctransformer):
         syllab = unicodedata.normalize("NFC", syllab)
         return syllab
 
-    def syllable_toneless(self, items):
-        return "".join([str(i) for i in items])
-
     def word_sep(self, items):
         # replace all syllable separators with hyphens
         # and separate syllables with hyphens if no
@@ -265,50 +189,15 @@ class Tlo(Tctransformer):
 class Duffus(Tctransformer):
     """Convert Teochew pengim parse tree to Duffus system"""
 
+    def __init__(self):
+        self.system = "duffus"
+
     def NASAL(self, value):
         return "\u207f"
 
     def SYLLABLE_SEP(self, value):
         # Change all syllable separators to hyphens
         return "-"
-
-    def initial(self, items):
-        trdict = {
-            term: TERMINALS["initials"][term]["duffus"]
-            for term in TERMINALS["initials"]
-            if "duffus" in TERMINALS["initials"][term]
-        }
-        return trdict[items[0].type]
-
-    def medial(self, items):
-        trdict = {
-            term: TERMINALS["medials"][term]["duffus"]
-            for term in TERMINALS["medials"]
-            if "duffus" in TERMINALS["medials"][term]
-        }
-        return trdict[items[0].type]
-
-    def coda(self, items):
-        return "".join([str(i) for i in items])
-
-    def codastops(self, items):
-        trdict = {
-            term: TERMINALS["codastops"][term]["duffus"]
-            for term in TERMINALS["codastops"]
-            if "duffus" in TERMINALS["codastops"][term]
-        }
-        return trdict[items[0].type]
-
-    def codanasal(self, items):
-        trdict = {
-            term: TERMINALS["codanasals"][term]["duffus"]
-            for term in TERMINALS["codanasals"]
-            if "duffus" in TERMINALS["codanasals"][term]
-        }
-        return trdict[items[0].type]
-
-    def final(self, items):
-        return "".join([str(i) for i in items])
 
     def tone(self, items):
         # Only return the citation tone
@@ -326,7 +215,6 @@ class Duffus(Tctransformer):
             "8": "\u0307",
             "0": "",
         }
-        # TODO put tone mark on first vowel letter else on first letter of final
         syllab = "".join(items[:-1])  # syllable without tone
         tone = items[-1]
         firstvowel = re.search(r"[aeiou]", syllab)
@@ -340,9 +228,6 @@ class Duffus(Tctransformer):
         syllab = syllab[0:inspos] + trdict[tone] + syllab[inspos:]
         syllab = unicodedata.normalize("NFC", syllab)
         return syllab
-
-    def syllable_toneless(self, items):
-        return "".join([str(i) for i in items])
 
     def word_sep(self, items):
         # replace all syllable separators with hyphens
@@ -359,6 +244,9 @@ class Duffus(Tctransformer):
 
 class Sinwz(Tctransformer):
     """Convert Teochew pengim parse tree to Sinwenz system"""
+
+    def __init__(self):
+        self.system = "sinwz"
 
     def NASAL(self, items):
         # Nasal will end with vowel so we can keep this simple
@@ -422,9 +310,6 @@ class Sinwz(Tctransformer):
         }
         return trdict[items[0].type]
 
-    def coda(self, items):
-        return "".join([str(i) for i in items])
-
     def codastops(self, items):
         trdict = {
             "COD_P": "p",
@@ -440,9 +325,6 @@ class Sinwz(Tctransformer):
             "COD_N": "n",
         }
         return trdict[items[0].type]
-
-    def final(self, items):
-        return "".join([str(i) for i in items])
 
     def tone(self, items):
         # Only return the citation tone
@@ -520,9 +402,6 @@ class Zapngou(Tctransformer):
             if "dieghv" in TERMINALS["medials"][term]
         }
         return trdict[items[0].type]
-
-    def coda(self, items):
-        return "".join([str(i) for i in items])
 
     def codastops(self, items):
         trdict = {

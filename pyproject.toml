@@ -45,4 +45,5 @@ parsetc = [
   "common.lark",
   "terminals.json",
   "extends.json",
+  "mergers.json",
 ]

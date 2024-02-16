@@ -1,0 +1,14 @@
+{
+  "initials" : {
+    "INIT_CH" : { "dieghv": "INIT_Z", "gdpi": "INIT_Z" , "ggn": "INIT_Z" , "ggnn": "INIT_Z" , "tlo": "INIT_Z" },
+    "INIT_CHH": { "dieghv": "INIT_C", "gdpi": "INIT_C" , "ggn": "INIT_C" , "ggnn": "INIT_C" , "tlo": "INIT_C" },
+    "INIT_J"  : { "dieghv": "INIT_R", "gdpi": "INIT_R" , "ggn": "INIT_R" , "ggnn": "INIT_R" , "tlo": "INIT_R" }
+  },
+  "codanasals" : {
+    "COD_N" : { "dieghv": "COD_NG","gdpi": "COD_NG", "ggn": "COD_NG"}
+  },
+  "codastops" : {
+    "COD_T": { "dieghv": "COD_K", "gdpi": "COD_K" }
+  }
+}
+ 
