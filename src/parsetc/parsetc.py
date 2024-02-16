@@ -9,7 +9,6 @@ import json
 import parsetc.translit as translit
 from parsetc import __version__
 
-from textwrap import dedent
 from importlib_resources import files
 from lark import Lark
 from lark import __version__ as lark_version
@@ -49,6 +48,7 @@ TRANSFORMER_DICT = {
 
 
 def print_version():
+    """Report package and dependency versions"""
     print("parsetc " + __version__)
     print("lark " + lark_version)
     print("unicodedata unidata_version " + unicodedata.unidata_version)
@@ -110,25 +110,40 @@ def diacritics_syllable_parse(syllable, system):
     return ("".join(notone), tone)
 
 
-def tone_diacritic_to_numeric(text, system):
-    """Convert tone diacritics to tone numbers
+# def tone_diacritic_to_numeric(text, system):
+def preprocess(text, system):
+    """Preprocess input text (lowercase, tone diacritics to numbers)
 
-    Tie-lo and Duffus systems only
+    Tone diacritics used by Tie-lo and Duffus systems only. Conversion of tone
+    diacritics to numeric assumes that all syllables have tones marked!
+    Conversion is impossible otherwise, because tone1 cannot be distinguished
+    from unmarked tone
+
+    Arguments
+    ---------
+    text : str
+        Input text, without linebreaks
+    system : str
+        Input scheme
 
     Returns
     -------
     str
         Input with tone numbers instead of diacritics
     """
-    out = []
-    for elem in re.split(r"([\s,\.\'\"\?\!\-]+)", text):  # TODO hacky
-        if elem != "" and not re.match(r"([\s,\.\'\"\?\!\-]+)", elem):
-            out.append(
-                "".join([str(i) for i in diacritics_syllable_parse(elem, system)])
-            )
-        else:
-            out.append(elem)
-    return "".join(out)
+    text = text.lower()
+    if system in ["tlo", "duffus"]:
+        out = []
+        for elem in re.split(r"([\s,\.\'\"\?\!\-]+)", text):  # TODO hacky
+            if elem != "" and not re.match(r"([\s,\.\'\"\?\!\-]+)", elem):
+                out.append(
+                    "".join([str(i) for i in diacritics_syllable_parse(elem, system)])
+                )
+            else:
+                out.append(elem)
+        return "".join(out)
+    else:
+        return text
 
 
 def transliterate_all(phrase, i="gdpi"):
@@ -137,7 +152,8 @@ def transliterate_all(phrase, i="gdpi"):
     Arguments
     ---------
     phrase : str
-        Text to be transliterated
+        Text to be transliterated, must be preprocessed to lowercase and to
+        convert diacritics to tone numbers
     i : str
         Input format. Must match one of the available inputs
 
@@ -163,13 +179,14 @@ def transliterate(phrase, i="gdpi", o="tlo", superscript_tone=False):
     Arguments
     ---------
     phrase : str
-        Text to be transliterated
+        Text to be transliterated, must be preprocessed to lowercase and to
+        convert diacritics to tone numbers
     i : str
         Input format. Must match one of the available inputs
     o : str
         Output format. Must match one of the available outputs
     superscript_tone : bool
-        Tone numbers in superscript
+        Superscript tone numbers
 
     Returns
     -------
@@ -258,10 +275,7 @@ def main():
         help="Only parse and convert text that is contained within delimiters (not compatible with --parse_only)",
     )
     parser.add_argument(
-        "--version",
-        "-v",
-        action="store_true",
-        help="Report version number"
+        "--version", "-v", action="store_true", help="Report version number"
     )
     args = parser.parse_args()
 
@@ -279,18 +293,13 @@ def main():
     else:
         for intext in sys.stdin:
             outtext = ""
-            # intext = sys.stdin.read().rstrip()
             intext = intext.rstrip()
             if args.delim_only:
                 in_splits = intext.split(args.delim_only)
                 for i in range(len(in_splits)):
                     if i % 2 == 1:
-                        if args.input in ["tlo", "duffus"]:
-                            in_splits[i] = tone_diacritic_to_numeric(
-                                in_splits[i].lower(), args.input
-                            )
                         outtext += transliterate(
-                            in_splits[i].lower(),
+                            preprocess(in_splits[i], args.input),
                             i=args.input,
                             o=args.output,
                             superscript_tone=args.superscript_tone,
@@ -298,12 +307,7 @@ def main():
                     else:
                         outtext += in_splits[i]
             else:
-                intext = intext.lower()
-                if args.input in ["tlo", "duffus"]:
-                    # If Tie-lo or duffus input, preprocess from diacritics to numeric tone marks
-                    # Assumes that all syllables have tones marked!
-                    # impossible otherwise, because tone1 cannot be distinguished from unmarked tone
-                    intext = tone_diacritic_to_numeric(intext, args.input)
+                intext = preprocess(intext, args.input)
                 if args.parse_only:
                     parsetree = PARSER_DICT[args.input].parse(intext)
                     print(parsetree.pretty())

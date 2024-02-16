@@ -51,8 +51,8 @@ Orthographic conventions for input text
    Mixing conventions may cause unexpected parsing errors.
 
 
-Running the script
-------------------
+Installation
+------------
 
 `parsetc` requires Python 3 and [`lark`](https://lark-parser.readthedocs.io/en/latest/) v1.1.
 
@@ -76,7 +76,11 @@ See help message:
 parsetc --help
 ```
 
-Input text is read from STDIN, no line breaks.
+
+Usage as command line tool
+--------------------------
+
+Input text is read line-by-line from STDIN. Output is written to STDOUT.
 
 ```bash
 # output in Tie-lo
@@ -92,4 +96,26 @@ Testing with provided example text:
 cat examples/dieghv.tones.txt | parsetc -i dieghv --all
 # Example with hyphens as syllable separators
 cat examples/dieghv.sep.txt | parsetc -i dieghv --all
+```
+
+
+Usage as a Python module
+------------------------
+
+Import the functions:
+
+```python
+from parsetc.parsetc import preprocess, transliterate
+```
+
+Input text should be lower case and without linebreaks. If it uses tone
+diacritics (`tlo` and `duffus` systems), they have to be converted to tone
+numbers. These preprocessing steps are handled by `preprocess`. The text can
+then be converted to the desired system with `transliterate`.
+
+```python
+# Preprocess text with tone diacritics
+intext = preprocess("úa àinn ôh tîe-gúr", i="tlo")
+# Convert to different phonetic spelling system
+outtext = transliterate(intext, i="tlo", o="gdpi")
 ```
