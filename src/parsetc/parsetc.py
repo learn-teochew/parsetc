@@ -40,6 +40,7 @@ TRANSFORMER_DICT = {
     "gdpi": translit.Gdpi(),
     "ggnn": translit.Ggnn(),
     "dieghv": translit.Dieghv(),
+    "nosefirst": translit.Nosefirst(),
     "tlo": translit.Tlo(),
     "duffus": translit.Duffus(),
     "sinwz": translit.Sinwz(),

@@ -679,3 +679,63 @@ class Zapngou(Teochew):
         # replace all syllable separators with spaces and separate syllables
         # with spaces if no syllable separator is present
         return "".join([i for i in items if i != "-"])
+
+
+class Nosefirst(Gdpi):
+    """Test example to rearrange finals so that NASAL precedes medial
+
+    Inherits from `Gdpi` class, only terminals differ
+    """
+
+    def __init__(self):
+        self.system = "dieghv"
+
+    def medial(self, items):
+        trdict = {
+            term: TERMINALS["medials"][term][self.system]
+            for term in TERMINALS["medials"]
+            if self.system in TERMINALS["medials"][term]
+        }
+        return "medial", trdict[items[0].type]
+
+    def codanasal(self, items):
+        trdict = {
+            term: TERMINALS["codanasals"][term][self.system]
+            for term in TERMINALS["codanasals"]
+            if self.system in TERMINALS["codanasals"][term]
+        }
+        for term in MERGERS["codanasals"]:
+            if self.system in MERGERS["codanasals"][term]:
+                merged_to = MERGERS["codanasals"][term][self.system]
+                trdict[term] = TERMINALS["codanasals"][merged_to][self.system]
+        return "codanasal", trdict[items[0].type]
+
+    def codastops(self, items):
+        trdict = {
+            term: TERMINALS["codastops"][term][self.system]
+            for term in TERMINALS["codastops"]
+            if self.system in TERMINALS["codastops"][term]
+        }
+        for term in MERGERS["codastops"]:
+            if self.system in MERGERS["codastops"][term]:
+                merged_to = MERGERS["codastops"][term][self.system]
+                trdict[term] = TERMINALS["codastops"][merged_to][self.system]
+        return "codastops", trdict[items[0].type]
+
+    def NASAL(self, items):
+        return "NASAL", "N"
+
+    # final : ( medial ( codanasal | NASAL )? ) | codanasal
+    # final_entering : medial ( NASAL? codastops )
+
+    def final(self, items):
+        itemdict = { item_type : item for (item_type, item) in items }
+        out = [ itemdict[t] for t in ['NASAL','medial','codanasal'] if t in itemdict]
+        return "".join([str(i) for i in out])
+
+    def final_entering(self, items):
+        itemdict = { item_type : item for (item_type, item) in items }
+        out = [ itemdict[t] for t in ['NASAL','medial','codastops'] if t in itemdict]
+        return "".join([str(i) for i in out])
+
+
