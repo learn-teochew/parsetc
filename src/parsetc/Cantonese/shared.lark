@@ -1,0 +1,54 @@
+start : (sentence | sentence_tone)+
+
+// Two options for dealing with potentially ambiguous syllable parsing, however mixing the two is dangerous...
+
+// 1. all syllables in a word must be separated either by tone number or punctuation
+sentence : ( PUNCTUATION | SPACE )* word_sep ( ( PUNCTUATION | SPACE )+ word_sep )* ( PUNCTUATION | SPACE )*
+word_sep : ( syllable_tone | syllable_toneless ) ( SYLLABLE_SEP ( syllable_tone | syllable_toneless) )*
+
+// 2. all syllables must have tone number (including 0), so no ambiguities about syllable separation
+sentence_tone : ( PUNCTUATION | SPACE )* word_tone ( ( PUNCTUATION | SPACE )+ word_tone )* ( PUNCTUATION | SPACE )*
+word_tone : syllable_tone+
+
+// Syllables
+// syllable : [initial] final tone?
+syllable_tone : [initial] ( ( final tone ) | ( final_entering tone_entering ) )
+syllable_toneless : [initial] ( final | final_entering ) 
+
+// Initials
+initial : INIT_B | INIT_P  | INIT_M | INIT_F
+        | INIT_D  | INIT_T | INIT_N | INIT_L
+        | INIT_G  | INIT_K | INIT_NG | INIT_H
+        | INIT_GW | INIT_KW| INIT_W 
+        | INIT_Z  | INIT_C | INIT_S  | INIT_J 
+
+// Finals
+final : ( medial codanasal? ) | codanasal
+final_entering : medial codastops
+
+// Medials
+// longer medials are listed first to be preferentially matched
+medial : MED_AAI | MED_AAU | MED_EOI
+       | MED_AA  | MED_AI  | MED_AU  | MED_EI  | MED_EU | MED_IU
+       | MED_OI  | MED_OU  | MED_UI  | MED_EO  | MED_OE | MED_YU
+       | MED_A   | MED_E   | MED_I   | MED_O   | MED_U 
+
+// Codas
+coda : codanasal | codastops
+codanasal : COD_M | COD_NG | COD_N
+codastops : COD_P | COD_K | COD_T
+
+// Tones
+tone : tone_citation | tone_entering
+tone_citation: tone_1 | tone_2 | tone_3 | tone_4 | tone_5 | tone_6
+tone_entering : tone_7 | tone_8 | tone_9
+
+// Syllable separator
+// hyphen or apostrophe are also valid punctuation
+// usage as syllable separator has priority over use as punctuation
+SYLLABLE_SEP.1 : "-" | "'" | "’"
+
+// Punctuation and spacing
+// syllable separator has priority over other punctuation
+PUNCTUATION.0 : "." | "," | ":" | ";" | "?" | "!" | "'" | "-" | "(" | ")" | "[" | "]" | "“" | "”" | "‘" | "’"
+SPACE : " "

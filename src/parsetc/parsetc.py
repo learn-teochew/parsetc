@@ -97,7 +97,7 @@ def transliterate_all(phrase, i, parser_dict, transformer_dict):
         print(f"Unknown spelling scheme {i}")
 
 
-def transliterate(phrase, i, o, parser_dict, transfomer_dict, superscript_tone=False):
+def transliterate(phrase, i, o, parser_dict, transformer_dict, superscript_tone=False):
     """Transliterate romanized Teochew into different spelling scheme
 
     Arguments
@@ -163,7 +163,7 @@ def get_args():
         "-l",
         type=str,
         default="Teochew",
-        choices=["Teochew"],
+        choices=["Teochew", "Cantonese"],
         help="Language/dialect module to use"
     )
     parser.add_argument(

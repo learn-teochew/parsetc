@@ -1,14 +1,16 @@
-Parsing tools for Teochew phonetic spelling
-===========================================
+Parsing and conversion of Teochew Chinese romanizations
+=======================================================
 
 [![PyPI version shields.io](https://img.shields.io/pypi/v/parsetc.svg)](https://pypi.python.org/pypi/parsetc/)
 ![GitHub License](https://img.shields.io/github/license/learn-teochew/parsetc)
 
-Parse and convert between different Teochew phonetic spelling schemes.
+Parse and convert between different Teochew romanized spelling schemes.
 
 
-Input formats
--------------
+Available romanization schemes for Teochew
+------------------------------------------
+
+### Input
 
  * Geng'dang Pêng'im 廣東拼音 (`gdpi`)
  * Gaginang Peng'im 家己儂拼音 (`ggn`)
@@ -22,8 +24,7 @@ Input formats
    [(source)](https://archive.org/details/englishchinesev00duffgoog)
 
 
-Output formats
---------------
+### Output
 
 `gdpi`, `ggnn`, `tlo`, `duffus`, `dieghv`, plus:
 
@@ -34,8 +35,17 @@ Output formats
    「《擊木知音》音系之再研究」 (2014)
 
 
-Orthographic conventions for input text
----------------------------------------
+Other languages
+---------------
+
+This tool was originally developed for Teochew, but can be extended in the
+future to other dialects or languages. An experimental Cantonese module
+(`--language Cantonese`) with Jyutping (`jp`) and Cantonese Pinyin (`cpy`) is
+available.
+
+
+Orthographic requirements for input text
+----------------------------------------
 
  * Text must be in lower case
  * Syllables may be written with or without tone numbers
@@ -76,6 +86,12 @@ See help message:
 parsetc --help
 ```
 
+View available input and output schemes for Teochew:
+
+```bash
+parsetc --language Teochew --show_options
+```
+
 
 Usage
 -----
@@ -83,6 +99,8 @@ Usage
 ### Command line tool
 
 Input text is read line-by-line from STDIN. Output is written to STDOUT.
+
+The language (`--language` or `-l`) is `Teochew` by default.
 
 ```bash
 # output in Tie-lo
@@ -103,23 +121,7 @@ cat examples/dieghv.sep.txt | parsetc -i dieghv --all
 
 ### Python module
 
-Import the functions:
-
-```python
-from parsetc.parsetc import preprocess, transliterate
-```
-
-Input text should be lower case and without linebreaks. If it uses tone
-diacritics (`tlo` and `duffus` systems), they have to be converted to tone
-numbers. These preprocessing steps are handled by `preprocess`. The text can
-then be converted to the desired system with `transliterate`.
-
-```python
-# Preprocess text with tone diacritics
-intext = preprocess("úa àinn ôh tîe-gúr", i="tlo")
-# Convert to different phonetic spelling system
-outtext = transliterate(intext, i="tlo", o="gdpi")
-```
+Updated instructions coming soon...
 
 
 Related projects
