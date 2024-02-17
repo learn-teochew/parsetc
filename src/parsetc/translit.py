@@ -57,6 +57,12 @@ class Tctransformer(Transformer):
     def tone_changed(self,items):
         return "".join(items)
 
+    def tone_1(self, items):
+        return items[0]
+
+    def tone_5(self, items):
+        return items[0]
+
     def tone_4(self, items):
         return items[0]
 
