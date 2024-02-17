@@ -42,8 +42,8 @@ version = {attr = "parsetc.__version__"}
 
 [tool.setuptools.package-data]
 parsetc = [
-  "common.lark",
-  "terminals.json",
-  "extends.json",
-  "mergers.json",
+  "Teochew/shared.lark",
+  "Teochew/terminals.json",
+  "Teochew/extends.json",
+  "Teochew/mergers.json",
 ]

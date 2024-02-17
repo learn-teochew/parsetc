@@ -8,8 +8,8 @@ from importlib_resources import files
 from lark import Transformer
 
 # Load terminals and mergers data
-TERMINALS = json.loads(files("parsetc").joinpath("terminals.json").read_text())
-MERGERS = json.loads(files("parsetc").joinpath("mergers.json").read_text())
+TERMINALS = json.loads(files("parsetc").joinpath("Teochew/terminals.json").read_text())
+MERGERS = json.loads(files("parsetc").joinpath("Teochew/mergers.json").read_text())
 
 
 def str_or_None(s):
