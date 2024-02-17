@@ -172,12 +172,22 @@ class Gdpi(Teochew):
 
 class Ggnn(Gdpi):
     """Convert Teochew pengim parse tree to Gaginang Peng'im
-    
+
     Inherits from `Gdpi` class, only terminals differ
     """
 
     def __init__(self):
         self.system = "ggnn"
+
+
+class Dieghv(Gdpi):
+    """Convert Teochew pengim parse tree to Dieghv
+
+    Inherits from `Gdpi` class, only terminals differ
+    """
+
+    def __init__(self):
+        self.system = "dieghv"
 
 
 class Duffus(Teochew):
@@ -237,22 +247,14 @@ class Duffus(Teochew):
         return "-".join([i for i in items if i != "-"])
 
 
-class Tlo(Teochew):
+class Tlo(Duffus):
     """Convert Teochew pengim parse tree to Tie-lo
-    
+
     Inherits from Duffus class, only terminals and tone diacritics differ
     """
 
     def __init__(self):
         self.system = "tlo"
-
-    def tone(self, items):
-        # Only return the citation tone
-        return str(items[0])
-
-    def tone_entering(self, items):
-        # Only return the citation tone
-        return str(items[0])
 
     def syllable_tone(self, items):
         # Tie-lo is less straightforward because it marks
@@ -287,7 +289,7 @@ class Tlo(Teochew):
 
 class Sinwz(Teochew):
     """Convert Teochew pengim parse tree to Sinwenz system
-    
+
     This system presents some challenges and is not yet incorporated into the
     data files, so the transformer is manually specified.
     """
@@ -444,6 +446,7 @@ class Zapngou(Teochew):
     case because the finals are terminals and not decomposed further to
     medials+coda
     """
+
     INITS = ["柳", "邊", "求", "去", "地", "頗", "他", "貞", "入", "時", "文", "語", "出", "喜"]
 
     def NASAL(self, value):

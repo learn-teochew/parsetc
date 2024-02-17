@@ -39,6 +39,7 @@ for scheme in ["dieghv", "gdpi", "ggn", "ggnn", "tlo", "duffus"]:
 TRANSFORMER_DICT = {
     "gdpi": translit.Gdpi(),
     "ggnn": translit.Ggnn(),
+    "dieghv": translit.Dieghv(),
     "tlo": translit.Tlo(),
     "duffus": translit.Duffus(),
     "sinwz": translit.Sinwz(),

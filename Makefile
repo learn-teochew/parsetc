@@ -6,6 +6,8 @@ test1:
 test2:
 	cat examples/dieghv.sep.txt | parsetc -i dieghv --all
 	cat examples/duffus.txt | parsetc -i duffus --all
+black:
+	black src/parsetc/*.py
 build:
 	python -m build
 upload:
