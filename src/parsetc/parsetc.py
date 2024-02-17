@@ -19,7 +19,6 @@ TERMINALS = json.loads(files("parsetc").joinpath("terminals.json").read_text())
 EXTENDS = json.loads(files("parsetc").joinpath("extends.json").read_text())
 
 # Load rules that are common to all systems
-# RULES = {}
 with open(files("parsetc").joinpath(f"common.lark")) as fh:
     COMMON = fh.read()
 
@@ -27,7 +26,6 @@ with open(files("parsetc").joinpath(f"common.lark")) as fh:
 PARSER_DICT = {}
 LARK_DICT = {}
 for scheme in ["dieghv", "gdpi", "ggn", "ggnn", "tlo", "duffus"]:
-    # lark_rules = [RULES["common"], RULES[scheme]]
     lark_rules = [COMMON] + EXTENDS[scheme] if scheme in EXTENDS else [COMMON]
     for group in TERMINALS:
         for term in TERMINALS[group]:

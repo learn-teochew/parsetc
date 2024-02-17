@@ -16,7 +16,6 @@ syllable_tone : [initial] ( ( final tone ) | ( final_entering tone_entering ) )
 syllable_toneless : [initial] ( final | final_entering ) 
 
 // Initials
-// TODO: null initial
 initial : INIT_BH | INIT_P  | INIT_B
         | INIT_M  | INIT_NG | INIT_N
         | INIT_GH | INIT_K  | INIT_G

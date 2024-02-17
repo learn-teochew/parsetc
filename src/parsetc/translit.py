@@ -51,36 +51,39 @@ class Tctransformer(Transformer):
     def final_entering(self, items):
         return "".join([str(i) for i in items])
 
-    def tone_citation(self,items):
+    def tone_citation(self, items):
         return "".join(items)
 
-    def tone_changed(self,items):
+    def tone_changed(self, items):
         return "".join(items)
+
+    def NASAL(self, items):
+        return TERMINALS["nasal"]["NASAL"][self.system]
 
     # TODO metafunction to make functions here?
     def tone_1(self, items):
-        return TERMINALS["tones"]['tone_1'][self.system]
+        return TERMINALS["tones"]["tone_1"][self.system]
 
     def tone_2(self, items):
-        return TERMINALS["tones"]['tone_2'][self.system]
+        return TERMINALS["tones"]["tone_2"][self.system]
 
     def tone_3(self, items):
-        return TERMINALS["tones"]['tone_3'][self.system]
+        return TERMINALS["tones"]["tone_3"][self.system]
 
     def tone_4(self, items):
-        return TERMINALS["tones"]['tone_4'][self.system]
+        return TERMINALS["tones"]["tone_4"][self.system]
 
     def tone_5(self, items):
-        return TERMINALS["tones"]['tone_5'][self.system]
+        return TERMINALS["tones"]["tone_5"][self.system]
 
     def tone_6(self, items):
-        return TERMINALS["tones"]['tone_6'][self.system]
+        return TERMINALS["tones"]["tone_6"][self.system]
 
     def tone_7(self, items):
-        return TERMINALS["tones"]['tone_7'][self.system]
+        return TERMINALS["tones"]["tone_7"][self.system]
 
     def tone_8(self, items):
-        return TERMINALS["tones"]['tone_8'][self.system]
+        return TERMINALS["tones"]["tone_8"][self.system]
 
     def syllable_tone(self, items):
         return "".join([str_or_None(i) for i in items])
@@ -146,9 +149,6 @@ class Gdpi(Tctransformer):
     def __init__(self):
         self.system = "gdpi"
 
-    def NASAL(self, value):
-        return "n"
-
     def tone(self, items):
         if len(items) == 1:
             return str(items[0])
@@ -172,9 +172,6 @@ class Ggnn(Tctransformer):
     def __init__(self):
         self.system = "ggnn"
 
-    def NASAL(self, value):
-        return "ñ"
-
     def tone(self, items):
         if len(items) == 1:
             return str(items[0])
@@ -197,9 +194,6 @@ class Tlo(Tctransformer):
 
     def __init__(self):
         self.system = "tlo"
-
-    def NASAL(self, value):
-        return "nn"
 
     def SYLLABLE_SEP(self, value):
         # Change all syllable separators to hyphens
@@ -227,7 +221,9 @@ class Tlo(Tctransformer):
             "8": "\u0302",
             "0": "",
         }
-        syllab = "".join([str_or_None(i) for i in items[:-1] if i])  # syllable without tone
+        syllab = "".join(
+            [str_or_None(i) for i in items[:-1] if i]
+        )  # syllable without tone
         tone = items[-1]
         firstvowel = re.search(r"[aeiou]", syllab)
         if firstvowel:
@@ -256,9 +252,6 @@ class Duffus(Tctransformer):
 
     def __init__(self):
         self.system = "duffus"
-
-    def NASAL(self, value):
-        return "\u207f"
 
     def SYLLABLE_SEP(self, value):
         # Change all syllable separators to hyphens
@@ -359,7 +352,7 @@ class Sinwz(Tctransformer):
             "MED_AU": "ao",
             "MED_IA": "ia",
             "MED_IAU": "iao",
-            "MED_IEU": "iao", # TODO merger?
+            "MED_IEU": "iao",  # TODO merger?
             "MED_IOU": "iao",
             "MED_IU": "iu",
             "MED_IE": "io",
@@ -560,7 +553,7 @@ class Zapngou(Tctransformer):
             "o": "高",
             "oh": "高",
             "ai": "皆",
-            "ain": "皆（鼻）", # not in Xu
+            "ain": "皆（鼻）",  # not in Xu
             "aih": "皆",
             "ing": "斤",  # different from Xu
             "ik": "斤",  # different from Xu
@@ -640,10 +633,10 @@ class Zapngou(Tctransformer):
         else:
             return ""
 
-    def tone_citation(self,items):
+    def tone_citation(self, items):
         return items[0]
 
-    def tone_changed(self,items):
+    def tone_changed(self, items):
         return items[0]
 
     def tone_1(self, items):
@@ -674,7 +667,6 @@ class Zapngou(Tctransformer):
         # null initial 英 is encoded as None, because "" is not permissible as
         # regex
         if items[0] is None:
-        # if str(items[0])[0] not in Zapngou.INITS:
             return "【" + "英" + "".join([str_or_None(i) for i in items]) + "】"
         else:
             return "【" + "".join([str(i) for i in items]) + "】"
