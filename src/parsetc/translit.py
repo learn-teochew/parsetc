@@ -23,11 +23,11 @@ def str_or_None(s):
         return str(s)
 
 
-class Tctransformer(Transformer):
-    """Common to all transformers unless overridden
+class Teochew(Transformer):
+    """Common to all Teochew transformers unless overridden
 
     self.system is the key for the transcription system that is used to look up
-    the terminals and mergers data.
+    the data in the TERMINALS and MERGERS dicts
     """
 
     def __init__(self):
@@ -143,111 +143,44 @@ class Tctransformer(Transformer):
         return trdict[items[0].type]
 
 
-class Gdpi(Tctransformer):
+class Gdpi(Teochew):
     """Convert Teochew pengim parse tree to Gengdang Pêng'im"""
 
     def __init__(self):
         self.system = "gdpi"
 
     def tone(self, items):
+        # Citation tone only
         if len(items) == 1:
             return str(items[0])
+        # Both citation and changed tones
         elif len(items) == 2:
             return str(items[0]) + "(" + str(items[1]) + ")"
         else:
             return ""
 
     def tone_entering(self, items):
+        # Citation tone only
         if len(items) == 1:
             return str(items[0])
+        # Both citation and changed tones
         elif len(items) == 2:
             return str(items[0]) + "(" + str(items[1]) + ")"
         else:
             return ""
 
 
-class Ggnn(Tctransformer):
-    """Convert Teochew pengim parse tree to Gaginang Peng'im"""
+class Ggnn(Gdpi):
+    """Convert Teochew pengim parse tree to Gaginang Peng'im
+    
+    Inherits from `Gdpi` class, only terminals differ
+    """
 
     def __init__(self):
         self.system = "ggnn"
 
-    def tone(self, items):
-        if len(items) == 1:
-            return str(items[0])
-        elif len(items) == 2:
-            return str(items[0]) + "(" + str(items[1]) + ")"
-        else:
-            return ""
 
-    def tone_entering(self, items):
-        if len(items) == 1:
-            return str(items[0])
-        elif len(items) == 2:
-            return str(items[0]) + "(" + str(items[1]) + ")"
-        else:
-            return ""
-
-
-class Tlo(Tctransformer):
-    """Convert Teochew pengim parse tree to Tie-lo"""
-
-    def __init__(self):
-        self.system = "tlo"
-
-    def SYLLABLE_SEP(self, value):
-        # Change all syllable separators to hyphens
-        return "-"
-
-    def tone(self, items):
-        # Only return the citation tone
-        return str(items[0])
-
-    def tone_entering(self, items):
-        # Only return the citation tone
-        return str(items[0])
-
-    def syllable_tone(self, items):
-        # Tie-lo is less straightforward because it marks
-        # tones with diacritics
-        trdict = {
-            "1": "",
-            "2": "\u0301",
-            "3": "\u0300",
-            "4": "",
-            "5": "\u0302",
-            "6": "\u0306",
-            "7": "\u0304",
-            "8": "\u0302",
-            "0": "",
-        }
-        syllab = "".join(
-            [str_or_None(i) for i in items[:-1] if i]
-        )  # syllable without tone
-        tone = items[-1]
-        firstvowel = re.search(r"[aeiou]", syllab)
-        if firstvowel:
-            # put tone mark on first vowel letter
-            inspos = firstvowel.span()[1]
-        else:
-            # no vowel in syllable, put on nasal codas n or m, n comes first
-            firstnasal = re.search(r"[nm]", syllab)
-            inspos = firstnasal.span()[1]
-        syllab = syllab[0:inspos] + trdict[tone] + syllab[inspos:]
-        syllab = unicodedata.normalize("NFC", syllab)
-        return syllab
-
-    def word_sep(self, items):
-        # replace all syllable separators with hyphens
-        # and separate syllables with hyphens if no
-        # syllable separator is present
-        return "-".join([i for i in items if i != "-"])
-
-    def word_tone(self, items):
-        return "-".join([i for i in items if i != "-"])
-
-
-class Duffus(Tctransformer):
+class Duffus(Teochew):
     """Convert Teochew pengim parse tree to Duffus system"""
 
     def __init__(self):
@@ -304,8 +237,60 @@ class Duffus(Tctransformer):
         return "-".join([i for i in items if i != "-"])
 
 
-class Sinwz(Tctransformer):
-    """Convert Teochew pengim parse tree to Sinwenz system"""
+class Tlo(Teochew):
+    """Convert Teochew pengim parse tree to Tie-lo
+    
+    Inherits from Duffus class, only terminals and tone diacritics differ
+    """
+
+    def __init__(self):
+        self.system = "tlo"
+
+    def tone(self, items):
+        # Only return the citation tone
+        return str(items[0])
+
+    def tone_entering(self, items):
+        # Only return the citation tone
+        return str(items[0])
+
+    def syllable_tone(self, items):
+        # Tie-lo is less straightforward because it marks
+        # tones with diacritics
+        trdict = {
+            "1": "",
+            "2": "\u0301",
+            "3": "\u0300",
+            "4": "",
+            "5": "\u0302",
+            "6": "\u0306",
+            "7": "\u0304",
+            "8": "\u0302",
+            "0": "",
+        }
+        syllab = "".join(
+            [str_or_None(i) for i in items[:-1] if i]
+        )  # syllable without tone
+        tone = items[-1]
+        firstvowel = re.search(r"[aeiou]", syllab)
+        if firstvowel:
+            # put tone mark on first vowel letter
+            inspos = firstvowel.span()[1]
+        else:
+            # no vowel in syllable, put on nasal codas n or m, n comes first
+            firstnasal = re.search(r"[nm]", syllab)
+            inspos = firstnasal.span()[1]
+        syllab = syllab[0:inspos] + trdict[tone] + syllab[inspos:]
+        syllab = unicodedata.normalize("NFC", syllab)
+        return syllab
+
+
+class Sinwz(Teochew):
+    """Convert Teochew pengim parse tree to Sinwenz system
+    
+    This system presents some challenges and is not yet incorporated into the
+    data files, so the transformer is manually specified.
+    """
 
     def __init__(self):
         self.system = "sinwz"
@@ -451,9 +436,14 @@ class Sinwz(Tctransformer):
         return "-".join([i for i in items if i != "-"])
 
 
-class Zapngou(Tctransformer):
-    # This is a special case because the finals are terminals and not
-    # decomposed further to medials+coda
+class Zapngou(Teochew):
+    """Convert Teochew pengim parse tree to rime dictionary analysis
+
+    This system presents some challenges and is not yet incorporated into the
+    data files, so the transformer is manually specified. This is a special
+    case because the finals are terminals and not decomposed further to
+    medials+coda
+    """
     INITS = ["柳", "邊", "求", "去", "地", "頗", "他", "貞", "入", "時", "文", "語", "出", "喜"]
 
     def NASAL(self, value):
