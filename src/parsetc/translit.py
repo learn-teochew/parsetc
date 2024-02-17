@@ -48,6 +48,21 @@ class Tctransformer(Transformer):
     def final(self, items):
         return "".join([str(i) for i in items])
 
+    def final_entering(self, items):
+        return "".join([str(i) for i in items])
+
+#     def tone(self,items):
+#         return "".join(items)
+
+    def tone_citation(self,items):
+        return "".join(items)
+
+    def tone_changed(self,items):
+        return "".join(items)
+
+    # def tone_entering(self,items):
+    #     return "".join(items)
+
     def syllable_tone(self, items):
         return "".join([str_or_None(i) for i in items])
 
@@ -123,6 +138,15 @@ class Gdpi(Tctransformer):
         else:
             return ""
 
+    def tone_entering(self, items):
+        if len(items) == 1:
+            return str(items[0])
+        elif len(items) == 2:
+            return str(items[0]) + "(" + str(items[1]) + ")"
+        else:
+            return ""
+
+
 
 class Ggnn(Tctransformer):
     """Convert Teochew pengim parse tree to Gaginang Peng'im"""
@@ -134,6 +158,14 @@ class Ggnn(Tctransformer):
         return "ñ"
 
     def tone(self, items):
+        if len(items) == 1:
+            return str(items[0])
+        elif len(items) == 2:
+            return str(items[0]) + "(" + str(items[1]) + ")"
+        else:
+            return ""
+
+    def tone_entering(self, items):
         if len(items) == 1:
             return str(items[0])
         elif len(items) == 2:
@@ -156,6 +188,10 @@ class Tlo(Tctransformer):
         return "-"
 
     def tone(self, items):
+        # Only return the citation tone
+        return str(items[0])
+
+    def tone_entering(self, items):
         # Only return the citation tone
         return str(items[0])
 
@@ -211,6 +247,10 @@ class Duffus(Tctransformer):
         return "-"
 
     def tone(self, items):
+        # Only return the citation tone
+        return str(items[0])
+
+    def tone_entering(self, items):
         # Only return the citation tone
         return str(items[0])
 
@@ -338,6 +378,10 @@ class Sinwz(Tctransformer):
         return trdict[items[0].type]
 
     def tone(self, items):
+        # Only return the citation tone
+        return str(items[0])
+
+    def tone_entering(self, items):
         # Only return the citation tone
         return str(items[0])
 
@@ -545,10 +589,19 @@ class Zapngou(Tctransformer):
             "1": "上平",
             "2": "上上",
             "3": "上去",
-            "4": "上入",
             "5": "下平",
             "6": "下上",
             "7": "下去",
+        }
+        if len(items) >= 1:
+            # citation tone only
+            return trdict[str(items[0])]
+        else:
+            return ""
+
+    def tone_entering(self, items):
+        trdict = {
+            "4": "上入",
             "8": "下入",
         }
         if len(items) >= 1:
