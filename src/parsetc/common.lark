@@ -12,8 +12,8 @@ word_tone : syllable_tone+
 
 // Syllables
 // syllable : [initial] final tone?
-syllable_tone : [initial] final tone
-syllable_toneless : [initial] final
+syllable_tone : [initial] ( ( final tone ) | ( final_entering tone_entering ) )
+syllable_toneless : [initial] ( final | final_entering ) 
 
 // Initials
 // TODO: null initial
@@ -26,8 +26,8 @@ initial : INIT_BH | INIT_P  | INIT_B
         | INIT_R  | INIT_L 
 
 // Finals
-// TODO: rule for entering tone
-final : ( medial ( coda | ( NASAL codastops? ) )? ) | codanasal
+final : ( medial ( codanasal | NASAL )? ) | codanasal
+final_entering : medial ( NASAL? codastops )
 
 // Medials
 // longer medials are listed first to be preferentially matched
@@ -43,8 +43,10 @@ codanasal : COD_M | COD_NG
 codastops : COD_P | COD_K | COD_H
 
 // Tones
-tone : TONENUMBER ( "(" TONENUMBER ")" )?
-TONENUMBER : "0".."8"
+tone : tone_citation ( "(" tone_changed ")" )?
+tone_citation: TONE_1 | TONE_2 | TONE_3 | TONE_5 | TONE_6 | TONE_7
+tone_changed: TONE_1 | TONE_2 | TONE_5 | TONE_6 | TONE_7
+tone_entering : ( TONE_4 ( "(" TONE_8 ")" )? ) | ( TONE_8 ( "(" TONE_4 ")" )? )
 
 // Syllable separator
 // hyphen or apostrophe are also valid punctuation

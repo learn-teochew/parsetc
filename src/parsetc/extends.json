@@ -1,17 +1,26 @@
 {
-  "duffus": [
-    "%extend initial: INIT_CH | INIT_CHH | INIT_J",
-    "%extend codanasal : COD_N",
-    "%extend codastops : COD_T"
+  "dieghv" : [
+    "%extend tone_citation : TONE_0"
+  ],
+  "gdpi" : [
+    "%extend tone_citation : TONE_0"
+  ],
+  "ggn" : [
+    "%extend codastops : COD_T",
+    "%extend tone_citation : TONE_0",
+    "%extend tone_citation : TONE_0"
   ],
   "ggnn" : [
     "%extend codanasal : COD_N",
-    "%extend codastops : COD_T"
-  ],
-  "ggn" : [
-    "%extend codastops : COD_T"
+    "%extend codastops : COD_T",
+    "%extend tone_citation : TONE_0"
   ],
   "tlo" : [
+    "%extend codanasal : COD_N",
+    "%extend codastops : COD_T"
+  ],
+  "duffus": [
+    "%extend initial: INIT_CH | INIT_CHH | INIT_J",
     "%extend codanasal : COD_N",
     "%extend codastops : COD_T"
   ]
