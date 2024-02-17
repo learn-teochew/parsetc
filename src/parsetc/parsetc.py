@@ -139,7 +139,7 @@ def preprocess(text, system):
         return text
 
 
-def transliterate_all(phrase, i="gdpi"):
+def transliterate_all(phrase, i, parser_dict, transformer_dict):
     """Transliterate romanized Teochew into all available output schemes
 
     Arguments
@@ -148,7 +148,11 @@ def transliterate_all(phrase, i="gdpi"):
         Text to be transliterated, must be preprocessed to lowercase and to
         convert diacritics to tone numbers
     i : str
-        Input format. Must match one of the available inputs
+        Input format. Must match one of the available keys in the parser dict
+    parser_dict : dict
+        Lark parsers keyed by name of input format
+    transformer_dict : dict
+        Lark Transfomer class objects keyed by name of output formats
 
     Returns
     -------
@@ -157,16 +161,16 @@ def transliterate_all(phrase, i="gdpi"):
         str: scheme name and transliteration.
     """
     try:
-        t = PARSER_DICT[i].parse(phrase)
+        t = parser_dict[i].parse(phrase)
         out = []
-        for o in TRANSFORMER_DICT:
-            out.append((o, TRANSFORMER_DICT[o].transform(t)))
+        for o in transformer_dict:
+            out.append((o, transformer_dict[o].transform(t)))
         return out
     except KeyError:
         print(f"Unknown spelling scheme {i}")
 
 
-def transliterate(phrase, i="gdpi", o="tlo", superscript_tone=False):
+def transliterate(phrase, i, o, parser_dict, transfomer_dict, superscript_tone=False):
     """Transliterate romanized Teochew into different spelling scheme
 
     Arguments
@@ -178,6 +182,10 @@ def transliterate(phrase, i="gdpi", o="tlo", superscript_tone=False):
         Input format. Must match one of the available inputs
     o : str
         Output format. Must match one of the available outputs
+    parser_dict : dict
+        Lark parsers keyed by name of input format
+    transformer_dict : dict
+        Lark Transfomer class objects keyed by name of output formats
     superscript_tone : bool
         Superscript tone numbers
 
@@ -187,9 +195,9 @@ def transliterate(phrase, i="gdpi", o="tlo", superscript_tone=False):
         Input text transliterated into requested phonetic spelling.
     """
     try:
-        t = PARSER_DICT[i].parse(phrase)
+        t = parser_dict[i].parse(phrase)
         try:
-            out = TRANSFORMER_DICT[o].transform(t)
+            out = transformer_dict[o].transform(t)
             if superscript_tone:
                 subst = {
                     "1": "¹",
@@ -209,10 +217,10 @@ def transliterate(phrase, i="gdpi", o="tlo", superscript_tone=False):
                 return out
         except KeyError:
             print(f"Invalid output scheme {o}")
-            print(f"Must be one of {', '.join(list(TRANSFORMER_DICT.keys()))}")
+            print(f"Must be one of {', '.join(list(transformer_dict.keys()))}")
     except KeyError:
         print(f"Invalid input scheme {i}")
-        print(f"Must be one of {', '.join(list(PARSER_DICT.keys()))}")
+        print(f"Must be one of {', '.join(list(parser_dict.keys()))}")
 
 
 def main():
@@ -295,6 +303,8 @@ def main():
                             preprocess(in_splits[i], args.input),
                             i=args.input,
                             o=args.output,
+                            parser_dict=PARSER_DICT,
+                            transformer_dict=TRANSFORMER_DICT,
                             superscript_tone=args.superscript_tone,
                         )
                     else:
@@ -305,7 +315,7 @@ def main():
                     parsetree = PARSER_DICT[args.input].parse(intext)
                     print(parsetree.pretty())
                 elif args.all:
-                    out = transliterate_all(intext, i=args.input)
+                    out = transliterate_all(intext, i=args.input, parser_dict=PARSER_DICT, transformer_dict=TRANSFORMER_DICT)
                     print("\t".join(["INPUT", intext]))
                     for line in out:
                         print("\t".join(list(line)))
@@ -314,6 +324,8 @@ def main():
                         intext,
                         i=args.input,
                         o=args.output,
+                        parser_dict=PARSER_DICT,
+                        transformer_dict=TRANSFORMER_DICT,
                         superscript_tone=args.superscript_tone,
                     )
             print(outtext)
