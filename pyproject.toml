@@ -46,4 +46,8 @@ parsetc = [
   "Teochew/terminals.json",
   "Teochew/extends.json",
   "Teochew/mergers.json",
+  "Cantonese/shared.lark",
+  "Cantonese/terminals.json",
+  "Cantonese/extends.json",
+  "Cantonese/mergers.json",
 ]
