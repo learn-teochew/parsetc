@@ -58,16 +58,16 @@ class Tctransformer(Transformer):
         return "".join(items)
 
     def tone_1(self, items):
-        return items[0]
+        return TERMINALS["tones"]['tone_1'][self.system]
 
     def tone_5(self, items):
-        return items[0]
+        return TERMINALS["tones"]['tone_5'][self.system]
 
     def tone_4(self, items):
-        return items[0]
+        return TERMINALS["tones"]['tone_4'][self.system]
 
     def tone_8(self, items):
-        return items[0]
+        return TERMINALS["tones"]['tone_8'][self.system]
 
     def syllable_tone(self, items):
         return "".join([str_or_None(i) for i in items])
@@ -390,6 +390,18 @@ class Sinwz(Tctransformer):
         # Only return the citation tone
         return str(items[0])
 
+    def tone_1(self, items):
+        return "1"
+
+    def tone_5(self, items):
+        return "5"
+
+    def tone_4(self, items):
+        return "4"
+
+    def tone_8(self, items):
+        return "8"
+
     def syllable_tone(self, items):
         # Check if syllable begins with i or u
         pre = list("".join([str_or_None(i) for i in items]))
@@ -590,17 +602,9 @@ class Zapngou(Tctransformer):
             return pre
 
     def tone(self, items):
-        trdict = {
-            "1": "上平",
-            "2": "上上",
-            "3": "上去",
-            "5": "下平",
-            "6": "下上",
-            "7": "下去",
-        }
         if len(items) >= 1:
             # citation tone only
-            return trdict[str(items[0])]
+            return items[0]
         else:
             return ""
 
@@ -611,8 +615,32 @@ class Zapngou(Tctransformer):
         else:
             return ""
 
+    def tone_citation(self,items):
+        return items[0]
+
+    def tone_changed(self,items):
+        return items[0]
+
+    def tone_1(self, items):
+        return "上平"
+
+    def TONE_2(self, items):
+        return "上上"
+
+    def TONE_3(self, items):
+        return "上去"
+
     def tone_4(self, items):
         return "上入"
+
+    def tone_5(self, items):
+        return "下平"
+
+    def TONE_6(self, items):
+        return "下上"
+
+    def TONE_7(self, items):
+        return "下去"
 
     def tone_8(self, items):
         return "下入"

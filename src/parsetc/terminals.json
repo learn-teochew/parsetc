@@ -65,13 +65,13 @@
 
   "tones" : {
     "TONE_0": { "dieghv": "0", "gdpi": "0", "ggn": "0", "ggnn": "0"                              },
-    "!tone_1": { "dieghv": "1", "gdpi": "1", "ggn": "1", "ggnn": "1", "tlo": "1" , "duffus": "1"  },
+    "tone_1": { "dieghv": "1", "gdpi": "1", "ggn": "1", "ggnn": "1", "tlo": "1" , "duffus": "1"  },
     "TONE_2": { "dieghv": "2", "gdpi": "2", "ggn": "2", "ggnn": "2", "tlo": "2" , "duffus": "2"  },
     "TONE_3": { "dieghv": "3", "gdpi": "3", "ggn": "3", "ggnn": "3", "tlo": "3" , "duffus": "3"  },
-    "!tone_4": { "dieghv": "4", "gdpi": "4", "ggn": "4", "ggnn": "4", "tlo": "1" , "duffus": "1"  },
-    "!tone_5": { "dieghv": "5", "gdpi": "5", "ggn": "5", "ggnn": "5", "tlo": "5" , "duffus": "5"  },
+    "tone_4": { "dieghv": "4", "gdpi": "4", "ggn": "4", "ggnn": "4", "tlo": "1" , "duffus": "1"  },
+    "tone_5": { "dieghv": "5", "gdpi": "5", "ggn": "5", "ggnn": "5", "tlo": "5" , "duffus": "5"  },
     "TONE_6": { "dieghv": "6", "gdpi": "6", "ggn": "6", "ggnn": "6", "tlo": "6" , "duffus": "6"  },
     "TONE_7": { "dieghv": "7", "gdpi": "7", "ggn": "7", "ggnn": "7", "tlo": "7" , "duffus": "7"  },
-    "!tone_8": { "dieghv": "8", "gdpi": "8", "ggn": "8", "ggnn": "8", "tlo": "5" , "duffus": "8"  }
+    "tone_8": { "dieghv": "8", "gdpi": "8", "ggn": "8", "ggnn": "8", "tlo": "5" , "duffus": "8"  }
   }
 }
