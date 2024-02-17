@@ -13,26 +13,50 @@ from importlib_resources import files
 from lark import Lark
 from lark import __version__ as lark_version
 
-# Load lark grammar
-# Load terminals and rule extends for each transcription system
-TERMINALS = json.loads(files("parsetc").joinpath("terminals.json").read_text())
-EXTENDS = json.loads(files("parsetc").joinpath("extends.json").read_text())
+TEOCHEW_SYS = ["dieghv", "gdpi", "ggn", "ggnn", "tlo", "duffus"]
 
-# Load rules that are shared across all systems
-with open(files("parsetc").joinpath(f"shared.lark")) as fh:
-    SHARED = fh.read()
+def load_parser_data(shared_fn, terminals_fn, extends_fn, systems):
+    """Load Lark grammar for parser
 
-# Available input formats for parsers
-PARSER_DICT = {}
-LARK_DICT = {}
-for scheme in ["dieghv", "gdpi", "ggn", "ggnn", "tlo", "duffus"]:
-    lark_rules = [SHARED] + EXTENDS[scheme] if scheme in EXTENDS else [SHARED]
-    for group in TERMINALS:
-        for term in TERMINALS[group]:
-            if scheme in TERMINALS[group][term]:
-                lark_rules.append(f'{term} : "{TERMINALS[group][term][scheme]}"')
-    LARK_DICT[scheme] = "\n".join(lark_rules)
-    PARSER_DICT[scheme] = Lark("\n".join(lark_rules), start="start")
+    Arguments
+    ---------
+    shared_fn : str
+        Path relative to script of lark file with shared rules
+    terminals_fn : str
+        Path relative to script of JSON file with terminals
+    extends_fn : str
+        Path relative to script of JSON file with extension rules
+    systems : list
+        List of short names of transcription systems
+
+    Returns
+    -------
+    lark_dict
+        Lark rules in text keyed by names of transcription systems
+    parser_dict
+        Lark parsers in dict keyed by names of transcription systems
+    """
+    # Load lark grammar
+    # Load terminals and rule extends for each transcription system
+    terminals = json.loads(files("parsetc").joinpath(terminals_fn).read_text())
+    extends = json.loads(files("parsetc").joinpath(extends_fn).read_text())
+
+    # Load rules that are shared across all systems
+    with open(files("parsetc").joinpath(shared_fn)) as fh:
+        shared = fh.read()
+
+    # Available input formats for parsers
+    parser_dict = {}
+    lark_dict = {}
+    for scheme in systems:
+        lark_rules = [shared] + extends[scheme] if scheme in extends else [shared]
+        for group in terminals:
+            for term in terminals[group]:
+                if scheme in terminals[group][term]:
+                    lark_rules.append(f'{term} : "{terminals[group][term][scheme]}"')
+        lark_dict[scheme] = "\n".join(lark_rules)
+        parser_dict[scheme] = Lark("\n".join(lark_rules), start="start")
+    return lark_dict, parser_dict
 
 
 # Available output formats for transformers
@@ -236,7 +260,7 @@ def main():
         "-i",
         type=str,
         default="gdpi",
-        help=f"Input romanization, available: {', '.join(list(PARSER_DICT.keys()))}",
+        help=f"Input romanization, available: {', '.join(TEOCHEW_SYS)}",
     )
     parser.add_argument(
         "--output",
@@ -284,12 +308,16 @@ def main():
         print_version()
         exit()
 
+    lark_dict, parser_dict = load_parser_data(shared_fn="shared.lark",
+            terminals_fn="terminals.json", extends_fn="extends.json",
+            systems=TEOCHEW_SYS)
+
     if args.show_lark:
-        if args.input in LARK_DICT:
-            print(LARK_DICT[args.input])
+        if args.input in lark_dict:
+            print(lark_dict[args.input])
         else:
             print(
-                f"Invalid input scheme {args.input}, must be one of {', '.join(list(LARK_DICT.keys()))}"
+                f"Invalid input scheme {args.input}, must be one of {', '.join(list(lark_dict.keys()))}"
             )
     else:
         for intext in sys.stdin:
@@ -303,7 +331,7 @@ def main():
                             preprocess(in_splits[i], args.input),
                             i=args.input,
                             o=args.output,
-                            parser_dict=PARSER_DICT,
+                            parser_dict=parser_dict,
                             transformer_dict=TRANSFORMER_DICT,
                             superscript_tone=args.superscript_tone,
                         )
@@ -312,10 +340,10 @@ def main():
             else:
                 intext = preprocess(intext, args.input)
                 if args.parse_only:
-                    parsetree = PARSER_DICT[args.input].parse(intext)
+                    parsetree = parser_dict[args.input].parse(intext)
                     print(parsetree.pretty())
                 elif args.all:
-                    out = transliterate_all(intext, i=args.input, parser_dict=PARSER_DICT, transformer_dict=TRANSFORMER_DICT)
+                    out = transliterate_all(intext, i=args.input, parser_dict=parser_dict, transformer_dict=TRANSFORMER_DICT)
                     print("\t".join(["INPUT", intext]))
                     for line in out:
                         print("\t".join(list(line)))
@@ -324,7 +352,7 @@ def main():
                         intext,
                         i=args.input,
                         o=args.output,
-                        parser_dict=PARSER_DICT,
+                        parser_dict=parser_dict,
                         transformer_dict=TRANSFORMER_DICT,
                         superscript_tone=args.superscript_tone,
                     )
