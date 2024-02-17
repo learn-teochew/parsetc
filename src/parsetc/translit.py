@@ -57,14 +57,27 @@ class Tctransformer(Transformer):
     def tone_changed(self,items):
         return "".join(items)
 
+    # TODO metafunction to make functions here?
     def tone_1(self, items):
         return TERMINALS["tones"]['tone_1'][self.system]
+
+    def tone_2(self, items):
+        return TERMINALS["tones"]['tone_2'][self.system]
+
+    def tone_3(self, items):
+        return TERMINALS["tones"]['tone_3'][self.system]
+
+    def tone_4(self, items):
+        return TERMINALS["tones"]['tone_4'][self.system]
 
     def tone_5(self, items):
         return TERMINALS["tones"]['tone_5'][self.system]
 
-    def tone_4(self, items):
-        return TERMINALS["tones"]['tone_4'][self.system]
+    def tone_6(self, items):
+        return TERMINALS["tones"]['tone_6'][self.system]
+
+    def tone_7(self, items):
+        return TERMINALS["tones"]['tone_7'][self.system]
 
     def tone_8(self, items):
         return TERMINALS["tones"]['tone_8'][self.system]
@@ -393,11 +406,23 @@ class Sinwz(Tctransformer):
     def tone_1(self, items):
         return "1"
 
-    def tone_5(self, items):
-        return "5"
+    def tone_2(self, items):
+        return "2"
+
+    def tone_3(self, items):
+        return "3"
 
     def tone_4(self, items):
         return "4"
+
+    def tone_5(self, items):
+        return "5"
+
+    def tone_6(self, items):
+        return "6"
+
+    def tone_7(self, items):
+        return "7"
 
     def tone_8(self, items):
         return "8"
@@ -624,10 +649,10 @@ class Zapngou(Tctransformer):
     def tone_1(self, items):
         return "上平"
 
-    def TONE_2(self, items):
+    def tone_2(self, items):
         return "上上"
 
-    def TONE_3(self, items):
+    def tone_3(self, items):
         return "上去"
 
     def tone_4(self, items):
@@ -636,10 +661,10 @@ class Zapngou(Tctransformer):
     def tone_5(self, items):
         return "下平"
 
-    def TONE_6(self, items):
+    def tone_6(self, items):
         return "下上"
 
-    def TONE_7(self, items):
+    def tone_7(self, items):
         return "下去"
 
     def tone_8(self, items):

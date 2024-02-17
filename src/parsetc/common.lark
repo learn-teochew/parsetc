@@ -44,8 +44,8 @@ codastops : COD_P | COD_K | COD_H
 
 // Tones
 tone : tone_citation ( "(" tone_changed ")" )?
-tone_citation: tone_1 | TONE_2 | TONE_3 | tone_5 | TONE_6 | TONE_7
-tone_changed: tone_1 | TONE_2 | tone_5 | TONE_6 | TONE_7
+tone_citation: tone_1 | tone_2 | tone_3 | tone_5 | tone_6 | tone_7
+tone_changed: tone_1 | tone_2 | tone_5 | tone_6 | tone_7
 tone_entering : ( tone_4 ( "(" tone_8 ")" )? ) | ( tone_8 ( "(" tone_4 ")" )? )
 
 // Syllable separator
