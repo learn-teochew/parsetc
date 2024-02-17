@@ -11,9 +11,9 @@ sentence_tone : ( PUNCTUATION | SPACE )* word_tone ( ( PUNCTUATION | SPACE )+ wo
 word_tone : syllable_tone+
 
 // Syllables
-// syllable : initial? final tone?
-syllable_tone : initial? final tone
-syllable_toneless : initial? final
+// syllable : [initial] final tone?
+syllable_tone : [initial] final tone
+syllable_toneless : [initial] final
 
 // Initials
 // TODO: null initial

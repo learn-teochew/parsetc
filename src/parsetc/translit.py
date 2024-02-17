@@ -12,6 +12,17 @@ TERMINALS = json.loads(files("parsetc").joinpath("terminals.json").read_text())
 MERGERS = json.loads(files("parsetc").joinpath("mergers.json").read_text())
 
 
+def str_or_None(s):
+    """Convert to str or empty str if None
+
+    Deal with null initial, which is encoded as None rather than a terminal
+    """
+    if s is None:
+        return ""
+    else:
+        return str(s)
+
+
 class Tctransformer(Transformer):
     """Common to all transformers unless overridden
 
@@ -38,10 +49,10 @@ class Tctransformer(Transformer):
         return "".join([str(i) for i in items])
 
     def syllable_tone(self, items):
-        return "".join([str(i) for i in items])
+        return "".join([str_or_None(i) for i in items])
 
     def syllable_toneless(self, items):
-        return "".join([str(i) for i in items])
+        return "".join([str_or_None(i) for i in items])
 
     def word_sep(self, items):
         return "".join(items)
@@ -162,7 +173,7 @@ class Tlo(Tctransformer):
             "8": "\u0302",
             "0": "",
         }
-        syllab = "".join(items[:-1])  # syllable without tone
+        syllab = "".join([str_or_None(i) for i in items[:-1] if i])  # syllable without tone
         tone = items[-1]
         firstvowel = re.search(r"[aeiou]", syllab)
         if firstvowel:
@@ -215,7 +226,7 @@ class Duffus(Tctransformer):
             "8": "\u0307",
             "0": "",
         }
-        syllab = "".join(items[:-1])  # syllable without tone
+        syllab = "".join([str_or_None(i) for i in items[:-1]])  # syllable without tone
         tone = items[-1]
         firstvowel = re.search(r"[aeiou]", syllab)
         if firstvowel:
@@ -332,7 +343,7 @@ class Sinwz(Tctransformer):
 
     def syllable_tone(self, items):
         # Check if syllable begins with i or u
-        pre = list("".join([str(i) for i in items]))
+        pre = list("".join([str_or_None(i) for i in items]))
         if pre[0] == "i" and len(pre) > 1:
             pre[0] = "j"
         elif pre[0] == "u" and len(pre) > 1:
@@ -341,7 +352,7 @@ class Sinwz(Tctransformer):
 
     def syllable_toneless(self, items):
         # Check if syllable begins with i or u
-        pre = list("".join([str(i) for i in items]))
+        pre = list("".join([str_or_None(i) for i in items]))
         if pre[0] == "i" and len(pre) > 1:
             pre[0] = "j"
         elif pre[0] == "u" and len(pre) > 1:
@@ -463,6 +474,7 @@ class Zapngou(Tctransformer):
             "o": "高",
             "oh": "高",
             "ai": "皆",
+            "ain": "皆（鼻）", # not in Xu
             "aih": "皆",
             "ing": "斤",  # different from Xu
             "ik": "斤",  # different from Xu
@@ -546,17 +558,17 @@ class Zapngou(Tctransformer):
             return ""
 
     def syllable_tone(self, items):
-        # If the first character is not in the list of initials, then assume
-        # this is a null-initial syllable, and add 英 character. Workaround
-        # because null is not permissible as a regex.
-        if str(items[0])[0] not in Zapngou.INITS:
-            return "【" + "英" + "".join([str(i) for i in items]) + "】"
+        # null initial 英 is encoded as None, because "" is not permissible as
+        # regex
+        if items[0] is None:
+        # if str(items[0])[0] not in Zapngou.INITS:
+            return "【" + "英" + "".join([str_or_None(i) for i in items]) + "】"
         else:
             return "【" + "".join([str(i) for i in items]) + "】"
 
     def syllable_toneless(self, items):
-        if str(items[0])[0] not in Zapngou.INITS:
-            return "【" + "英" + "".join([str(i) for i in items]) + "】"
+        if items[0] is None:
+            return "【" + "英" + "".join([str_or_None(i) for i in items]) + "】"
         else:
             return "【" + "".join([str(i) for i in items]) + "】"
 
