@@ -51,17 +51,17 @@ class Tctransformer(Transformer):
     def final_entering(self, items):
         return "".join([str(i) for i in items])
 
-#     def tone(self,items):
-#         return "".join(items)
-
     def tone_citation(self,items):
         return "".join(items)
 
     def tone_changed(self,items):
         return "".join(items)
 
-    # def tone_entering(self,items):
-    #     return "".join(items)
+    def tone_4(self, items):
+        return items[0]
+
+    def tone_8(self, items):
+        return items[0]
 
     def syllable_tone(self, items):
         return "".join([str_or_None(i) for i in items])
@@ -145,7 +145,6 @@ class Gdpi(Tctransformer):
             return str(items[0]) + "(" + str(items[1]) + ")"
         else:
             return ""
-
 
 
 class Ggnn(Tctransformer):
@@ -600,15 +599,17 @@ class Zapngou(Tctransformer):
             return ""
 
     def tone_entering(self, items):
-        trdict = {
-            "4": "上入",
-            "8": "下入",
-        }
         if len(items) >= 1:
             # citation tone only
-            return trdict[str(items[0])]
+            return items[0]
         else:
             return ""
+
+    def tone_4(self, items):
+        return "上入"
+
+    def tone_8(self, items):
+        return "下入"
 
     def syllable_tone(self, items):
         # null initial 英 is encoded as None, because "" is not permissible as

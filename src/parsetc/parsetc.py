@@ -100,14 +100,6 @@ def diacritics_syllable_parse(syllable, system):
     # All other characters
     notone = [chr(i) for i in decomp if i not in tonemarks[system]]
 
-    # check for entering tones
-    if notone[-1] in ["p", "t", "k", "h"] and tone != 4 and tone != 8:
-        if tone == 1:
-            tone = 4
-        elif tone == 5:
-            tone = 8
-        else:
-            pass  # TODO complain
     return ("".join(notone), tone)
 
 

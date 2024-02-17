@@ -46,7 +46,7 @@ codastops : COD_P | COD_K | COD_H
 tone : tone_citation ( "(" tone_changed ")" )?
 tone_citation: TONE_1 | TONE_2 | TONE_3 | TONE_5 | TONE_6 | TONE_7
 tone_changed: TONE_1 | TONE_2 | TONE_5 | TONE_6 | TONE_7
-tone_entering : ( TONE_4 ( "(" TONE_8 ")" )? ) | ( TONE_8 ( "(" TONE_4 ")" )? )
+tone_entering : ( tone_4 ( "(" tone_8 ")" )? ) | ( tone_8 ( "(" tone_4 ")" )? )
 
 // Syllable separator
 // hyphen or apostrophe are also valid punctuation
