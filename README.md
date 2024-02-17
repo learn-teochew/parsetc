@@ -25,7 +25,7 @@ Input formats
 Output formats
 --------------
 
-`gdpi`, `ggnn`, `tlo`, `duffus`, plus:
+`gdpi`, `ggnn`, `tlo`, `duffus`, `dieghv`, plus:
 
  * Teochew Sinwenz (`sinwz`);
    [(source)](http://eresources.nlb.gov.sg/newspapers/Digitised/Page/nysp19391115-1.1.22)
