@@ -6,7 +6,7 @@ import argparse
 import sys
 import json
 
-import parsetc.translit as translit
+from parsetc.translit import TRANSFORMER_DICT
 from parsetc import __version__
 
 from importlib_resources import files
@@ -58,19 +58,6 @@ def load_parser_data(shared_fn, terminals_fn, extends_fn, systems):
         lark_dict[scheme] = "\n".join(lark_rules)
         parser_dict[scheme] = Lark("\n".join(lark_rules), start="start")
     return lark_dict, parser_dict
-
-
-# Available output formats for transformers
-TRANSFORMER_DICT = {
-    "gdpi": translit.Gdpi(),
-    "ggnn": translit.Ggnn(),
-    "dieghv": translit.Dieghv(),
-    "nosefirst": translit.Nosefirst(),
-    "tlo": translit.Tlo(),
-    "duffus": translit.Duffus(),
-    "sinwz": translit.Sinwz(),
-    "15": translit.Zapngou(),
-}
 
 
 def print_version():
@@ -248,12 +235,11 @@ def transliterate(phrase, i, o, parser_dict, transfomer_dict, superscript_tone=F
         print(f"Must be one of {', '.join(list(parser_dict.keys()))}")
 
 
-def main():
+def get_args():
     parser = argparse.ArgumentParser(
         description="""
-        Parse and convert romanized Teochew between different phonetic spelling schemes
-
-        Text is read from STDIN
+        Parse and convert romanized Teochew between different phonetic spelling schemes.
+        Text is read from STDIN, output written to STDOUT.
         """
     )
     parser.add_argument(
@@ -304,11 +290,17 @@ def main():
         "--version", "-v", action="store_true", help="Report version number"
     )
     args = parser.parse_args()
+    return args
+
+
+def main():
+    args = get_args()
 
     if args.version:
         print_version()
         exit()
 
+    # Load parser data
     lark_dict, parser_dict = load_parser_data(
         shared_fn="shared.lark",
         terminals_fn="terminals.json",

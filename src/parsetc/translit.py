@@ -22,7 +22,6 @@ def str_or_None(s):
     else:
         return str(s)
 
-
 class Teochew(Transformer):
     """Common to all Teochew transformers unless overridden
 
@@ -739,3 +738,14 @@ class Nosefirst(Gdpi):
         return "".join([str(i) for i in out])
 
 
+# Available output formats for transformers
+TRANSFORMER_DICT = {
+    "gdpi": Gdpi(),
+    "ggnn": Ggnn(),
+    "dieghv": Dieghv(),
+    "nosefirst": Nosefirst(),
+    "tlo": Tlo(),
+    "duffus": Duffus(),
+    "sinwz": Sinwz(),
+    "15": Zapngou(),
+}
