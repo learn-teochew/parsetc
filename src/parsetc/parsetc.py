@@ -15,6 +15,7 @@ from lark import __version__ as lark_version
 
 TEOCHEW_SYS = ["dieghv", "gdpi", "ggn", "ggnn", "tlo", "duffus"]
 
+
 def load_parser_data(shared_fn, terminals_fn, extends_fn, systems):
     """Load Lark grammar for parser
 
@@ -308,52 +309,62 @@ def main():
         print_version()
         exit()
 
-    lark_dict, parser_dict = load_parser_data(shared_fn="shared.lark",
-            terminals_fn="terminals.json", extends_fn="extends.json",
-            systems=TEOCHEW_SYS)
+    lark_dict, parser_dict = load_parser_data(
+        shared_fn="shared.lark",
+        terminals_fn="terminals.json",
+        extends_fn="extends.json",
+        systems=TEOCHEW_SYS,
+    )
 
     if args.show_lark:
-        if args.input in lark_dict:
+        try:
             print(lark_dict[args.input])
-        else:
+        except KeyError:
             print(
-                f"Invalid input scheme {args.input}, must be one of {', '.join(list(lark_dict.keys()))}"
+                f"Invalid input scheme {args.input}, must be one of {', '.join(list(lark_dict.keys()))}",
+                file=sys.stderr,
             )
-    else:
-        for intext in sys.stdin:
-            outtext = ""
-            intext = intext.rstrip()
-            if args.delim_only:
-                in_splits = intext.split(args.delim_only)
-                for i in range(len(in_splits)):
-                    if i % 2 == 1:
-                        outtext += transliterate(
-                            preprocess(in_splits[i], args.input),
-                            i=args.input,
-                            o=args.output,
-                            parser_dict=parser_dict,
-                            transformer_dict=TRANSFORMER_DICT,
-                            superscript_tone=args.superscript_tone,
-                        )
-                    else:
-                        outtext += in_splits[i]
-            else:
-                intext = preprocess(intext, args.input)
-                if args.parse_only:
-                    parsetree = parser_dict[args.input].parse(intext)
-                    print(parsetree.pretty())
-                elif args.all:
-                    out = transliterate_all(intext, i=args.input, parser_dict=parser_dict, transformer_dict=TRANSFORMER_DICT)
-                    print("\t".join(["INPUT", intext]))
-                    for line in out:
-                        print("\t".join(list(line)))
-                else:
-                    outtext = transliterate(
-                        intext,
+        exit()
+
+    for intext in sys.stdin:
+        outtext = ""
+        intext = intext.rstrip()
+        if args.delim_only:
+            in_splits = intext.split(args.delim_only)
+            for i in range(len(in_splits)):
+                if i % 2 == 1:
+                    outtext += transliterate(
+                        preprocess(in_splits[i], args.input),
                         i=args.input,
                         o=args.output,
                         parser_dict=parser_dict,
                         transformer_dict=TRANSFORMER_DICT,
                         superscript_tone=args.superscript_tone,
                     )
-            print(outtext)
+                else:
+                    outtext += in_splits[i]
+        else:
+            intext = preprocess(intext, args.input)
+            if args.parse_only:
+                parsetree = parser_dict[args.input].parse(intext)
+                print(parsetree.pretty())
+            elif args.all:
+                out = transliterate_all(
+                    intext,
+                    i=args.input,
+                    parser_dict=parser_dict,
+                    transformer_dict=TRANSFORMER_DICT,
+                )
+                print("\t".join(["INPUT", intext]))
+                for line in out:
+                    print("\t".join(list(line)))
+            else:
+                outtext = transliterate(
+                    intext,
+                    i=args.input,
+                    o=args.output,
+                    parser_dict=parser_dict,
+                    transformer_dict=TRANSFORMER_DICT,
+                    superscript_tone=args.superscript_tone,
+                )
+        print(outtext)
