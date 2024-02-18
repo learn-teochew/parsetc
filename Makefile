@@ -1,4 +1,8 @@
 install:
+	pip uninstall parsetc
+	pip install .
+
+install-editable:
 	pip install --editable .
 
 test1: test-teochew-parse test-cantonese-parse
