@@ -3,6 +3,7 @@ import unicodedata
 
 INPUT_SYS = ["jp"]
 
+
 def diacritics_syllable_parse(syllable, system):
     """Parse a syllable with tone diacritics to tone number
 
@@ -18,7 +19,7 @@ def diacritics_syllable_parse(syllable, system):
         "yale": {
             772: "1a",  # combining macron
             768: "1b",  # combining grave
-            769: "2" ,  # combining acute
+            769: "2",  # combining acute
         },
     }
     notone = []
@@ -70,6 +71,3 @@ def preprocess(text, system):
         return "".join(out)
     else:
         return text
-
-
-

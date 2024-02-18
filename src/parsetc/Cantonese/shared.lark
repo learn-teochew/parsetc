@@ -24,6 +24,7 @@ initial : INIT_B | INIT_P  | INIT_M | INIT_F
 // Finals
 final : ( medial codanasal? ) | codanasal
 final_entering : medial codastop
+// assume syllables like `eongk` do not exist
 
 // Medials
 // longer medials are listed first to be preferentially matched

@@ -8,7 +8,9 @@ from importlib_resources import files
 from lark import Transformer
 
 # Load terminals and mergers data
-TERMINALS = json.loads(files("parsetc").joinpath("Cantonese/terminals.json").read_text())
+TERMINALS = json.loads(
+    files("parsetc").joinpath("Cantonese/terminals.json").read_text()
+)
 MERGERS = json.loads(files("parsetc").joinpath("Cantonese/mergers.json").read_text())
 
 
@@ -21,6 +23,7 @@ def str_or_None(s):
         return ""
     else:
         return str(s)
+
 
 class Cantonese(Transformer):
     """Common to all Cantonese transformers unless overridden
@@ -132,11 +135,13 @@ class Jp(Cantonese):
     def __init__(self):
         self.system = "jp"
 
+
 class Cpy(Cantonese):
     """Cantonese Pinyin"""
 
     def __init__(self):
         self.system = "cpy"
+
 
 class Yale(Cantonese):
     """Yale Romanization"""
@@ -144,23 +149,40 @@ class Yale(Cantonese):
     def __init__(self):
         self.system = "yale"
 
-    def initial(self, items):
+    def syllable_toneless(self, items):
+        raise Exception(
+            "Cannot convert toneless syllables to Yale because of ambiguity"
+        )
+
+    def _lookup_terminal_withtype(self, items, which="initial"):
         trdict = {
-            term: TERMINALS["initial"][term][self.system]
-            for term in TERMINALS["initial"]
-            if self.system in TERMINALS["initial"][term]
+            term: TERMINALS[which][term][self.system]
+            for term in TERMINALS[which]
+            if self.system in TERMINALS[which][term]
         }
-        for term in MERGERS["initial"]:
-            if self.system in MERGERS["initial"][term]:
-                merged_to = MERGERS["initial"][term][self.system]
-                trdict[term] = TERMINALS["initial"][merged_to][self.system]
-        return "initial", trdict[items[0].type]
+        for term in MERGERS[which]:
+            if self.system in MERGERS[which][term]:
+                merged_to = MERGERS[which][term][self.system]
+                trdict[term] = TERMINALS[which][merged_to][self.system]
+        return which, trdict[items[0].type]
+
+    def initial(self, items):
+        return Yale._lookup_terminal_withtype(self, items, "initial")
+
+    def medial(self, items):
+        return Yale._lookup_terminal_withtype(self, items, "medial")
+
+    def codastop(self, items):
+        return Yale._lookup_terminal_withtype(self, items, "codastop")
+
+    def codanasal(self, items):
+        return Yale._lookup_terminal_withtype(self, items, "codanasal")
 
     def final(self, items):
-        return "final", "".join([str(i) for i in items])
+        return "final", {i[0]: i[1] for i in items}
 
     def final_entering(self, items):
-        return "final_entering", "".join([str(i) for i in items])
+        return "final_entering", {i[0]: i[1] for i in items}
 
     def tone_citation(self, items):
         # Should only be one item
@@ -169,12 +191,6 @@ class Yale(Cantonese):
     def tone_entering(self, items):
         # Should only be one item
         return items[0]
-
-#     def syllable_tone(self, items):
-#         return "".join([str_or_None(i) for i in items])
-
-    def syllable_toneless(self, items):
-        return "".join([str_or_None(i) for i in items])
 
     def syllable_tone(self, items):
         trdict = {
@@ -189,28 +205,31 @@ class Yale(Cantonese):
             "tone_8": "",
             "tone_9": "",
         }
-        print(items)
-        # items: [initial] final tonecitation
-        # syllab = "".join([str_or_None(i) for i in items[:-1]])  # syllable without tone
-        tone = items[-1][0]
-        final = items[1][1]
-        firstvowel = re.search(r"[aeiou]", final)
-        if firstvowel:
-            # put tone mark on first vowel letter
-            inspos = firstvowel.span()[1]
-        else:
-            # no vowel in syllable, put on nasal codas n or m, n comes first
-            firstnasal = re.search(r"[nm]", final)
-            inspos = firstnasal.span()[1]
-        if tone in ['tone_4','tone_5','tone_6','tone_9']:
-            final = final[0:inspos] + trdict[tone] + final[inspos:] + "h"
-        else:
-            final = final[0:inspos] + trdict[tone] + final[inspos:]
-        # TODO for tone 9, the 'h' is infixed before the conda stop
-        # if str(tone) in ["4","5","6","9"]:
-        #     syllab = syllab + "h"
-        syllab = unicodedata.normalize("NFC", items[0][1] + final)
-        return syllab
+        # items is a list of: [initial] final tone_citation
+        initial = items[0]  # first element, either tuple or None
+        tone = items[-1][0]  # last element
+        final_text = ""
+        if items[1][0] == "final":
+            final = items[1][1]
+            if "medial" in final:
+                final_text += final["medial"] + trdict[tone]
+                if tone in ["tone_4", "tone_5", "tone_6"]:
+                    final_text += "h"
+                if "codanasal" in final:
+                    final_text += final["codanasal"]
+            else:  # codanasalnasal only
+                final_text += final["codanasal"] + trdict[tone]
+        elif items[1][0] == "final_entering":
+            final = items[1][1]
+            final_text += final["medial"] + trdict[tone]
+            if tone == "tone_9":
+                final_text += "h"
+            final_text += final["codastop"]
+        syllable_text = ""
+        if initial is not None:
+            syllable_text += initial[1]
+        syllable_text += final_text
+        return unicodedata.normalize("NFC", syllable_text)
 
 
 # Available output formats for transformers
