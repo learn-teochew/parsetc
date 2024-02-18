@@ -176,6 +176,10 @@ Q & A
   contributions in detail, so please understand if I decline them or take a
   long time to respond.
 
+* Q: Parsing and conversion is slow, how can I speed it up?
+* A: Break input into shorter lines, and consider using PyPy instead of the
+  standard Python interpreter. If you have other suggestions for speedup please
+  get in touch!
 
 Related projects
 ----------------
