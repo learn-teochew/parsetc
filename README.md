@@ -6,6 +6,13 @@ Parsing and conversion of Teochew Chinese romanizations
 
 Parse and convert between different Teochew romanized spelling schemes.
 
+`parsetc` represents romanization schemes as context-free grammars, and
+implements parsers and translators using the
+[`lark`](https://lark-parser.readthedocs.io/en/stable/index.html) Python
+library. The aim is to represent romanized text as an abstract parse tree
+representing the phonology, which can then be converted to other romanization
+schemes in a consistent, rule-based way.
+
 
 Available romanization schemes for Teochew
 ------------------------------------------
@@ -47,7 +54,7 @@ available.
 Orthographic requirements for input text
 ----------------------------------------
 
- * Text must be in lower case
+ * Text must be in lower case, otherwise will be converted to lower case
  * Syllables may be written with or without tone numbers
  * Syllables may be combined into words for legibility, i.e. [word-segmented
    writing](https://en.wikipedia.org/wiki/Chinese_word-segmented_writing)
@@ -103,25 +110,51 @@ Input text is read line-by-line from STDIN. Output is written to STDOUT.
 The language (`--language` or `-l`) is `Teochew` by default.
 
 ```bash
-# output in Tie-lo
+# Convert to Tie-lo
 echo 'ua2 ain3 oh8 diê5ghe2, ain3 dan3 diê5ziu1 uê7.' | parsetc -i gdpi -o tlo
-# all available output romanizations
+# Convert to all available output romanizations
 echo 'ua2 ain3 oh8 diê5ghe2, ain3 dan3 diê5ziu1 uê7.' | parsetc -i gdpi --all
+# Show parse tree (useful for debugging)
+echo 'ua2 ain3 oh8 diê5ghe2, ain3 dan3 diê5ziu1 uê7.' | parsetc -i gdpi -p
 ```
 
-Testing with provided example text:
+Testing with sample texts in the `examples/` folder:
 
 ```bash
 # Example with tone numbers but no syllable separators
-cat examples/dieghv.tones.txt | parsetc -i dieghv --all
+cat examples/teochew.dieghv.tones.txt | parsetc -i dieghv --all
 # Example with hyphens as syllable separators
-cat examples/dieghv.sep.txt | parsetc -i dieghv --all
+cat examples/teochew.dieghv.sep.txt | parsetc -i dieghv --all
+```
+
+Try a Cantonese example (work in progress):
+
+```bash
+echo "ceon1 min4 bat1 gok3 hiu2" | parsetc -l Cantonese -i jp --all
+cat examples/cantonese.cpy.txt | parsetc -l Cantonese -i cpy --all
 ```
 
 
 ### Python module
 
-Updated instructions coming soon...
+[ Work in progress. Updated docs coming soon... ]
+
+Common functions and command line script are in the `parsetc.parsetc`
+submodule. Each language has a dedicated subpackage with the following
+structure (using Teochew as an example):
+
+```
+src/parsetc/Teochew/
+├── shared.lark     # lark grammar for shared parser rules
+├── extends.json    # lark %extend statements specific to individual schemes
+├── terminals.json  # dictionary of terminals for each scheme
+├── mergers.json    # dictionary of phonological mergers specific to individual schemes
+├── parser.py       # preprocessing and parser functions
+└── translit.py     # Translator classes
+```
+
+The lark rules and json files are the data required for the parsing and
+translation functions in `parser.py` and `translit.py`.
 
 
 Related projects
@@ -141,4 +174,4 @@ layouts](https://github.com/learn-teochew/POJ-variants-keyboard)
 ### Others
 
 * [taibun](https://github.com/andreihar/taibun) - Transliterator and tokenizer
-  for Taiwanese Hokkien
+  for Taiwanese Hokkien by Andrei Harbachov
