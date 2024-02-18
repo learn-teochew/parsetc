@@ -157,6 +157,25 @@ The lark rules and json files are the data required for the parsing and
 translation functions in `parser.py` and `translit.py`.
 
 
+Q & A
+-----
+
+* Q: Can I convert Chinese characters to romanization with `parsetc`?
+* A: No, it is for converting between different romanization systems only.
+
+* Q: `parsetc` makes a mistake, or it crashes when parsing a text. Can you fix it?
+* A: Please check first if you are using the latest version of `parsetc` (run
+  `parsetc --version`). If the error still persists, please file a bug report
+  on the Github [issues](https://github.com/learn-teochew/parsetc/issues) page,
+  with the input text that caused the crash/error.
+
+* Q: Can I contribute code to this project?
+* A: You are welcome to look into the source code and fork/modfiy it. However,
+  I currently do not have the capacity to review pull requests and
+  contributions in detail, so please understand if I decline them or take a
+  long time to respond.
+
+
 Related projects
 ----------------
 
