@@ -6,36 +6,23 @@ INPUT_SYS = ["jp"]
 def diacritics_syllable_parse(syllable, system):
     """Parse a syllable with tone diacritics to tone number
 
-    Tie-lo or Duffus systems only. Also decomposes compound characters, needed
-    for ṳ which can be either single character or combining.
+    Yale system only. Also decomposes compound characters.
 
     Will not complain if a syllable has two diacritics. Beware!
 
     Returns
     -------
-    (str, int) : base syllable string, tone number. Tone 0 not supported
+    (str, str) : base syllable string, tone number. Tone 0 not supported
     """
     tonemarks = {
-        "tlo": {
-            769: 2,  # hex 0x301
-            768: 3,  # 0x300
-            770: 5,  # 0x302
-            774: 6,  # 0x306
-            780: 6,  # 0x30C combining caron, often confused with combining breve
-            772: 7,  # 0x304
-        },
-        "duffus": {
-            769: 2,  # hex 0x301
-            768: 3,  # 0x300
-            770: 5,  # 0x302
-            771: 6,  # 0x303
-            772: 7,  # 0x304
-            781: 8,  # 0x30D # vertical line above
-            775: 8,  # 0x307 # dot above - variant
+        "yale": {
+            772: "1a",  # combining macron
+            768: "1b",  # combining grave
+            769: "2" ,  # combining acute
         },
     }
     notone = []
-    tone = 1  # default tone
+    tone = 3  # unmarked
 
     decomp = [ord(i) for i in unicodedata.normalize("NFD", syllable)]
     # Check for tone diacritic, should be only one
@@ -71,7 +58,7 @@ def preprocess(text, system):
         Input with tone numbers instead of diacritics
     """
     text = text.lower()
-    if system in ["tlo", "duffus"]:
+    if system in ["yale"]:
         out = []
         for elem in re.split(r"([\s,\.\'\"\?\!\-]+)", text):  # TODO hacky
             if elem != "" and not re.match(r"([\s,\.\'\"\?\!\-]+)", elem):

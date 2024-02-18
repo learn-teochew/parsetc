@@ -11,8 +11,7 @@ sentence_tone : ( PUNCTUATION | SPACE )* word_tone ( ( PUNCTUATION | SPACE )+ wo
 word_tone : syllable_tone+
 
 // Syllables
-// syllable : [initial] final tone?
-syllable_tone : [initial] ( ( final tone ) | ( final_entering tone_entering ) )
+syllable_tone : [initial] ( ( final tone_citation ) | ( final_entering tone_entering ) )
 syllable_toneless : [initial] ( final | final_entering ) 
 
 // Initials
@@ -24,7 +23,7 @@ initial : INIT_B | INIT_P  | INIT_M | INIT_F
 
 // Finals
 final : ( medial codanasal? ) | codanasal
-final_entering : medial codastops
+final_entering : medial codastop
 
 // Medials
 // longer medials are listed first to be preferentially matched
@@ -34,13 +33,12 @@ medial : MED_AAI | MED_AAU | MED_EOI
        | MED_A   | MED_E   | MED_I   | MED_O   | MED_U 
 
 // Codas
-coda : codanasal | codastops
+coda : codanasal | codastop
 codanasal : COD_M | COD_NG | COD_N
-codastops : COD_P | COD_K | COD_T
+codastop : COD_P | COD_K | COD_T
 
 // Tones
-tone : tone_citation | tone_entering
-tone_citation: tone_1 | tone_2 | tone_3 | tone_4 | tone_5 | tone_6
+tone_citation: tone_1a | tone_1b | tone_2 | tone_3 | tone_4 | tone_5 | tone_6
 tone_entering : tone_7 | tone_8 | tone_9
 
 // Syllable separator

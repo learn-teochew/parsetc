@@ -1,71 +1,71 @@
 { 
-  "initials" : {
-    "INIT_B"  : { "jp" : "b" , "cpy" : "b"  },
-    "INIT_P"  : { "jp" : "p" , "cpy" : "p"  },
-    "INIT_M"  : { "jp" : "m" , "cpy" : "m"  },
-    "INIT_F"  : { "jp" : "f" , "cpy" : "f"  },
-    "INIT_D"  : { "jp" : "d" , "cpy" : "d"  },
-    "INIT_T"  : { "jp" : "t" , "cpy" : "t"  },
-    "INIT_N"  : { "jp" : "n" , "cpy" : "n"  },
-    "INIT_L"  : { "jp" : "l" , "cpy" : "l"  },
-    "INIT_G"  : { "jp" : "g" , "cpy" : "g"  },
-    "INIT_K"  : { "jp" : "k" , "cpy" : "k"  },
-    "INIT_NG" : { "jp" : "ng", "cpy" : "ng" },
-    "INIT_H"  : { "jp" : "h" , "cpy" : "h"  },
-    "INIT_GW" : { "jp" : "gw", "cpy" : "gw" },
-    "INIT_KW" : { "jp" : "kw", "cpy" : "kw" },
-    "INIT_W"  : { "jp" : "w" , "cpy" : "w"  },
-    "INIT_Z"  : { "jp" : "z" , "cpy" : "dz" },
-    "INIT_C"  : { "jp" : "c" , "cpy" : "ch" },
-    "INIT_S"  : { "jp" : "s" , "cpy" : "s"  },
-    "INIT_J"  : { "jp" : "j" , "cpy" : "j"  }
+  "initial" : {
+    "INIT_B"  : { "jp" : "b" , "cpy" : "b"  , "yale" : "b"  },
+    "INIT_P"  : { "jp" : "p" , "cpy" : "p"  , "yale" : "p"  },
+    "INIT_M"  : { "jp" : "m" , "cpy" : "m"  , "yale" : "m"  },
+    "INIT_F"  : { "jp" : "f" , "cpy" : "f"  , "yale" : "f"  },
+    "INIT_D"  : { "jp" : "d" , "cpy" : "d"  , "yale" : "d"  },
+    "INIT_T"  : { "jp" : "t" , "cpy" : "t"  , "yale" : "t"  },
+    "INIT_N"  : { "jp" : "n" , "cpy" : "n"  , "yale" : "n"  },
+    "INIT_L"  : { "jp" : "l" , "cpy" : "l"  , "yale" : "l"  },
+    "INIT_G"  : { "jp" : "g" , "cpy" : "g"  , "yale" : "g"  },
+    "INIT_K"  : { "jp" : "k" , "cpy" : "k"  , "yale" : "k"  },
+    "INIT_NG" : { "jp" : "ng", "cpy" : "ng" , "yale" : "ng" },
+    "INIT_H"  : { "jp" : "h" , "cpy" : "h"  , "yale" : "h"  },
+    "INIT_GW" : { "jp" : "gw", "cpy" : "gw" , "yale" : "gw" },
+    "INIT_KW" : { "jp" : "kw", "cpy" : "kw" , "yale" : "kw" },
+    "INIT_W"  : { "jp" : "w" , "cpy" : "w"  , "yale" : "w"  },
+    "INIT_Z"  : { "jp" : "z" , "cpy" : "dz" , "yale" : "j"  },
+    "INIT_C"  : { "jp" : "c" , "cpy" : "ch" , "yale" : "ch" },
+    "INIT_S"  : { "jp" : "s" , "cpy" : "s"  , "yale" : "s"  },
+    "INIT_J"  : { "jp" : "j" , "cpy" : "j"  , "yale" : "y"  }
   },
 
-  "medials" : {
-    "MED_AAI": { "jp": "aai", "cpy": "aai"},
-    "MED_AAU": { "jp": "aau", "cpy": "aau"},
-    "MED_EOI": { "jp": "eoi", "cpy": "eoi"},
-    "MED_AA" : { "jp": "aa" , "cpy": "aa" },
-    "MED_AI" : { "jp": "ai" , "cpy": "ai" },
-    "MED_AU" : { "jp": "au" , "cpy": "au" },
-    "MED_EI" : { "jp": "ei" , "cpy": "ei" },
-    "MED_EU" : { "jp": "eu" , "cpy": "eu" },
-    "MED_IU" : { "jp": "iu" , "cpy": "iu" },
-    "MED_OI" : { "jp": "oi" , "cpy": "oi" },
-    "MED_OU" : { "jp": "ou" , "cpy": "ou" },
-    "MED_UI" : { "jp": "ui" , "cpy": "ui" },
-    "MED_EO" : { "jp": "eo"               },
-    "MED_OE" : { "jp": "oe" , "cpy": "oe" },
-    "MED_YU" : { "jp": "yu" , "cpy": "y"  },
-    "MED_A"  : { "jp": "a"  , "cpy": "a"  },
-    "MED_E"  : { "jp": "e"  , "cpy": "e"  },
-    "MED_I"  : { "jp": "i"  , "cpy": "i"  },
-    "MED_O"  : { "jp": "o"  , "cpy": "o"  },
-    "MED_U"  : { "jp": "u"  , "cpy": "u"  }
+  "medial" : {
+    "MED_AAI": { "jp": "aai", "cpy": "aai", "yale": "aai"},
+    "MED_AAU": { "jp": "aau", "cpy": "aau", "yale": "aau"},
+    "MED_EOI": { "jp": "eoi", "cpy": "eoi", "yale": "eoi"},
+    "MED_AA" : { "jp": "aa" , "cpy": "aa" , "yale": "a"  },
+    "MED_AI" : { "jp": "ai" , "cpy": "ai" , "yale": "ai" },
+    "MED_AU" : { "jp": "au" , "cpy": "au" , "yale": "au" },
+    "MED_EI" : { "jp": "ei" , "cpy": "ei" , "yale": "ei" },
+    "MED_EU" : { "jp": "eu" , "cpy": "eu"                },
+    "MED_IU" : { "jp": "iu" , "cpy": "iu" , "yale": "iu" },
+    "MED_OI" : { "jp": "oi" , "cpy": "oi" , "yale": "oi" },
+    "MED_OU" : { "jp": "ou" , "cpy": "ou" , "yale": "ou" },
+    "MED_UI" : { "jp": "ui" , "cpy": "ui" , "yale": "ui" },
+    "MED_EO" : { "jp": "eo"               , "yale": "eu" },
+    "MED_OE" : { "jp": "oe" , "cpy": "oe"                },
+    "MED_YU" : { "jp": "yu" , "cpy": "y"  , "yale": "yu" },
+    "MED_A"  : { "jp": "a"  , "cpy": "a"  , "yale": "a"  },
+    "MED_E"  : { "jp": "e"  , "cpy": "e"  , "yale": "e"  },
+    "MED_I"  : { "jp": "i"  , "cpy": "i"  , "yale": "i"  },
+    "MED_O"  : { "jp": "o"  , "cpy": "o"  , "yale": "o"  },
+    "MED_U"  : { "jp": "u"  , "cpy": "u"  , "yale": "u"  }
   },
 
-  "codanasals" : {
-    "COD_M" : { "jp": "m"  , "cpy" : "m"  },
-    "COD_NG": { "jp": "ng" , "cpy" : "ng" },
-    "COD_N" : { "jp" : "n" , "cpy" : "n"  }
+  "codanasal" : {
+    "COD_M" : { "jp": "m"  , "cpy" : "m" , "yale" : "m"  },
+    "COD_NG": { "jp": "ng" , "cpy" : "ng", "yale" : "ng" },
+    "COD_N" : { "jp" : "n" , "cpy" : "n" , "yale" : "n"  }
   },
 
-  "codastops" : {
-    "COD_P": { "jp" : "p" , "cpy" : "p" },
-    "COD_K": { "jp" : "k" , "cpy" : "k" },
-    "COD_T": { "jp" : "t" , "cpy" : "t" }
+  "codastop" : {
+    "COD_P": { "jp" : "p" , "cpy" : "p" , "yale" : "p" },
+    "COD_K": { "jp" : "k" , "cpy" : "k" , "yale" : "k" },
+    "COD_T": { "jp" : "t" , "cpy" : "t" , "yale" : "t" }
   },
 
   "tones" : {
-    "tone_0": { "jp": "0" , "cpy": "0" },
-    "tone_1": { "jp": "1" , "cpy": "1" },
-    "tone_2": { "jp": "2" , "cpy": "2" },
-    "tone_3": { "jp": "3" , "cpy": "3" },
-    "tone_4": { "jp": "4" , "cpy": "4" },
-    "tone_5": { "jp": "5" , "cpy": "5" },
-    "tone_6": { "jp": "6" , "cpy": "6" },
-    "tone_7": { "jp": "1" , "cpy": "7" },
-    "tone_8": { "jp": "3" , "cpy": "8" },
-    "tone_9": { "jp": "6" , "cpy": "9" }
+    "tone_1a":   { "jp": "1" , "cpy": "1" , "yale": "1a"},
+    "tone_1b":   { "jp": "1" , "cpy": "1" , "yale": "1b"},
+    "tone_2" :   { "jp": "2" , "cpy": "2" , "yale": "2" },
+    "tone_3" :   { "jp": "3" , "cpy": "3" , "yale": "3" },
+    "tone_4" :   { "jp": "4" , "cpy": "4" , "yale": "1b"},
+    "tone_5" :   { "jp": "5" , "cpy": "5" , "yale": "2"},
+    "tone_6" :   { "jp": "6" , "cpy": "6" , "yale": "3"},
+    "tone_7" :   { "jp": "1" , "cpy": "7" , "yale": "1a"},
+    "tone_8" :   { "jp": "3" , "cpy": "8" , "yale": "3" },
+    "tone_9" :   { "jp": "6" , "cpy": "9" , "yale": "3" }
   }
 }
