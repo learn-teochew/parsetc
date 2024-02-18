@@ -46,8 +46,8 @@ def preprocess(text, system):
     impossible otherwise, because tone1 cannot be distinguished from unmarked
     tone.
 
-    Arguments
-    ---------
+    Parameters
+    ----------
     text : str
         Input text, without linebreaks
     system : str

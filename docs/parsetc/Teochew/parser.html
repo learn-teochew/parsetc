@@ -121,8 +121,8 @@
 </span><span id="L-59"><a href="#L-59"><span class="linenos">59</span></a><span class="sd">    Conversion is impossible otherwise, because tone1 cannot be distinguished</span>
 </span><span id="L-60"><a href="#L-60"><span class="linenos">60</span></a><span class="sd">    from unmarked tone</span>
 </span><span id="L-61"><a href="#L-61"><span class="linenos">61</span></a>
-</span><span id="L-62"><a href="#L-62"><span class="linenos">62</span></a><span class="sd">    Arguments</span>
-</span><span id="L-63"><a href="#L-63"><span class="linenos">63</span></a><span class="sd">    ---------</span>
+</span><span id="L-62"><a href="#L-62"><span class="linenos">62</span></a><span class="sd">    Parameters</span>
+</span><span id="L-63"><a href="#L-63"><span class="linenos">63</span></a><span class="sd">    ----------</span>
 </span><span id="L-64"><a href="#L-64"><span class="linenos">64</span></a><span class="sd">    text : str</span>
 </span><span id="L-65"><a href="#L-65"><span class="linenos">65</span></a><span class="sd">        Input text, without linebreaks</span>
 </span><span id="L-66"><a href="#L-66"><span class="linenos">66</span></a><span class="sd">    system : str</span>
@@ -136,8 +136,8 @@
 </span><span id="L-74"><a href="#L-74"><span class="linenos">74</span></a>    <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
 </span><span id="L-75"><a href="#L-75"><span class="linenos">75</span></a>    <span class="k">if</span> <span class="n">system</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;tlo&quot;</span><span class="p">,</span> <span class="s2">&quot;duffus&quot;</span><span class="p">]:</span>
 </span><span id="L-76"><a href="#L-76"><span class="linenos">76</span></a>        <span class="n">out</span> <span class="o">=</span> <span class="p">[]</span>
-</span><span id="L-77"><a href="#L-77"><span class="linenos">77</span></a>        <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;([\s,\.\&#39;</span><span class="se">\&quot;</span><span class="s2">\?\!\-]+)&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>  <span class="c1"># TODO hacky</span>
-</span><span id="L-78"><a href="#L-78"><span class="linenos">78</span></a>            <span class="k">if</span> <span class="n">elem</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;([\s,\.\&#39;</span><span class="se">\&quot;</span><span class="s2">\?\!\-]+)&quot;</span><span class="p">,</span> <span class="n">elem</span><span class="p">):</span>
+</span><span id="L-77"><a href="#L-77"><span class="linenos">77</span></a>        <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;([\s,\.\&#39;</span><span class="se">\&quot;</span><span class="s2">\?\!\-\;\:]+)&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>  <span class="c1"># TODO hacky</span>
+</span><span id="L-78"><a href="#L-78"><span class="linenos">78</span></a>            <span class="k">if</span> <span class="n">elem</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;([\d\s,\.\&#39;</span><span class="se">\&quot;</span><span class="s2">\?\!\-\;\:]+)&quot;</span><span class="p">,</span> <span class="n">elem</span><span class="p">):</span>
 </span><span id="L-79"><a href="#L-79"><span class="linenos">79</span></a>                <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
 </span><span id="L-80"><a href="#L-80"><span class="linenos">80</span></a>                    <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">diacritics_syllable_parse</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">system</span><span class="p">)])</span>
 </span><span id="L-81"><a href="#L-81"><span class="linenos">81</span></a>                <span class="p">)</span>
@@ -256,8 +256,8 @@ for ṳ which can be either single character or combining.</p>
 </span><span id="preprocess-60"><a href="#preprocess-60"><span class="linenos">60</span></a><span class="sd">    Conversion is impossible otherwise, because tone1 cannot be distinguished</span>
 </span><span id="preprocess-61"><a href="#preprocess-61"><span class="linenos">61</span></a><span class="sd">    from unmarked tone</span>
 </span><span id="preprocess-62"><a href="#preprocess-62"><span class="linenos">62</span></a>
-</span><span id="preprocess-63"><a href="#preprocess-63"><span class="linenos">63</span></a><span class="sd">    Arguments</span>
-</span><span id="preprocess-64"><a href="#preprocess-64"><span class="linenos">64</span></a><span class="sd">    ---------</span>
+</span><span id="preprocess-63"><a href="#preprocess-63"><span class="linenos">63</span></a><span class="sd">    Parameters</span>
+</span><span id="preprocess-64"><a href="#preprocess-64"><span class="linenos">64</span></a><span class="sd">    ----------</span>
 </span><span id="preprocess-65"><a href="#preprocess-65"><span class="linenos">65</span></a><span class="sd">    text : str</span>
 </span><span id="preprocess-66"><a href="#preprocess-66"><span class="linenos">66</span></a><span class="sd">        Input text, without linebreaks</span>
 </span><span id="preprocess-67"><a href="#preprocess-67"><span class="linenos">67</span></a><span class="sd">    system : str</span>
@@ -271,8 +271,8 @@ for ṳ which can be either single character or combining.</p>
 </span><span id="preprocess-75"><a href="#preprocess-75"><span class="linenos">75</span></a>    <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
 </span><span id="preprocess-76"><a href="#preprocess-76"><span class="linenos">76</span></a>    <span class="k">if</span> <span class="n">system</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;tlo&quot;</span><span class="p">,</span> <span class="s2">&quot;duffus&quot;</span><span class="p">]:</span>
 </span><span id="preprocess-77"><a href="#preprocess-77"><span class="linenos">77</span></a>        <span class="n">out</span> <span class="o">=</span> <span class="p">[]</span>
-</span><span id="preprocess-78"><a href="#preprocess-78"><span class="linenos">78</span></a>        <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;([\s,\.\&#39;</span><span class="se">\&quot;</span><span class="s2">\?\!\-]+)&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>  <span class="c1"># TODO hacky</span>
-</span><span id="preprocess-79"><a href="#preprocess-79"><span class="linenos">79</span></a>            <span class="k">if</span> <span class="n">elem</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;([\s,\.\&#39;</span><span class="se">\&quot;</span><span class="s2">\?\!\-]+)&quot;</span><span class="p">,</span> <span class="n">elem</span><span class="p">):</span>
+</span><span id="preprocess-78"><a href="#preprocess-78"><span class="linenos">78</span></a>        <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;([\s,\.\&#39;</span><span class="se">\&quot;</span><span class="s2">\?\!\-\;\:]+)&quot;</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>  <span class="c1"># TODO hacky</span>
+</span><span id="preprocess-79"><a href="#preprocess-79"><span class="linenos">79</span></a>            <span class="k">if</span> <span class="n">elem</span> <span class="o">!=</span> <span class="s2">&quot;&quot;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;([\d\s,\.\&#39;</span><span class="se">\&quot;</span><span class="s2">\?\!\-\;\:]+)&quot;</span><span class="p">,</span> <span class="n">elem</span><span class="p">):</span>
 </span><span id="preprocess-80"><a href="#preprocess-80"><span class="linenos">80</span></a>                <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
 </span><span id="preprocess-81"><a href="#preprocess-81"><span class="linenos">81</span></a>                    <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">diacritics_syllable_parse</span><span class="p">(</span><span class="n">elem</span><span class="p">,</span> <span class="n">system</span><span class="p">)])</span>
 </span><span id="preprocess-82"><a href="#preprocess-82"><span class="linenos">82</span></a>                <span class="p">)</span>
@@ -291,12 +291,14 @@ diacritics to numeric assumes that all syllables have tones marked!
 Conversion is impossible otherwise, because tone1 cannot be distinguished
 from unmarked tone</p>
 
-<h6 id="arguments">Arguments</h6>
+<h6 id="parameters">Parameters</h6>
 
-<p>text : str
-    Input text, without linebreaks
-system : str
-    Input scheme</p>
+<ul>
+<li><strong>text</strong> (str):
+Input text, without linebreaks</li>
+<li><strong>system</strong> (str):
+Input scheme</li>
+</ul>
 
 <h6 id="returns">Returns</h6>
 

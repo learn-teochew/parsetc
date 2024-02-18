@@ -21,8 +21,8 @@ def str_or_None(s):
 
     Deal with null initial, which is encoded as None rather than a terminal
 
-    Arguments
-    ---------
+    Parameters
+    ----------
     s : str or None
 
     Returns
@@ -128,8 +128,8 @@ class Cantonese(Transformer):
 
         This is an internal method used by the rule-specific methods.
 
-        Arguments
-        ---------
+        Parameters
+        ----------
         items : list
             Children from parse tree
         which : str
@@ -202,8 +202,8 @@ class Yale(Cantonese):
         addition to the child elements it returns name of the rule itself, as
         the elements have to be rearranged in the parent.
 
-        Arguments
-        ---------
+        Parameters
+        ----------
         items : list
             Children from parse tree
         which : str

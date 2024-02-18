@@ -17,8 +17,8 @@ from lark import __version__ as lark_version
 def load_parser_data(shared_fn, terminals_fn, extends_fn, systems):
     """Load Lark grammar for parser
 
-    Arguments
-    ---------
+    Parameters
+    ----------
     shared_fn : str
         Path relative to script of lark file with shared rules
     terminals_fn : str
@@ -69,8 +69,8 @@ def print_version():
 def transliterate_all(phrase, i, parser_dict, transformer_dict):
     """Transliterate romanized Teochew into all available output schemes
 
-    Arguments
-    ---------
+    Parameters
+    ----------
     phrase : str
         Text to be transliterated, must be preprocessed to lowercase and to
         convert diacritics to tone numbers
@@ -100,8 +100,8 @@ def transliterate_all(phrase, i, parser_dict, transformer_dict):
 def transliterate(phrase, i, o, parser_dict, transformer_dict, superscript_tone=False):
     """Transliterate romanized Teochew into different spelling scheme
 
-    Arguments
-    ---------
+    Parameters
+    ----------
     phrase : str
         Text to be transliterated, must be preprocessed to lowercase and to
         convert diacritics to tone numbers

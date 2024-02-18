@@ -17,8 +17,8 @@ def str_or_None(s):
 
     Deal with null initial, which is encoded as None rather than a terminal
 
-    Arguments
-    ---------
+    Parameters
+    ----------
     s : str or None
 
     Returns
@@ -119,8 +119,8 @@ class Teochew(Transformer):
 
         This is an internal method used by the rule-specific methods.
 
-        Arguments
-        ---------
+        Parameters
+        ----------
         items : list
             Children from parse tree
         which : str
