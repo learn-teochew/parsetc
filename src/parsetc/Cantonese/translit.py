@@ -7,6 +7,8 @@ import unicodedata
 from importlib_resources import files
 from lark import Transformer
 
+"""Transformer classes and helper functions to output romanized text from parse trees"""
+
 # Load terminals and mergers data
 TERMINALS = json.loads(
     files("parsetc").joinpath("Cantonese/terminals.json").read_text()
@@ -18,6 +20,15 @@ def str_or_None(s):
     """Convert to str or empty str if None
 
     Deal with null initial, which is encoded as None rather than a terminal
+
+    Arguments
+    ---------
+    s : str or None
+
+    Returns
+    -------
+    str
+        Empty string "" if input was None, the string otherwise.
     """
     if s is None:
         return ""
@@ -26,13 +37,21 @@ def str_or_None(s):
 
 
 class Cantonese(Transformer):
-    """Common to all Cantonese transformers unless overridden
+    """Parent Transformer class for all Cantonese systems
 
-    self.system is the key for the transcription system that is used to look up
-    the data in the TERMINALS and MERGERS dicts
+    Methods used by all Cantonese systems, unless overriden.
     """
 
     def __init__(self):
+        """Initialize Transformer
+
+        Attributes
+        ----------
+        self.system : str
+            Key for the transcription system that is used to look up the data
+            in the TERMINALS and MERGERS dicts. None for the generic parent
+            class.
+        """
         self.system = None
 
     def start(self, items):
@@ -105,6 +124,22 @@ class Cantonese(Transformer):
         return "".join(items)
 
     def _lookup_terminal(self, items, which="initial"):
+        """Define method to look up terminals from dictionary
+
+        This is an internal method used by the rule-specific methods.
+
+        Arguments
+        ---------
+        items : list
+            Children from parse tree
+        which : str
+            Key for terminals dictionary to look up
+
+        Returns
+        -------
+        dict
+            Dictionary of terminal strings keyed by type
+        """
         trdict = {
             term: TERMINALS[which][term][self.system]
             for term in TERMINALS[which]
@@ -150,11 +185,39 @@ class Yale(Cantonese):
         self.system = "yale"
 
     def syllable_toneless(self, items):
+        """Raise exception if input has no tones
+
+        Yale romanization uses a limited form of tone spelling. Therefore, if
+        the input does not have tone information, it is impossible to
+        disambiguate between some syllables, e.g tones 1 and 4.
+        """
         raise Exception(
             "Cannot convert toneless syllables to Yale because of ambiguity"
         )
 
-    def _lookup_terminal_withtype(self, items, which="initial"):
+    def _lookup_terminal(self, items, which="initial"):
+        """Define method to look up terminals from dictionary
+
+        This is an internal method used by the rule-specific methods. In
+        addition to the child elements it returns name of the rule itself, as
+        the elements have to be rearranged in the parent.
+
+        Arguments
+        ---------
+        items : list
+            Children from parse tree
+        which : str
+            Key for terminals dictionary to look up
+
+        Returns
+        -------
+        Tuple of:
+
+        str
+            The rule key name
+        dict
+            Dictionary of terminal strings keyed by type
+        """
         trdict = {
             term: TERMINALS[which][term][self.system]
             for term in TERMINALS[which]
@@ -167,16 +230,16 @@ class Yale(Cantonese):
         return which, trdict[items[0].type]
 
     def initial(self, items):
-        return Yale._lookup_terminal_withtype(self, items, "initial")
+        return Yale._lookup_terminal(self, items, "initial")
 
     def medial(self, items):
-        return Yale._lookup_terminal_withtype(self, items, "medial")
+        return Yale._lookup_terminal(self, items, "medial")
 
     def codastop(self, items):
-        return Yale._lookup_terminal_withtype(self, items, "codastop")
+        return Yale._lookup_terminal(self, items, "codastop")
 
     def codanasal(self, items):
-        return Yale._lookup_terminal_withtype(self, items, "codanasal")
+        return Yale._lookup_terminal(self, items, "codanasal")
 
     def final(self, items):
         return "final", {i[0]: i[1] for i in items}
@@ -193,6 +256,18 @@ class Yale(Cantonese):
         return items[0]
 
     def syllable_tone(self, items):
+        """Syllable with tone diacritics
+
+        Yale romanization uses diacritics instead of tone numbers, as well as
+        tone spelling (-h to medial for tones 4,5,6,9). For tone 9 the -h comes
+        before the stop coda, therefore the elements have to be rearranged.
+
+        Returns
+        -------
+        str
+            Syllable in Yale romanization with tone diacritics, Unicode NFC
+            normalized.
+        """
         trdict = {
             "tone_1a": "\u0304",
             "tone_1b": "\u0300",

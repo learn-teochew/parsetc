@@ -164,7 +164,7 @@ def get_args():
         type=str,
         default="Teochew",
         choices=["Teochew", "Cantonese"],
-        help="Language/dialect module to use"
+        help="Language/dialect module to use",
     )
     parser.add_argument(
         "--input",
@@ -183,7 +183,7 @@ def get_args():
     parser.add_argument(
         "--show_options",
         action="store_true",
-        help="Show available languages and transcription schemes"
+        help="Show available languages and transcription schemes",
     )
     parser.add_argument(
         "--parse_only",

@@ -3,6 +3,7 @@ import unicodedata
 
 INPUT_SYS = ["dieghv", "gdpi", "ggn", "ggnn", "tlo", "duffus"]
 
+
 def diacritics_syllable_parse(syllable, system):
     """Parse a syllable with tone diacritics to tone number
 
@@ -83,6 +84,3 @@ def preprocess(text, system):
         return "".join(out)
     else:
         return text
-
-
-

@@ -33,11 +33,14 @@ black:
 	black src/parsetc/Teochew/*.py
 	black src/parsetc/Cantonese/*.py
 
-build:
+docs:
+	pdoc -o docs -d numpy --include-undocumented ./src/parsetc
+
+build: docs
 	python -m build
 
 upload:
 	twine upload --skip-existing dist/*
 
 help:
-	echo "install test1 test2 build upload"
+	echo "install test1 test2 docs build upload"

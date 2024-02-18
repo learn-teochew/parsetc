@@ -41,10 +41,10 @@ def diacritics_syllable_parse(syllable, system):
 def preprocess(text, system):
     """Preprocess input text (lowercase, tone diacritics to numbers)
 
-    Tone diacritics used by Tie-lo and Duffus systems only. Conversion of tone
-    diacritics to numeric assumes that all syllables have tones marked!
-    Conversion is impossible otherwise, because tone1 cannot be distinguished
-    from unmarked tone
+    Tone diacritics used by Yale system. Conversion of tone diacritics to
+    numeric assumes that all syllables have tones marked!  Conversion is
+    impossible otherwise, because tone1 cannot be distinguished from unmarked
+    tone.
 
     Arguments
     ---------

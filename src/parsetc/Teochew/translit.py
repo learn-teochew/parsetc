@@ -16,20 +16,38 @@ def str_or_None(s):
     """Convert to str or empty str if None
 
     Deal with null initial, which is encoded as None rather than a terminal
+
+    Arguments
+    ---------
+    s : str or None
+
+    Returns
+    -------
+    str
+        Empty string "" if input was None, the string otherwise.
     """
     if s is None:
         return ""
     else:
         return str(s)
 
-class Teochew(Transformer):
-    """Common to all Teochew transformers unless overridden
 
-    self.system is the key for the transcription system that is used to look up
-    the data in the TERMINALS and MERGERS dicts
+class Teochew(Transformer):
+    """Parent Transformer class for all Teochew systems
+
+    Methods used by all Teochew systems, unless overriden.
     """
 
     def __init__(self):
+        """Initialize Transformer
+
+        Attributes
+        ----------
+        self.system : str
+            Key for the transcription system that is used to look up the data
+            in the TERMINALS and MERGERS dicts. None for the generic parent
+            class.
+        """
         self.system = None
 
     def start(self, items):
@@ -96,7 +114,23 @@ class Teochew(Transformer):
     def word_tone(self, items):
         return "".join(items)
 
-    def _lookup_terminal(self, items, which='initial'):
+    def _lookup_terminal(self, items, which="initial"):
+        """Define method to look up terminals from dictionary
+
+        This is an internal method used by the rule-specific methods.
+
+        Arguments
+        ---------
+        items : list
+            Children from parse tree
+        which : str
+            Key for terminals dictionary to look up
+
+        Returns
+        -------
+        dict
+            Dictionary of terminal strings keyed by type
+        """
         trdict = {
             term: TERMINALS[which][term][self.system]
             for term in TERMINALS[which]
@@ -110,24 +144,33 @@ class Teochew(Transformer):
         return trdict[items[0].type]
 
     def initial(self, items):
-        return Teochew._lookup_terminal(self, items, which='initial')
+        return Teochew._lookup_terminal(self, items, which="initial")
 
     def medial(self, items):
-        return Teochew._lookup_terminal(self, items, which='medial')
+        return Teochew._lookup_terminal(self, items, which="medial")
 
     def codastop(self, items):
-        return Teochew._lookup_terminal(self, items, which='codastop')
+        return Teochew._lookup_terminal(self, items, which="codastop")
 
     def codanasal(self, items):
-        return Teochew._lookup_terminal(self, items, which='codanasal')
+        return Teochew._lookup_terminal(self, items, which="codanasal")
+
 
 class Gdpi(Teochew):
-    """Convert Teochew pengim parse tree to Gengdang Pêng'im"""
+    """Gengdang Pêng'im"""
 
     def __init__(self):
         self.system = "gdpi"
 
     def tone(self, items):
+        """Tone numbers
+
+        Returns
+        -------
+        str:
+            Citation tone number; followed by changed tone in parentheses if
+            available
+        """
         # Citation tone only
         if len(items) == 1:
             return str(items[0])
@@ -138,6 +181,14 @@ class Gdpi(Teochew):
             return ""
 
     def tone_entering(self, items):
+        """Tone numbers for entering tones (4 and 8)
+
+        Returns
+        -------
+        str:
+            Citation tone number; followed by changed tone in parentheses if
+            available
+        """
         # Citation tone only
         if len(items) == 1:
             return str(items[0])
@@ -149,7 +200,7 @@ class Gdpi(Teochew):
 
 
 class Ggnn(Gdpi):
-    """Convert Teochew pengim parse tree to Gaginang Peng'im
+    """Gaginang Peng'im with -ñ representing nasalization
 
     Inherits from `Gdpi` class, only terminals differ
     """
@@ -159,7 +210,7 @@ class Ggnn(Gdpi):
 
 
 class Dieghv(Gdpi):
-    """Convert Teochew pengim parse tree to Dieghv
+    """Dieghv
 
     Inherits from `Gdpi` class, only terminals differ
     """
@@ -169,13 +220,19 @@ class Dieghv(Gdpi):
 
 
 class Duffus(Teochew):
-    """Convert Teochew pengim parse tree to Duffus system"""
+    """Duffus system, also known as Peh-ue-ji or Swatow Church romanization
+
+    Uses tone diacritics instead of tone numbers.
+    """
 
     def __init__(self):
         self.system = "duffus"
 
     def SYLLABLE_SEP(self, value):
-        # Change all syllable separators to hyphens
+        """Syllable separator in word
+
+        Change all syllable separators to hyphens
+        """
         return "-"
 
     def tone(self, items):
@@ -187,6 +244,17 @@ class Duffus(Teochew):
         return str(items[0])
 
     def syllable_tone(self, items):
+        """Syllable with tone diacritics
+
+        Duffus romanization uses diacritics instead of tone numbers. Diacritics
+        are placed on vowels in the medial; otherwise on the nasal -m- or -n-.
+
+        Returns
+        -------
+        str
+            Syllable in Duffus romanization with tone diacritics, Unicode NFC
+            normalized.
+        """
         trdict = {
             "1": "",
             "2": "\u0301",
@@ -226,7 +294,7 @@ class Duffus(Teochew):
 
 
 class Tlo(Duffus):
-    """Convert Teochew pengim parse tree to Tie-lo
+    """Tie-lo
 
     Inherits from Duffus class, only terminals and tone diacritics differ
     """
@@ -235,8 +303,17 @@ class Tlo(Duffus):
         self.system = "tlo"
 
     def syllable_tone(self, items):
-        # Tie-lo is less straightforward because it marks
-        # tones with diacritics
+        """Syllable with tone diacritics
+
+        Tie-lo romanization uses diacritics instead of tone numbers. Diacritics
+        are placed on vowels in the medial; otherwise on the nasal -m- or -n-.
+
+        Returns
+        -------
+        str
+            Syllable in Duffus romanization with tone diacritics, Unicode NFC
+            normalized.
+        """
         trdict = {
             "1": "",
             "2": "\u0301",
@@ -266,10 +343,10 @@ class Tlo(Duffus):
 
 
 class Sinwz(Teochew):
-    """Convert Teochew pengim parse tree to Sinwenz system
+    """Sinwenz
 
     This system presents some challenges and is not yet incorporated into the
-    data files, so the transformer is manually specified.
+    data files, so the terminals are manually specified in the transformer.
     """
 
     def __init__(self):
@@ -417,12 +494,17 @@ class Sinwz(Teochew):
 
 
 class Zapngou(Teochew):
-    """Convert Teochew pengim parse tree to rime dictionary analysis
+    """Rime dictionary analysis of initials and finals
 
     This system presents some challenges and is not yet incorporated into the
-    data files, so the transformer is manually specified. This is a special
-    case because the finals are terminals and not decomposed further to
-    medials+coda
+    data files, so the terminals are manually specified in the transformer.
+    This is a special case because the finals are terminals and not decomposed
+    further to medials+coda.
+
+    Each final has a distinct terminal, so we first convert finals to dieghv
+    and use that to lookup a dictionary. Not all realized finals are
+    represented in the rime scheme, so dieghv romanization is output as
+    fallback.
     """
 
     INITS = ["柳", "邊", "求", "去", "地", "頗", "他", "貞", "入", "時", "文", "語", "出", "喜"]
@@ -660,15 +742,16 @@ class Zapngou(Teochew):
 
 
 class Nosefirst(Gdpi):
-    """Test example to rearrange finals so that NASAL precedes medial
+    """Test example
 
-    Inherits from `Gdpi` class, only terminals differ
+    Rearrange finals so that NASAL precedes medial; for testing only, not
+    exposed to end user.
     """
 
     def __init__(self):
-        self.system = "dieghv" # lookup from dieghv tables
+        self.system = "dieghv"  # lookup from dieghv tables
 
-    def _lookup_terminal(self, items, which='initial'):
+    def _lookup_terminal(self, items, which="initial"):
         trdict = {
             term: TERMINALS[which][term][self.system]
             for term in TERMINALS[which]
@@ -681,13 +764,13 @@ class Nosefirst(Gdpi):
         return which, trdict[items[0].type]
 
     def medial(self, items):
-        return Nosefirst._lookup_terminal(self, items, 'medial')
+        return Nosefirst._lookup_terminal(self, items, "medial")
 
     def codanasal(self, items):
-        return Nosefirst._lookup_terminal(self, items, 'codanasal')
+        return Nosefirst._lookup_terminal(self, items, "codanasal")
 
     def codastop(self, items):
-        return Nosefirst._lookup_terminal(self, items, 'codastop')
+        return Nosefirst._lookup_terminal(self, items, "codastop")
 
     def NASAL(self, items):
         return "NASAL", "N"
@@ -696,13 +779,13 @@ class Nosefirst(Gdpi):
     # final_entering : medial ( NASAL? codastops )
 
     def final(self, items):
-        itemdict = { item_type : item for (item_type, item) in items }
-        out = [ itemdict[t] for t in ['NASAL','medial','codanasal'] if t in itemdict]
+        itemdict = {item_type: item for (item_type, item) in items}
+        out = [itemdict[t] for t in ["NASAL", "medial", "codanasal"] if t in itemdict]
         return "".join([str(i) for i in out])
 
     def final_entering(self, items):
-        itemdict = { item_type : item for (item_type, item) in items }
-        out = [ itemdict[t] for t in ['NASAL','medial','codastop'] if t in itemdict]
+        itemdict = {item_type: item for (item_type, item) in items}
+        out = [itemdict[t] for t in ["NASAL", "medial", "codastop"] if t in itemdict]
         return "".join([str(i) for i in out])
 
 
