@@ -1,7 +1,7 @@
 import re
 import unicodedata
 
-INPUT_SYS = ["jp"]
+INPUT_SYS = ["jp", "cpy"]
 
 
 def diacritics_syllable_parse(syllable, system):

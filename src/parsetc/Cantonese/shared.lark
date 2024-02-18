@@ -29,8 +29,8 @@ final_entering : medial codastop
 // Medials
 // longer medials are listed first to be preferentially matched
 medial : MED_AAI | MED_AAU | MED_EOI
-       | MED_AA  | MED_AI  | MED_AU  | MED_EI  | MED_EU | MED_IU
-       | MED_OI  | MED_OU  | MED_UI  | MED_EO  | MED_OE | MED_YU
+       | MED_AA  | MED_AI  | MED_AU  | MED_EI  | MED_IU
+       | MED_OI  | MED_OU  | MED_UI  | MED_OE  | MED_YU
        | MED_A   | MED_E   | MED_I   | MED_O   | MED_U 
 
 // Codas

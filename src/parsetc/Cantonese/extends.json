@@ -1,3 +1,11 @@
 {
-  "jp" : []
+  "jp" : [
+    "%extend medial: MED_EO | MED_EU"
+  ],
+  "cpy" : [
+    "%extend medial: MED_EU"
+  ],
+  "yale" : [
+    "%extend medial: MED_EO"
+  ]
 }
