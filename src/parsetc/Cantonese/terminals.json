@@ -16,7 +16,7 @@
     "INIT_KW" : { "jp" : "kw", "cpy" : "kw" , "yale" : "kw" },
     "INIT_W"  : { "jp" : "w" , "cpy" : "w"  , "yale" : "w"  },
     "INIT_Z"  : { "jp" : "z" , "cpy" : "dz" , "yale" : "j"  },
-    "INIT_C"  : { "jp" : "c" , "cpy" : "ch" , "yale" : "ch" },
+    "INIT_C"  : { "jp" : "c" , "cpy" : "ts" , "yale" : "ch" },
     "INIT_S"  : { "jp" : "s" , "cpy" : "s"  , "yale" : "s"  },
     "INIT_J"  : { "jp" : "j" , "cpy" : "j"  , "yale" : "y"  }
   },
