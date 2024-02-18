@@ -137,8 +137,6 @@ cat examples/cantonese.cpy.txt | parsetc -l Cantonese -i cpy --all
 
 ### Python module
 
-[ Work in progress. Updated docs coming soon... ]
-
 Common functions and command line script are in the `parsetc.parsetc`
 submodule. Each language has a dedicated subpackage with the following
 structure (using Teochew as an example):
@@ -155,6 +153,9 @@ src/parsetc/Teochew/
 
 The lark rules and json files are the data required for the parsing and
 translation functions in `parser.py` and `translit.py`.
+
+Refer to the [API documentation](https://learn-teochew.github.io/parsetc) for
+more information.
 
 
 Q & A
