@@ -419,6 +419,7 @@ class Sinwz(Teochew):
             "COD_P": "p",
             "COD_K": "q",
             "COD_H": "q",
+            "COD_T": "q",
         }
         return trdict[items[0].type]
 
