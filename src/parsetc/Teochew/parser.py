@@ -74,8 +74,8 @@ def preprocess(text, system):
     text = text.lower()
     if system in ["tlo", "duffus"]:
         out = []
-        for elem in re.split(r"([\s,\.\'\"\?\!\-]+)", text):  # TODO hacky
-            if elem != "" and not re.match(r"([\s,\.\'\"\?\!\-]+)", elem):
+        for elem in re.split(r"([\s,\.\'\"\?\!\-\;\:]+)", text):  # TODO hacky
+            if elem != "" and not re.search(r"([\d\s,\.\'\"\?\!\-\;\:]+)", elem):
                 out.append(
                     "".join([str(i) for i in diacritics_syllable_parse(elem, system)])
                 )

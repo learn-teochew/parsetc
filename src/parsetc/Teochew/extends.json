@@ -21,6 +21,7 @@
   "duffus": [
     "%extend initial: INIT_CH | INIT_CHH | INIT_J",
     "%extend codanasal : COD_N",
-    "%extend codastop : COD_T"
+    "%extend codastop : COD_T",
+    "%extend PUNCTUATION : \"0\"..\"9\""
   ]
 }
