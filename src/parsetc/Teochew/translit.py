@@ -96,51 +96,30 @@ class Teochew(Transformer):
     def word_tone(self, items):
         return "".join(items)
 
-    def initial(self, items):
+    def _lookup_terminal(self, items, which='initial'):
         trdict = {
-            term: TERMINALS["initials"][term][self.system]
-            for term in TERMINALS["initials"]
-            if self.system in TERMINALS["initials"][term]
+            term: TERMINALS[which][term][self.system]
+            for term in TERMINALS[which]
+            if self.system in TERMINALS[which][term]
         }
         # initials that have merged in modern Teochew
-        for term in MERGERS["initials"]:
-            if self.system in MERGERS["initials"][term]:
-                merged_to = MERGERS["initials"][term][self.system]
-                trdict[term] = TERMINALS["initials"][merged_to][self.system]
+        for term in MERGERS[which]:
+            if self.system in MERGERS[which][term]:
+                merged_to = MERGERS[which][term][self.system]
+                trdict[term] = TERMINALS[which][merged_to][self.system]
         return trdict[items[0].type]
+
+    def initial(self, items):
+        return Teochew._lookup_terminal(self, items, which='initial')
 
     def medial(self, items):
-        trdict = {
-            term: TERMINALS["medials"][term][self.system]
-            for term in TERMINALS["medials"]
-            if self.system in TERMINALS["medials"][term]
-        }
-        return trdict[items[0].type]
+        return Teochew._lookup_terminal(self, items, which='medial')
 
-    def codastops(self, items):
-        trdict = {
-            term: TERMINALS["codastops"][term][self.system]
-            for term in TERMINALS["codastops"]
-            if self.system in TERMINALS["codastops"][term]
-        }
-        for term in MERGERS["codastops"]:
-            if self.system in MERGERS["codastops"][term]:
-                merged_to = MERGERS["codastops"][term][self.system]
-                trdict[term] = TERMINALS["codastops"][merged_to][self.system]
-        return trdict[items[0].type]
+    def codastop(self, items):
+        return Teochew._lookup_terminal(self, items, which='codastop')
 
     def codanasal(self, items):
-        trdict = {
-            term: TERMINALS["codanasals"][term][self.system]
-            for term in TERMINALS["codanasals"]
-            if self.system in TERMINALS["codanasals"][term]
-        }
-        for term in MERGERS["codanasals"]:
-            if self.system in MERGERS["codanasals"][term]:
-                merged_to = MERGERS["codanasals"][term][self.system]
-                trdict[term] = TERMINALS["codanasals"][merged_to][self.system]
-        return trdict[items[0].type]
-
+        return Teochew._lookup_terminal(self, items, which='codanasal')
 
 class Gdpi(Teochew):
     """Convert Teochew pengim parse tree to Gengdang Pêng'im"""
@@ -358,7 +337,7 @@ class Sinwz(Teochew):
         }
         return trdict[items[0].type]
 
-    def codastops(self, items):
+    def codastop(self, items):
         trdict = {
             "COD_P": "p",
             "COD_K": "q",
@@ -481,26 +460,26 @@ class Zapngou(Teochew):
 
     def medial(self, items):
         trdict = {
-            term: TERMINALS["medials"][term]["dieghv"]
-            for term in TERMINALS["medials"]
-            if "dieghv" in TERMINALS["medials"][term]
+            term: TERMINALS["medial"][term]["dieghv"]
+            for term in TERMINALS["medial"]
+            if "dieghv" in TERMINALS["medial"][term]
         }
         return trdict[items[0].type]
 
-    def codastops(self, items):
+    def codastop(self, items):
         trdict = {
-            term: TERMINALS["codastops"][term]["dieghv"]
-            for term in TERMINALS["codastops"]
-            if "dieghv" in TERMINALS["codastops"][term]
+            term: TERMINALS["codastop"][term]["dieghv"]
+            for term in TERMINALS["codastop"]
+            if "dieghv" in TERMINALS["codastop"][term]
         }
         trdict["COD_T"] = "g"  # Dieghv does not have stop -t
         return trdict[items[0].type]
 
     def codanasal(self, items):
         trdict = {
-            term: TERMINALS["codanasals"][term]["dieghv"]
-            for term in TERMINALS["codanasals"]
-            if "dieghv" in TERMINALS["codanasals"][term]
+            term: TERMINALS["codanasal"][term]["dieghv"]
+            for term in TERMINALS["codanasal"]
+            if "dieghv" in TERMINALS["codanasal"][term]
         }
         trdict["COD_N"] = "ng"  # Dieghv does not have coda n
         return trdict[items[0].type]
@@ -687,39 +666,28 @@ class Nosefirst(Gdpi):
     """
 
     def __init__(self):
-        self.system = "dieghv"
+        self.system = "dieghv" # lookup from dieghv tables
+
+    def _lookup_terminal(self, items, which='initial'):
+        trdict = {
+            term: TERMINALS[which][term][self.system]
+            for term in TERMINALS[which]
+            if self.system in TERMINALS[which][term]
+        }
+        for term in MERGERS[which]:
+            if self.system in MERGERS[which][term]:
+                merged_to = MERGERS[which][term][self.system]
+                trdict[term] = TERMINALS[which][merged_to][self.system]
+        return which, trdict[items[0].type]
 
     def medial(self, items):
-        trdict = {
-            term: TERMINALS["medials"][term][self.system]
-            for term in TERMINALS["medials"]
-            if self.system in TERMINALS["medials"][term]
-        }
-        return "medial", trdict[items[0].type]
+        return Nosefirst._lookup_terminal(self, items, 'medial')
 
     def codanasal(self, items):
-        trdict = {
-            term: TERMINALS["codanasals"][term][self.system]
-            for term in TERMINALS["codanasals"]
-            if self.system in TERMINALS["codanasals"][term]
-        }
-        for term in MERGERS["codanasals"]:
-            if self.system in MERGERS["codanasals"][term]:
-                merged_to = MERGERS["codanasals"][term][self.system]
-                trdict[term] = TERMINALS["codanasals"][merged_to][self.system]
-        return "codanasal", trdict[items[0].type]
+        return Nosefirst._lookup_terminal(self, items, 'codanasal')
 
-    def codastops(self, items):
-        trdict = {
-            term: TERMINALS["codastops"][term][self.system]
-            for term in TERMINALS["codastops"]
-            if self.system in TERMINALS["codastops"][term]
-        }
-        for term in MERGERS["codastops"]:
-            if self.system in MERGERS["codastops"][term]:
-                merged_to = MERGERS["codastops"][term][self.system]
-                trdict[term] = TERMINALS["codastops"][merged_to][self.system]
-        return "codastops", trdict[items[0].type]
+    def codastop(self, items):
+        return Nosefirst._lookup_terminal(self, items, 'codastop')
 
     def NASAL(self, items):
         return "NASAL", "N"
@@ -734,7 +702,7 @@ class Nosefirst(Gdpi):
 
     def final_entering(self, items):
         itemdict = { item_type : item for (item_type, item) in items }
-        out = [ itemdict[t] for t in ['NASAL','medial','codastops'] if t in itemdict]
+        out = [ itemdict[t] for t in ['NASAL','medial','codastop'] if t in itemdict]
         return "".join([str(i) for i in out])
 
 
@@ -743,9 +711,9 @@ TRANSFORMER_DICT = {
     "gdpi": Gdpi(),
     "ggnn": Ggnn(),
     "dieghv": Dieghv(),
-    "nosefirst": Nosefirst(),
     "tlo": Tlo(),
     "duffus": Duffus(),
     "sinwz": Sinwz(),
     "15": Zapngou(),
+    # "nosefirst": Nosefirst(), # experimental only
 }

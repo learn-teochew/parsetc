@@ -1,5 +1,5 @@
 { 
-  "initials" : {
+  "initial" : {
     "INIT_BH" : { "dieghv": "bh","gdpi": "bh", "ggn": "bh", "ggnn": "bh", "tlo": "b"  , "duffus": "b"  },
     "INIT_P"  : { "dieghv": "p", "gdpi": "p" , "ggn": "p" , "ggnn": "p" , "tlo": "ph" , "duffus": "ph" },
     "INIT_B"  : { "dieghv": "b", "gdpi": "b" , "ggn": "b" , "ggnn": "b" , "tlo": "p"  , "duffus": "p"  },
@@ -22,7 +22,7 @@
     "INIT_L"  : { "dieghv": "l", "gdpi": "l" , "ggn": "l" , "ggnn": "l" , "tlo": "l"  , "duffus": "l"  }
   },
 
-  "medials" : {
+  "medial" : {
     "MED_AI" : { "dieghv": "ai",  "gdpi": "ai" , "ggn": "ai" , "ggnn": "ai" , "tlo": "ai" , "duffus":  "ai" },
     "MED_AU" : { "dieghv": "au",  "gdpi": "ao" , "ggn": "ao" , "ggnn": "ao" , "tlo": "au" , "duffus":  "au" },
     "MED_IA" : { "dieghv": "ia",  "gdpi": "ia" , "ggn": "ia" , "ggnn": "ia" , "tlo": "ia" , "duffus":  "ia" },
@@ -46,13 +46,13 @@
     "MED_U"  : { "dieghv": "u",   "gdpi": "u"  , "ggn": "u"  , "ggnn": "u"  , "tlo": "u"  , "duffus":  "u"  }
   },
 
-  "codanasals" : {
+  "codanasal" : {
     "COD_M" : { "dieghv": "m", "gdpi": "m" , "ggn": "m" , "ggnn": "m" , "tlo": "m" , "duffus": "m"  },
     "COD_NG": { "dieghv": "ng","gdpi": "ng", "ggn": "ng", "ggnn": "ng", "tlo": "ng", "duffus": "ng" },
     "COD_N" : {                                           "ggnn": "n" , "tlo": "n" , "duffus": "n"  }
   },
 
-  "codastops" : {
+  "codastop" : {
     "COD_P": { "dieghv": "p", "gdpi": "b", "ggn": "p", "ggnn": "p", "tlo": "p", "duffus": "p" },
     "COD_K": { "dieghv": "k", "gdpi": "g", "ggn": "k", "ggnn": "k", "tlo": "k", "duffus": "k" },
     "COD_H": { "dieghv": "h", "gdpi": "h", "ggn": "h", "ggnn": "h", "tlo": "h", "duffus": "h" },

@@ -26,7 +26,7 @@ initial : INIT_BH | INIT_P  | INIT_B
 
 // Finals
 final : ( medial ( codanasal | NASAL )? ) | codanasal
-final_entering : medial ( NASAL? codastops )
+final_entering : medial ( NASAL? codastop )
 
 // Medials
 // longer medials are listed first to be preferentially matched
@@ -37,9 +37,9 @@ medial : MED_AI  | MED_AU
        | MED_A   | MED_V   | MED_E   | MED_I   | MED_O   | MED_U   
 
 // Codas
-coda : codanasal | codastops
+coda : codanasal | codastop
 codanasal : COD_M | COD_NG
-codastops : COD_P | COD_K | COD_H
+codastop : COD_P | COD_K | COD_H
 
 // Tones
 tone : tone_citation ( "(" tone_changed ")" )?
